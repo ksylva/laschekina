@@ -1,0 +1,42 @@
+{% extends 'LSIMarketBundle::layout_mon_espace.html.twig' %}
+
+{% block title %}
+    Reservation sur mes annonces - {{ parent() }}
+{% endblock title %}
+
+{% block monespace %}
+    <div id="page" class="row">
+        <div class="">
+            <h3>Reservation sur mes annonces</h3>
+            <table class="table table-hover">
+                <thead>
+                <tr class="success">
+                    <th>Numero</th>
+                    <th>Titre de l'annonce</th>
+                    <th>Debut de la prestation</th>
+                    <th>Fin de la prestation</th>
+                    <th>Etat de la reservation</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, annonceR in annonceReservee %}
+                    <tr>
+
+                        <td>{{ key + 1 }}</td>
+                        <td>Titre de l'annonce</td>
+                        <td><strong>{{ annonceR.debutPrestation|date('d/m/Y') }}</strong></td>
+                        <td><strong>{{ annonceR.finPrestation|date('d/m/Y') }}</strong></td>
+                        {% if annonceR.reserveEtat == 'A' %}
+                            <td><strong>En attente de validation de votre part</strong></td>
+                        {% endif %}
+                        <td>Les actions</td>
+                    </tr>
+                {% else %}
+                    <p><strong>Vous n'avez de reservation sur aucune de vos annonces!</strong></p>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock monespace %}

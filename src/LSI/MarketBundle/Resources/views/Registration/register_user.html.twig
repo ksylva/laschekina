@@ -1,0 +1,120 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {#{{ form_widget(form) }}#}
+<div id="page" class="row">
+    <div class="row">
+        <div class="col-lg-offset-4 col-xs-5 col-md-5 col-lg-5">
+            <div class="form-group" onclick="usager()">
+                {{ form_label(form.type, 'Type d\'usagers', {'label_attr' : {'class' : 'radio-inline'}}) }}
+                {{ form_errors(form.type) }}
+                {{ form_widget(form.type, {'label_attr' : {'class' : 'radio-inline'}}) }}
+            </div>
+        </div>
+    </div>
+    <div class=" col-xs-6 col-md-6 col-lg-6">
+        <div class="form-group">
+            {{ form_label(form.nom, 'Nom') }}
+            {{ form_errors(form.nom) }}
+            {{ form_widget(form.nom) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.username, 'Nom d\'utilisateur') }}
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username, {'attr' : {'placeholder' : 'Entrez votre nom d\'utilisateur'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.email, 'Adresse email') }}
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email, {'attr' : {'placeholder' : 'Entrez votre adresse e-mail'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.plainPassword.first, 'Mot de passe') }}
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, {'attr' : {'placeholder' : 'Entrez votre mot de passe'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.plainPassword.second, 'Confirmer le mot de passe') }}
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, {'attr' : {'placeholder' : 'Rétapez le mot de passe'}}) }}
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-6 col-lg-6">
+        <div class="form-group">
+            {{ form_label(form.telephone) }}
+            {{ form_errors(form.telephone) }}
+            {{ form_widget(form.telephone, {'attr' : {'placeholder' : 'Votre numéro de téléphone'}}) }}
+        </div>
+        {#<div class="form-group">
+            {{ form_label(form.adresse) }}
+            {{ form_errors(form.adresse) }}
+            {{ form_widget(form.adresse, {'attr' : {'placeholder' : 'Votre adresse'}}) }}
+            #}{#{{ form_widget(form.validate, {'label': 'Valider l\'adresse', 'attr': {'class':'btn btn-info'}}) }}#}{#
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.ville) }}
+            {{ form_errors(form.ville) }}
+            {{ form_widget(form.ville, {'attr' : {'placeholder' : 'Votre ville'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.pays, 'Votre pays') }}
+            {{ form_errors(form.pays) }}
+            {{ form_widget(form.pays, {'attr' : {'placeholder' : 'Votre pays'}}) }}
+        </div>#}
+        <div class="form-group">
+            {{ form_label(form.indicatif, 'Indicatif de votre pays') }}
+            {{ form_errors(form.indicatif) }}
+            {{ form_widget(form.indicatif, {'attr' : {'placeholder' : 'L\'indicatif de votre pays'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.langue, 'Votre Langue (parlée)') }}
+            {{ form_errors(form.langue) }}
+            {{ form_widget(form.langue, {'attr' : {'placeholder' : 'Votre langue'}}) }}
+        </div>{##}
+    </div>
+
+    {##}{# form group pour la mairie #}{##}
+    {% if form.mairie is defined %}
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <div class="form-group" id="mairie" style="display: none;">
+            <div class="form-group">
+                {{ form_label(form.mairie.description, 'Description de la mairie', {'required': false}) }}
+                {{ form_widget(form.mairie.description, {'required': false, 'attr' : {'placeholder' : 'La description de votre mairie'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.mairie.service, 'Service de la mairie', {'required': false}) }}
+                {{ form_widget(form.mairie.service, {'required': false, 'attr' : {'placeholder' : 'Les services proposés par votre mairie'}}) }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {#
+
+    #}{# form group pour l'administre #}
+    {% if form.administre is defined %}
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <div class="form-group" id="adminis" style="display: none;">
+            <div class="form-group">
+                {{ form_label(form.administre.prenom, 'Votre prénom', {'required': false}) }}
+                {{ form_widget(form.administre.prenom, {'required': false, 'attr' : {'placeholder' : 'Votre/vos prénom(s)'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.administre.langueMat, 'Votre langue maternelle', {'required': false}) }}
+                {{ form_widget(form.administre.langueMat, {'required': false, 'attr' : {'placeholder' : 'Votre langue maternelle'}}) }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row ">
+        <div class="col-lg-offset-6 col-xs-6 col-md-6 col-lg-6">
+            <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary"/>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+

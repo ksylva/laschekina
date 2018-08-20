@@ -1,0 +1,15 @@
+{% extends '::layout.html.twig' %}
+
+    {% block body %}
+        <div  class="row">
+            <div class="col-lg-4" id="resultat">
+                {% for list in list %}
+                    <a href="#">
+                        <h3>{{ list.titre }}</h3>
+                        <img src="{{ asset(list.images.webPath) }}" alt="{{ list.images.alt }}" style="width: 300px;" />
+                        <h3 class="description">{{ list.description }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'LSIMarketBundle::layout_mon_espace.html.twig' %}
+
+{% block title %}
+    Mes commandes - {{ parent() }}
+{% endblock title %}
+
+{% block monespace %}
+    <div id="page" class="row">
+        <div class="">
+            <h3>Mes commandes</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr class="success">
+                        <th>Numero</th>
+                        <th>Titre de l'annonce</th>
+                        <th>Debut de la prestation</th>
+                        <th>Fin de la prestation</th>
+                        <th>Etat de la commande</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vous n'avez aucune commande! </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock monespace %}

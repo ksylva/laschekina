@@ -1,0 +1,48 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div id="page" class="row">
+    {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+
+        <div class="row">
+            <fieldset>
+                <legend style="width: 50%; margin-left: 15px;">Identifiants de connexion</legend>
+                <div class="col-md-4">
+                    {{ form_row(form.username) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.email) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.current_password) }}
+                </div>
+            </fieldset>
+        </div>
+        <div class="row">
+            <fieldset>
+                <legend style="width: 50%; margin-left: 15px;">Informations personnelles</legend>
+                <div class="col-md-6">
+                    {% if app.user.hasRole('ROLE_MAIRIE') %}
+                        {{ form_row(form.nom) }}
+                        {{ form_row(form.mairie.description) }}
+                        {{ form_row(form.mairie.service) }}
+                    {% elseif app.user.hasRole('ROLE_PART') %}
+                        {{ form_row(form.nom) }}
+                        {{ form_row(form.administre.prenom) }}
+                        {{ form_row(form.administre.langueMat) }}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.pays) }}
+                    {{ form_row(form.langue) }}
+                    {{ form_row(form.indicatif) }}
+                    {{ form_row(form.telephone) }}
+                    {{ form_row(form.adresse) }}
+                    {{ form_row(form.ville) }}
+                </div>
+            </fieldset>
+        </div>
+        <div>
+            <center><input type="submit" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-success"/></center>
+        </div>
+    {{ form_end(form) }}
+</div>

@@ -1,0 +1,63 @@
+<body>
+    <div id="page" class="row">
+        <div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <h2>Mes annonces</h2>
+                </div>
+                <div class="col-lg-offset-6 col-lg-3">
+                    <a href="{{ path('ls_imarket_ajouter_annonce') }}" class="btn btn-info">Ajouter une
+                        annonce</a>
+                </div>
+            </div>
+            <table id="annonce" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                <tr class="success">
+                    <th>Titre de l'annonce</th>
+                    <th>Date de publication</th>
+                    <th>Etat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for annonce in annonce %}
+                    <tr>
+                        <td>
+                            {{ annonce.titre }}
+                        </td>
+                        <td>
+                            {{ annonce.dateCreation|date('d/m/Y') }}
+                        </td>
+                        <td>
+                            {#{{ annonce.annonceEtat }}#}
+                        </td>
+                        {#<!-- <td>
+                            <div class="btn-group  btn-group-xs pull-right">
+                                <a href="{{ path('ls_imarket_voir_annonce', {'id': annonce.id}) }}">
+                                    <button type="button" class="btn btn-success">Consulter</button>
+                                </a>
+                                <a href="">
+                                    <button type="button" class="btn btn-warning">Désactiver</button>
+                                </a>
+                                <a href="">
+                                    <button type="button" class="btn btn-danger">Archiver</button>
+                                </a>
+                            </div>
+                        </td> -->#}
+                    </tr>
+                {% else %}
+                    <tr class="alert alert-info"><strong>Vous n'avez ajouté aucune annonce !</strong></tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr class="info">
+                    <th>Titre de l'annonce</th>
+                    <th>Date de publication</th>
+                    <th>Etat</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+
+</body>

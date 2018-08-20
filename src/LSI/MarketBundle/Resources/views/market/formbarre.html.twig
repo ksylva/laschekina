@@ -1,0 +1,78 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="container well">
+        <div class="row" style="position: relative; top: 65px">
+            <div class="col-lg-4 well" style="position: relative; top: 30px;">
+                {#Reserver pour la recherche affiner#}
+                {{ form_start(formaff, {'method': 'get'}) }}
+                {{ form_errors(formaff.Categorie) }}
+                {{ form_row(formaff.Categorie, {'attr': {'class': 'categorie'}}) }}
+                {{ form_errors(formaff.Ville) }}
+                {{ form_row(formaff.Ville, {'attr': {'class': 'prix'}}) }}
+                {{ form_errors(formaff.Budget) }}
+                {{ form_row(formaff.Budget, {'attr': {'class': 'budget'}}) }}
+                {{ form_errors(formaff.Periode) }}
+                {{ form_row(formaff.Periode, {'attr': {'class': 'periode'}}) }}
+                {{ form_errors(formaff.Prix) }}
+                {{ form_row(formaff.Prix, {'attr': {'class': 'prix'}}) }}
+                {{ form_row(formaff.recherche, {'attr': {'class': 'btn btn-success'}}) }}
+                {{ form_end(formaff) }}
+            </div>
+            <div class="col-lg-8" style="overflow: scroll; height: 410px; top: 79px">
+                {% for listeannonce in listeannonce %}
+                    <ul class="liste_element" style="line-height: 2px" id="filter">
+                        <li class="element" style="list-style: none">
+                            <div class="col-lg-8 well" style="height: 90px; background-color: white; text-align: inherit">
+                                <a href="{{ path('ls_imarket_voir_annonce', {'id': listeannonce.id} )}}">
+                                    <span>
+                                           <img
+                                               src="{{ asset(listeannonce.images.webPath) }}"
+                                               style="height: 50px; width: 70px;"/>
+                                            {#<h4>#}
+
+                                            {#</h4>#}
+                                            <h4 style="position: relative; bottom: 65px; left: 75px">
+                                                {{ listeannonce.titre }}, <span style="position: relative;" class="label label-info">{{ listeannonce.prixDefaut }} &euro;
+                                        </span>
+                                           </h4>
+                                           <h4 style="position: relative; bottom: 60px; left: 75px">{{ listeannonce.categorie.name }}</h4>
+
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                {% else %}
+                    <p class = "alert alert-info" style="font-size: x-large; color: red; text-align: center">Aucun resultat trouvé !</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 well" id="mapid" style="height: 480px; top: 80px">
+                {#Notre carte google map#}
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            var mymap = L.map('mapid').setView([48.866667, 2.333333], 13);
+            var tilestreets = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoibXVzc3lhcmwiLCJhIjoiY2pqc2Vlc2hrMDh4NDNxbzZoN3kwaTBhcyJ9.Wbcgy5p2QFDF5KDIyPaWYw'
+            });
+
+            tilestreets.addTo(mymap);
+
+            var marker = L.marker([48.866667, 2.333333]).addTo(mymap);
+            marker.bindPopup("<b>Patientez travaux en cours ...</b><br>I am a popup.");
+            var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
+                denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
+                aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
+                golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+        }
+    </script>
+{% endblock %}
+

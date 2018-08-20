@@ -1,0 +1,24 @@
+
+
+<div class="row">
+    <h4>Reservation d'annonce</h4>
+
+    {{ form_start(form) }}
+    {{ form_row(form.debutPrestation) }}
+
+    {{ form_row(form.finPrestation) }}
+
+    {{ form_widget(form.save, {'attr' : {'class' : 'btn btn-success'}}) }}
+
+    {{ form_end(form) }}
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // configure the bootstrap datepicker
+        $('.js-datepicker').datepicker({
+            format: 'dd-mm-yyyy'
+        });
+    });
+</script>

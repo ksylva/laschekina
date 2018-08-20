@@ -1,0 +1,36 @@
+{% extends 'LSIMarketBundle::layout_mon_espace.html.twig' %}
+
+{% block title %}
+    Mon annonces - {{ parent() }}
+{% endblock title %}
+
+{% block monespace %}
+    <div class="row">
+        <h2>Mes annonces</h2>
+
+        <table class="table table-hover">
+            {% for annonce in annonce %}
+                <tr>
+                    <td>
+                        {{ annonce.titre }}
+                    </td>
+                    <td>
+                        <div class="btn-group  btn-group-xs pull-right">
+                            <a href="{{ path('ls_imarket_voir_annonce', {'id': annonce.id}) }}">
+                                <button type="button" class="btn btn-success">Consulter</button>
+                            </a>
+                            <a href="">
+                                <button type="button" class="btn btn-warning">Désactiver</button>
+                            </a>
+                            <a href="">
+                                <button type="button" class="btn btn-danger">Archiver</button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <p class="alert alert-info"><strong>Vous n'avez ajouté aucune annonce !</strong></p>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock monespace %}

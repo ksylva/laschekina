@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>publicsspace</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{{ asset('bundles/lsimarket/css/standardize.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/lsimarket/css/publicsspace-grid.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/lsimarket/css/publicsspace.css') }}">
+</head>
+<body class="body page-publicsspace clearfix">
+<div class="text text-1">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur anim id est laborum
+        Lorem ipsum dolor sit amet,&nbsp;</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur anim id est laborum Lorem ipsum dolor sit amet,</p>
+</div>
+<div class="text text-2">
+    <p><span>BIENVENUE&nbsp;</span></p>
+    <p><span>
+SUR NOTRE
+</span></p>
+    <p><span>MARKET PLACE</span></p>
+</div>
+<img class="image" src="{{ asset('bundles/lsimarket/images/LOGO-MY-PUBLICS-SPACE.png') }}">
+<div class="element"></div>
+<button class="menu _button-1">Accueil</button>
+<button onClick="window.location='services.html';" class="menu _button-2">Réservation</button>
+<button onClick="window.location='location.html';" class="menu _button-3">Location</button>
+<button onClick="window.location='contact.html';" class="menu _button-4">Contact</button>
+<button onclick="window.location.href='{{ path('fos_user_security_login') }}'" class="_button-5"></button>
+<div class="container container-1 clearfix">
+    {#{{ form_start(form) }}
+    <div class="row">
+        <div class="col-lg-10">
+            {{ form_row(form.search) }}
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-infos" style="position: absolute; top: 18px">Recherche</button>
+        </div>
+    </div>
+    {{ form_end(form) }}#}
+    {% block centre %}
+
+    {% endblock centre %}
+</div>
+<p class="text text-3"><strong>CRITERES DE RECHERCHE</strong></p>
+<select class="_select-1" name="PROPRIETE">
+    <option value="PROPRIETE">PROPRIETE</option>
+    <option value="Option">Option</option>
+</select>
+<select class="_select-2">
+    <option value="SELECTION VILLE">SELECTION VILLE</option>
+    <option value="PARIS">PARIS</option>
+    <option value="MARSEILLE">MARSEILLE</option>
+    <option value="LA REUNION">LA REUNION</option>
+    <option value="Option">Option</option>
+</select>
+<select class="_select-3" name="PROPRIETE">
+    <option value="ENGINS">ENGINS</option>
+    <option value="TRACTEUR">TRACTEUR</option>
+    <option value="GRUMIER">GRUMIER</option>
+    <option value="BETTONEUSE">BETTONEUSE</option>
+</select>
+<select class="_select-4">
+    <option value="ENGINS">ENGINS</option>
+    <option value="CONSTRUCTION">CONSTRUCTION</option>
+    <option value="VOIERIE">VOIERIE</option>
+    <option value="NETTOYAGE">NETTOYAGE</option>
+</select>
+<p class="text text-4">Rechercher par prix</p>
+<select class="_select-5" name="MINI                                           EURO">
+    <option value="MINI  EURO">MINI  EURO</option>
+    <option value="200">200</option>
+    <option value="300">300</option>
+    <option value="400">400</option>
+    <option value="500">500</option>
+</select>
+<select class="_select-6" name="MAXI                                    EURO">
+    <option value="MAXI">MAXI</option>
+    <option value="1000">1000</option>
+    <option value="2000">2000</option>
+    <option value="3000">3000</option>
+    <option value="4000">4000</option>
+</select>
+<div class="container container-2 clearfix">
+    <button onClick="window.location='nos-engagements.html';" class="engagements _button-9">
+        <p>Nos&nbsp;</p>
+        <p>engagementS</p>
+    </button>
+    <button onClick="window.location='notredemarche.html';" class="engagements _button-10">
+        <p>NOTRE&nbsp;</p>
+        <p>DEMARCHE</p>
+    </button>
+    <button onClick="window.location='respectdesmarches.html';" class="engagements _button-11">
+        <p>RESPECT DU&nbsp;</p>
+        <p>MARCHE PUBLICS</p>
+    </button>
+    <button onClick="window.location='nousvousaccompagnons.html';" class="engagements _button-12">
+        <p>NOUS VOUS&nbsp;</p>
+        <p>ACCOMPAGNONS</p>
+    </button>
+</div>
+<button class="_button-13">Recherche avancé</button>
+<button class="_button-14">Definir Proprieté</button>
+
+</html>

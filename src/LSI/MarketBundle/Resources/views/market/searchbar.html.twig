@@ -1,0 +1,18 @@
+{# Creation de la barre de recherche... #}
+{#{{ form_start(form, {'attr': {'class':'form-inline'}}) }}#}
+<form action="{{ path('ls_imarket_search_results') }}" method="POST">
+{{ form_errors(form) }}
+
+<div class="form-group">
+    {# {{ form_label(form.search, "Rechercher", {'label_attr':{'class':'col-sm-2 control-label'}}) }} #}
+    {{ form_errors(form.search) }}
+    <div class="">
+        {{ form_widget(form.search, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.send, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+</div>
+    {{ form_rest(form) }}
+
+
+{#{{ form_end(form) }}#}
+</form>

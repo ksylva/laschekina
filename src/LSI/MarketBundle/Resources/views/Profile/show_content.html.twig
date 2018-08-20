@@ -1,0 +1,71 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div id="page" class="fos_user_user_show">
+    <table class="table table-striped">
+        <tr>
+            <td>{{ 'Nom'|trans }}</td>
+            <td>{{ user.nom }}</td>
+        </tr>
+
+        {% if app.user.hasRole('ROLE_PART') %}
+            <tr>
+                <td>{{ 'Prenom' }}</td>
+                <td>{{ user.administre.prenom }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'Langue maternelle' }}</td>
+                <td>{{ user.administre.langueMat }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'Photo de profil' }}</td>
+                <td>{{ user.administre.photoProfil }}</td>
+            </tr>
+        {% elseif app.user.hasRole('ROLE_MAIRIE') %}
+            <tr>
+                <td>{{ 'Description' }}</td>
+                <td>{{ user.mairie.description }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'Service' }}</td>
+                <td>{{ user.mairie.service }}</td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <td>{{ 'profile.show.username'|trans }}</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'profile.show.email'|trans }}</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Numéro de téléphone' }}</td>
+            <td>{{ user.telephone }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Adresse' }}</td>
+            <td>{{ user.adresse }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Ville' }}</td>
+            <td>{{ user.ville }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Pays' }}</td>
+            <td>{{ user.pays }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Indicatif' }}</td>
+            <td> + {{ user.indicatif }}</td>
+        </tr>
+        <tr>
+            <td>{{ 'Langue' }}</td>
+            <td>{{ user.langue |capitalize }}</td>
+        </tr>
+
+    </table>
+    <div class="row">
+        <center><a href="{{ path('fos_user_profile_edit') }}" class="btn btn-warning">Modifier mon profil</a></center>
+    </div>
+</div>

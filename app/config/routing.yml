@@ -1,0 +1,12 @@
+lsi_market:
+    resource: "@LSIMarketBundle/Resources/config/routing.yml"
+    prefix:   /market
+
+# Les routes de FOSUserBundle
+#fos_user:
+#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+
+
+
+

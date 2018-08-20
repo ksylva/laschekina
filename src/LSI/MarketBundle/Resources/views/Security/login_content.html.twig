@@ -1,0 +1,59 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% if error %}
+    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+<div id="pageLogin" class="row">
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+        <div >
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" class="form-control"/>
+            {% endif %}
+            <center><h3><strong>VOUS AVEZ DEJA UN COMPTE ?</strong></h3></center>
+            {#<label for="username" class="control-label">{{ 'security.login.username'|trans }}</label>#}
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}"
+                        required="required" autocomplete="username" class="form-control" placeholder="Adresse e-mail ou Nom d'utilisateur" />
+                </div>
+            </div>
+
+            {#<label for="password" class="control-label">{{ 'security.login.password'|trans }}</label>#}
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" id="password" name="_password"
+                        required="required" autocomplete="current-password" class="form-control" placeholder="Mot de passe"/>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-offset-2">
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="form-control pull-left"
+                       style="width:25%; height: 18px;"/>
+                <label for="remember_me" class="control-label">
+                    {{ 'security.login.remember_me'|trans }}</label>
+            </div>
+            <div class="form-group">
+                <div>
+                    <center>
+                        <input type="submit" id="_submit" name="_submit"
+                                    value="{{ 'security.login.submit'|trans }}"
+                                    class="btn btn-primary"/>
+                    </center>
+                </div>
+
+                <br/>
+                <center>
+                    <p>
+                        <a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>
+                    </p>
+                    <p style="font:400 16px/1.38 Helvetica;color:rgb(139, 138, 138);">
+                        Pas encore inscrit, <a href="{{ path('fos_user_registration_register') }}">Créer un compte</a>
+                    </p>
+                </center>
+            </div>
+        </div>
+    </form>
+</div>
