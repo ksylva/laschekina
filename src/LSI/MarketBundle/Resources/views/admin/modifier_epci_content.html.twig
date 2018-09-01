@@ -1,0 +1,28 @@
+<body>
+<div class="well">
+    {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+    <div class="form-group">
+        {{ form_errors(form.nom) }}
+        {{ form_label(form.nom, 'Nom de l\'EPCI') }}
+        {{ form_widget(form.nom, {'required': true, 'attr': {'placeholder': 'Nom de l\'EPCI'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_errors(form.description) }}
+        {{ form_label(form.description, 'Description de l\'EPCI') }}
+        {{ form_widget(form.description, {'required': true, 'attr': {'placeholder' : 'Description de l\'EPCI'}}) }}
+    </div>
+    <div class="form-group" id="cp">
+        {{ form_errors(form.codePostal) }}
+        {{ form_widget(form.codePostal, {'required': true}) }}
+    </div>
+    <div class="form-group">
+        <input type="button" id="add_code" value="Ajouter un code postal" class="btn btn-warning pull-right" />
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.add, {'label': 'Modifier', 'attr': {'class' : 'btn btn-warning'}}) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>
+</body>

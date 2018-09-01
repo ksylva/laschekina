@@ -11,6 +11,8 @@
         function usager() {
 
             var valeur;
+
+            // Le bouton 'mairie'
             if (document.getElementById('fos_user_registration_form_type_0').checked){
                 mairie.style.display = '';
                 document.getElementById
@@ -19,29 +21,59 @@
                 ('fos_user_registration_form_mairie_service').setAttribute('required', 'required');
                 document.getElementById('fos_user_registration_form_nom').
                 setAttribute('placeholder', 'Entrez le nom de votre mairie. Ex: Mairie de Paris');
+
+                maire.style.display = '';
+                document.getElementById('fos_user_registration_form_mairie_epci').setAttribute('required', 'required')
+
                 adminis.style.display = 'none';
                 document.getElementById
                 ('fos_user_registration_form_administre_prenom').removeAttribute('required');
+
                 document.getElementById
                 ('fos_user_registration_form_administre_langueMat').removeAttribute('required');
 
+                administ.style.display = 'none';
+                document.getElementById('fos_user_registration_form_administre_')
+
                 valeur = document.getElementById('fos_user_registration_form_type_0').value;
+            // Le bouton 'administré'
             }else if(document.getElementById('fos_user_registration_form_type_1').checked){
                 adminis.style.display = '';
                 document.getElementById
                 ('fos_user_registration_form_administre_prenom').setAttribute('required', 'required');
+
+                administ.style.display = '';
                 document.getElementById
                 ('fos_user_registration_form_administre_langueMat').setAttribute('required', 'required');
+
                 document.getElementById('fos_user_registration_form_nom').
                 setAttribute('placeholder', 'Entrez votre nom. Ex: Jean');
 
+                // Cacher les champs relatifs à la mairie
                 mairie.style.display = 'none';
                 document.getElementById
                 ('fos_user_registration_form_mairie_description').removeAttribute('required');
                 document.getElementById
                 ('fos_user_registration_form_mairie_service').removeAttribute('required');
+                maire.style.display = 'none';
+                document.getElementById('fos_user_registration_form_mairie_epci').removeAttribute('required');
+
                 valeur = document.getElementById('fos_user_registration_form_type_0').value;
             }
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            var monepci = function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ls_imarket_mon_epci') }}',
+                    data: {{ reponse }},
+                    success: function (data) {
+                        $("#maire").html(data);
+                    }
+                })
+            }
+        })
     </script>
 {% endblock javascripts %}

@@ -48,13 +48,7 @@ class Mairie
     private $latitude;
 
     /**
-     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\Adresse", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $addresse;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Epci", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Epci")
      * @ORM\JoinColumn(nullable=true)
      */
     private $epci;
@@ -163,30 +157,6 @@ class Mairie
     public function getLatitude()
     {
         return $this->latitude;
-    }
-
-    /**
-     * Set addresse
-     *
-     * @param \LSI\MarketBundle\Entity\Adresse $addresse
-     *
-     * @return Mairie
-     */
-    public function setAddresse(\LSI\MarketBundle\Entity\Adresse $addresse)
-    {
-        $this->addresse = $addresse;
-
-        return $this;
-    }
-
-    /**
-     * Get addresse
-     *
-     * @return \LSI\MarketBundle\Entity\Adresse
-     */
-    public function getAddresse()
-    {
-        return $this->addresse;
     }
 
     /**

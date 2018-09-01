@@ -35,16 +35,10 @@ class RegistrationType extends AbstractType {
             ->add('langue', LanguageType::class, array(
                 'empty_data' => 'Sélectionner votre langue',
                 'preferred_choices' => ['fr', 'en', 'de'],
-
-                //'empty_data' => 'Sélectionner votre langue',
             ))
             ->add('telephone', TextType::class)
-            //->add('adresse', TextType::class)
-            //->add('ville', TextType::class)
-            /*->add('pays', CountryType::class, array(
-                        'preferred_choices' => ['fr', 'en', 'de'],
-                        'empty_data' => 'Sélectionner votre pays',
-                    ))*/
+            ->add('adresse', AdresseType::class)
+
             ->add('mairie', MairieType::class, array('required' => false))
             ->add('administre', AdministreType::class, array('required' => false))
             ;

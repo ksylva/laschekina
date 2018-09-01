@@ -76,7 +76,6 @@ class Annonce
      * @var date
      *
      * @ORM\Column(name="date_creation", type="date")
-     *
      */
     private $dateCreation;
 
