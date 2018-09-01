@@ -65,14 +65,14 @@
                         </nav>
                     </div>
                     <div class="row"> {# Block central #}
-                        <div class="col-md-2">  {#Block lateral gauche#}
+                        <div class="col-md-3">  {#Block lateral gauche#}
                             <div class="volet">
                                 {% block volet %}
                                     <p> Block latéral</p>
-                                {% endblock %}
+                                {% endblock volet %}
                             </div>
                         </div>
-                        <div class="col-md-10"> {#Block droit #}
+                        <div class="col-md-9"> {#Block droit #}
                             {% block body %}
 
                             {% endblock body %}

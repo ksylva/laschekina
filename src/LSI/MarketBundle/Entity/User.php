@@ -39,7 +39,7 @@ class User extends BaseUser
     /**
      * @var string
      * 
-     * @ORM\Column(name="nom", type="string", length=50)
+     * @ORM\Column(name="nom", type="string", length=50, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(
      *     min = 5,
@@ -60,7 +60,7 @@ class User extends BaseUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="indicatif", type="string", length=4)
+     * @ORM\Column(name="indicatif", type="string", length=4, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern = "/^[\d]*$/",
@@ -85,14 +85,14 @@ class User extends BaseUser
 
     /**
      * @var string
-     * @ORM\Column(name="langue", type="string", length=3)
+     * @ORM\Column(name="langue", type="string", length=3, nullable=true)
      * @Assert\NotBlank()
      */
     protected $langue;
 
     /**
      * @var string
-     * @ORM\Column(name="telephone", type="string", length=15)
+     * @ORM\Column(name="telephone", type="string", length=15, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern = "/^[\d]*$/",
@@ -112,6 +112,12 @@ class User extends BaseUser
      * @var string
      */
     private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Adresse", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    protected $adresse;
 
     /**
      * @var array
@@ -344,4 +350,28 @@ class User extends BaseUser
         return $this->administre;
     }
 
+
+    /**
+     * Set adresse
+     *
+     * @param \LSI\MarketBundle\Entity\Adresse $adresse
+     *
+     * @return User
+     */
+    public function setAdresse(\LSI\MarketBundle\Entity\Adresse $adresse)
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    /**
+     * Get adresse
+     *
+     * @return \LSI\MarketBundle\Entity\Adresse
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
 }

@@ -2,10 +2,12 @@
 
 <div id="page" class="fos_user_user_show">
     <table class="table table-striped">
-        <tr>
-            <td>{{ 'Nom'|trans }}</td>
-            <td>{{ user.nom }}</td>
-        </tr>
+        {% if user.nom is defined %}
+            <tr>
+                <td>{{ 'Nom'|trans }}</td>
+                <td>{{ user.nom }}</td>
+            </tr>
+        {% endif %}
 
         {% if app.user.hasRole('ROLE_PART') %}
             <tr>
@@ -39,31 +41,48 @@
             <td>{{ 'profile.show.email'|trans }}</td>
             <td>{{ user.email }}</td>
         </tr>
-        <tr>
-            <td>{{ 'Numéro de téléphone' }}</td>
-            <td>{{ user.telephone }}</td>
-        </tr>
-        <tr>
-            <td>{{ 'Adresse' }}</td>
-            <td>{{ user.adresse }}</td>
-        </tr>
-        <tr>
-            <td>{{ 'Ville' }}</td>
-            <td>{{ user.ville }}</td>
-        </tr>
-        <tr>
-            <td>{{ 'Pays' }}</td>
-            <td>{{ user.pays }}</td>
-        </tr>
-        <tr>
-            <td>{{ 'Indicatif' }}</td>
-            <td> + {{ user.indicatif }}</td>
-        </tr>
-        <tr>
-            <td>{{ 'Langue' }}</td>
-            <td>{{ user.langue |capitalize }}</td>
-        </tr>
-
+        {% if user.telephone is defined %}
+            <tr>
+                <td>{{ 'Numéro de téléphone' }}</td>
+                <td>{{ user.telephone }}</td>
+            </tr>
+        {% endif %}
+        {% if user.adresse.pays is defined %}
+            <tr>
+                <td>{{ 'Pays' }}</td>
+                <td>{{ user.adresse.pays }}</td>
+            </tr>
+        {% endif %}
+        {% if user.adresse.ville is defined %}
+            <tr>
+                <td>{{ 'Ville' }}</td>
+                <td>{{ user.adresse.ville }}</td>
+            </tr>
+        {% endif %}
+        {% if user.adresse.rue is defined %}
+            <tr>
+                <td>{{ 'Rue' }}</td>
+                <td>{{ user.adresse.rue }}</td>
+            </tr>
+        {% endif %}
+        {% if user.adresse.codePostal is defined %}
+            <tr>
+                <td>{{ 'Code postal' }}</td>
+                <td>{{ user.adresse.codePostal }}</td>
+            </tr>
+        {% endif %}
+        {% if user.indicatif is defined %}
+            <tr>
+                <td>{{ 'Indicatif' }}</td>
+                <td> + {{ user.indicatif }}</td>
+            </tr>
+        {% endif %}
+        {% if user.langue is defined %}
+            <tr>
+                <td>{{ 'Langue' }}</td>
+                <td>{{ user.langue |capitalize }}</td>
+            </tr>
+        {% endif %}
     </table>
     <div class="row">
         <center><a href="{{ path('fos_user_profile_edit') }}" class="btn btn-warning">Modifier mon profil</a></center>

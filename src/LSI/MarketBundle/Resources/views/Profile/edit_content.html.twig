@@ -17,30 +17,44 @@
                 </div>
             </fieldset>
         </div>
-        <div class="row">
-            <fieldset>
-                <legend style="width: 50%; margin-left: 15px;">Informations personnelles</legend>
-                <div class="col-md-6">
-                    {% if app.user.hasRole('ROLE_MAIRIE') %}
-                        {{ form_row(form.nom) }}
-                        {{ form_row(form.mairie.description) }}
-                        {{ form_row(form.mairie.service) }}
-                    {% elseif app.user.hasRole('ROLE_PART') %}
-                        {{ form_row(form.nom) }}
-                        {{ form_row(form.administre.prenom) }}
-                        {{ form_row(form.administre.langueMat) }}
-                    {% endif %}
-                </div>
-                <div class="col-md-6">
-                    {{ form_row(form.pays) }}
-                    {{ form_row(form.langue) }}
-                    {{ form_row(form.indicatif) }}
-                    {{ form_row(form.telephone) }}
-                    {{ form_row(form.adresse) }}
-                    {{ form_row(form.ville) }}
-                </div>
-            </fieldset>
-        </div>
+        {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+
+        {% else %}
+            <div class="row">
+                <fieldset>
+                    <legend style="width: 50%; margin-left: 15px;">Informations personnelles</legend>
+                    <div class="col-md-6">
+                        {% if app.user.hasRole('ROLE_MAIRIE') %}
+                            {{ form_row(form.nom) }}
+                            {{ form_row(form.mairie.description) }}
+                            {{ form_row(form.mairie.service) }}
+                        {% elseif app.user.hasRole('ROLE_PART') %}
+                            {{ form_row(form.nom) }}
+                            {{ form_row(form.administre.prenom) }}
+                            {{ form_row(form.administre.langueMat) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {#{% if form.pays is defined %}
+                            {{ form_row(form.adresse.pays) }}
+                        {% endif %}
+                        {% if form.langue is defined %}
+                            {{ form_row(form.langue) }}
+                        {% endif %}
+                        {% if form.indicatif is defined %}
+                            {{ form_row(form.indicatif) }}
+                        {% endif %}
+                        {% if form.telephone is defined %}
+                            {{ form_row(form.telephone) }}
+                        {% endif %}
+                        {% if form.adresse.ville is defined %}
+                            {{ form_row(form.adresse.ville) }}
+                        {% endif %}#}
+
+                    </div>
+                </fieldset>
+            </div>
+        {% endif %}
         <div>
             <center><input type="submit" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-success"/></center>
         </div>

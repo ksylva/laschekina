@@ -3,12 +3,15 @@
 namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Epci
  *
  * @ORM\Table(name="epci")
  * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\EpciRepository")
+ * @UniqueEntity("nom")
  */
 class Epci
 {
@@ -24,23 +27,36 @@ class Epci
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=50)
+     * @ORM\Column(name="nom", type="string", length=50, unique=true)
+     * @Assert\Length(
+     *     min = 5,
+     *     max = 50,
+     *     minMessage = "Le nom doit comporter au moins {{ limit }} caractères.",
+     *     maxMessage = "Le nom ne doit pas comporter plus de {{ limit }} caractères."
+     * )
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=75)
+     * @ORM\Column(name="description", type="string", length=100)
+     * @Assert\Length(
+     *     min = 10,
+     *     max = 100,
+     *     minMessage = "La description doit comporter au moins {{ limit }} caractères.",
+     *     maxMessage = "La description ne doit pas comporter plus de {{ limit }} caractères."
+     * )
      */
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="codePostal", type="string", length=7)
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\CodePostal", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $codePostal;
+
+
 
     /**
      * @var datetime
@@ -110,31 +126,7 @@ class Epci
     {
         return $this->description;
     }
-
-    /**
-     * Set codePostal
-     *
-     * @param string $codePostal
-     *
-     * @return Epci
-     */
-    public function setCodePostal($codePostal)
-    {
-        $this->codePostal = $codePostal;
-
-        return $this;
-    }
-
-    /**
-     * Get codePostal
-     *
-     * @return string
-     */
-    public function getCodePostal()
-    {
-        return $this->codePostal;
-    }
-
+    
     /**
      * Set dateCreation
      *
@@ -157,5 +149,41 @@ class Epci
     public function getDateCreation()
     {
         return $this->dateCreation;
+    }
+
+    
+
+    /**
+     * Add codePostal
+     *
+     * @param \LSI\MarketBundle\Entity\CodePostal $codePostal
+     *
+     * @return Epci
+     */
+    public function addCodePostal(\LSI\MarketBundle\Entity\CodePostal $codePostal)
+    {
+        $this->codePostal[] = $codePostal;
+
+        return $this;
+    }
+
+    /**
+     * Remove codePostal
+     *
+     * @param \LSI\MarketBundle\Entity\CodePostal $codePostal
+     */
+    public function removeCodePostal(\LSI\MarketBundle\Entity\CodePostal $codePostal)
+    {
+        $this->codePostal->removeElement($codePostal);
+    }
+
+    /**
+     * Get codePostal
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCodePostal()
+    {
+        return $this->codePostal;
     }
 }

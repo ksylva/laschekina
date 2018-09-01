@@ -4,8 +4,8 @@ namespace LSI\MarketBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,12 +22,18 @@ class AdministreType extends AbstractType
                 'label' => 'Langue maternelle',
                 'preferred_choices' => ['fr', 'en', 'de'],
                 ),
-                array('required' => false))
-            //->add('photoProfil', FileType::class, array('required' => false))
+                array('required' => false)
+            )
+            ->add('photoProfil', FileType::class)
+            //->add('addresse', AdresseType::class, array('required' => false))
         ;
 
-        $builder->remove('photoProfil');
-    }/**
+        $builder
+            ->remove('photoProfil')
+            ;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

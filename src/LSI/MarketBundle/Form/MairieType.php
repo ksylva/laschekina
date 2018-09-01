@@ -20,11 +20,15 @@ class MairieType extends AbstractType
             ->add('service', TextareaType::class, array('required' => false))
             ->add('longitude', TextType::class, array('required' => false))
             ->add('latitude', TextType::class, array('required' => false))
+            //->add('addresse', AdresseType::class, array('required' => false))
+            ->add('epi', TextType::class, array('required' => false))
         ;
 
         $builder
+            ->remove('epci')
             ->remove('longitude')
-            ->remove('latitude');
+            ->remove('latitude')
+            ;
     }
 
     /**

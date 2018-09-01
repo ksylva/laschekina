@@ -56,7 +56,7 @@ class Caracteristique
     private $categorie;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="annonce")
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="caracteristiques")
      * @ORM\JoinColumn(nullable=false)
      */
     private $annonce;

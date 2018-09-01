@@ -41,10 +41,17 @@ class Administre
     private $photoProfil;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Adresse", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var float
+     * @ORM\Column(name="longitude", type="float", nullable=true)
      */
-    private $addresse;
+    private $longitude;
+
+    /**
+     * @var float
+     * @ORM\Column(name="latitude", type="float", nullable=true)
+     */
+    private $latitude;
+
 
     /**
      * Get id
@@ -129,26 +136,50 @@ class Administre
     }
 
     /**
-     * Set addresse
+     * Set longitude
      *
-     * @param \LSI\MarketBundle\Entity\Adresse $addresse
+     * @param float $longitude
      *
      * @return Administre
      */
-    public function setAddresse(\LSI\MarketBundle\Entity\Adresse $addresse)
+    public function setLongitude($longitude)
     {
-        $this->addresse = $addresse;
+        $this->longitude = $longitude;
 
         return $this;
     }
 
     /**
-     * Get addresse
+     * Get longitude
      *
-     * @return \LSI\MarketBundle\Entity\Adresse
+     * @return float
      */
-    public function getAddresse()
+    public function getLongitude()
     {
-        return $this->addresse;
+        return $this->longitude;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     *
+     * @return Administre
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
     }
 }

@@ -1,6 +1,23 @@
 # Les routes de FOSUserBundle
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
 
 # Page d'accueil
 lsi_market_homepage:
@@ -112,9 +129,56 @@ ls_imarket_engagement:
     defaults:
         _controller: LSIMarketBundle:Code:nosEngagements
 
+#------------------------------------------------ ADMINISTRATION -------------------------------------------------------
+#********************************* SUPER ADMIN **********************************************
+ls_imarket_superadmin:
+    path: /superadmin
+    defaults:
+        _controller: LSIMarketBundle:Admin:superAdmin
+
+ls_imarket_admin_registration:
+    path: /superadmin/registration
+    defaults:
+        _controller: LSIMarketBundle:Admin:addAdmin
+
+#*********************************** ADMIN ********************************************************
+ls_imarket_accueil:
+   path: /monsespace/admin
+   defaults:
+       _controller: LSIMarketBundle:Admin:indexAdmin
 
 
+#***************************************** MODULE EPCI ********************************
+# Pour récupérer les infos de l'EPCI
+ls_imarket_mon_epci:
+    path: /monepci
+    defaults:
+        _controller: LSIMarketBundle:Market:monEpci
 
+# Pour ajouter un epci
+ls_imarket_ajout_epci:
+    path: /monespace/admin/ajoutepci
+    defaults:
+        _controller: LSIMarketBundle:Admin:ajouterEpci
 
+# Pour lister les EPCI
+ls_imarket_liste_epci:
+    path: /monespace/admin/listeepci
+    defaults:
+        _controller: LSIMarketBundle:Admin:listeEpci
 
+# Pour consulter un EPCI
+ls_imarket_voir_epci:
+    path: /monespace/admin/voirepci/{id}
+    defaults:
+        _controller: LSIMarketBundle:Admin:voirEpci
+    requirements:
+        id: \d+
 
+# Pour modifier un EPCI
+ls_imarket_modifier_epci:
+    path: /monespace/admin/modifierepci/{id}
+    defaults:
+        _controller: LSIMarketBundle:Admin:modifierEpci
+    requirements:
+        id: \d+
