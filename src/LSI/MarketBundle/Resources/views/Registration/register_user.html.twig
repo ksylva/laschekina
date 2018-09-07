@@ -97,9 +97,9 @@
 
         {#{% if form.mairie is defined %}
             <div class="form-group" id="maire" style="display: none;">
-                {{ form_label(form.mairie.epi, 'EPCI') }}
-                {{ form_errors(form.mairie.epi) }}
-                {{ form_widget(form.mairie.epi, {'disabled' : 'disabled', 'attr':{'placeholder':'Votre EPCI'}}) }}
+                {{ form_label(form.mairie.epci, 'EPCI') }}
+                {{ form_errors(form.mairie.epci) }}
+                {{ form_widget(form.mairie.epci, {'disabled' : 'disabled', 'attr':{'placeholder':'Votre EPCI'}}) }}
             </div>
         {% endif %}#}
 
