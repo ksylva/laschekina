@@ -23,7 +23,7 @@
                                 <div class="navbar-header">
                                     <a class="navbar-brand" href="#">
                                         <img src="{{ asset('bundles/lsimarket/images/logo.png') }}"
-                                             style="height: auto; width: 150px;" class="responsive"></a>
+                                             style="height: auto; width: 90px;" class="responsive"></a>
                                 </div>
                                 <ul class="nav navbar-nav">
                                     <li><a href="{{ path('lsi_market_homepage') }}">Accueil</a></li>
@@ -65,14 +65,14 @@
                         </nav>
                     </div>
                     <div class="row"> {# Block central #}
-                        <div class="col-md-2">  {#Block lateral gauche#}
+                        <div class="col-md-3">  {#Block lateral gauche#}
                             <div class="volet">
                                 {% block volet %}
                                     <p> Block latéral</p>
-                                {% endblock %}
+                                {% endblock volet %}
                             </div>
                         </div>
-                        <div class="col-md-10"> {#Block droit #}
+                        <div class="col-md-9"> {#Block droit#}
                             {% block body %}
 
                             {% endblock body %}

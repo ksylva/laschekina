@@ -103,3 +103,26 @@ fos_user:
         form :
             type : FOS\UserBundle\Form\Type\ResettingFormType
             name : fos_user_resetting_form
+
+# TinyCME
+stfalcon_tinymce:
+    theme:
+        simple: ~
+        advanced:
+            plugins:
+                - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                - "insertdatetime nonbreaking save table contextmenu directionality"
+                - "emoticons template paste textcolor"
+            toolbar1: "insertfile undo redo | styleselect fontselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify |
+             bullist numlist outdent indent | link image | print preview | forecolor backcolor emoticons"
+            #toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example"
+            image_advtab: true
+            templates:
+                - {title: 'Test template 1', content: 'Test 1'}
+                - {title: 'Test template 2', content: 'Test 2'}
+        # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
+        bbcode:
+            plugins: ["bbcode, code, link, preview"]
+            menubar: false
+            toolbar1: "bold,italic,underline,undo,redo,link,unlink,removeformat,cleanup,code,preview"

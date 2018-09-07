@@ -269,8 +269,8 @@ class MarketController extends Controller {
     }
 
     // Renvoie la liste des annonces crees par une mairie.
-    public function monEspaceAction(){
-        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+    /*public function monEspaceAction(){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART', 'ROLE_SUPER_ADMIN'], $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
         // Recuperer le User connecte
@@ -293,8 +293,13 @@ class MarketController extends Controller {
             return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig');
         }elseif ($this->getUser()->hasRole('ROLE_PART')){
             return $this->reservationAction();
-        }
+        }elseif($this->getUser()->hasRole('ROLE_SUPER_ADMIN')){
 
+        }
+    }*/
+
+    public function monEspaceAction(){
+        return $this->render('LSIMarketBundle::monespace.html.twig');
     }
 
     public function modifierAction($id, Request $request) {
@@ -329,7 +334,7 @@ class MarketController extends Controller {
         }
 
         //création de la vue
-        return $this->render('LSIMarketBundle:Market:modifier.html.twig', array('form' => $form->createView(),
+        return $this->render('LSIMarketBundle:market:modifier.html.twig', array('form' => $form->createView(),
             'images'=> $annonce->getImages()->getWebPath()));
     }
 
@@ -494,6 +499,16 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:commande:mes_commandes.html.twig');
     }
 
+    /*public function monEpciAction($cp){
+        $em = $this->getDoctrine()->getManager();
+
+        $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+
+        if (null !== $codePostal){
+            $reponse = new Response(json_encode($codePostal));
+            return $reponse;
+        }
+    }*/
 
     function sendMail($from, $to, $subject, $body){
             $mesg = \Swift_Message::newInstance()

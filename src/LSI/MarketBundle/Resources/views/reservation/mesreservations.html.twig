@@ -1,4 +1,4 @@
-{% extends 'LSIMarketBundle::layout_mon_espace.html.twig' %}
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
 
 {% block title %}
     Mes reservations - {{ parent() }}
@@ -40,7 +40,13 @@
                         </td>
                     </tr>
                 {% else %}
-                    <tr class="info"><strong>Vous n'avez pas de reservation !</strong></tr>
+                    <tr class="info">
+                        <td colspan="6">
+                            <center>
+                                <strong>Vous n'avez pas de reservation !</strong>
+                            </center>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

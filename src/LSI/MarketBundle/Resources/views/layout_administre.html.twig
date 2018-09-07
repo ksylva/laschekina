@@ -1,0 +1,36 @@
+{% block administre %}
+    <div class="" style="height: 100%;">
+        <nav class="navbar navbar-inverse" >
+            <div class="container-fluid">
+                <div class="navbar navbar-fixed-left">
+                    <p class="navbar-brand">ESPACE ADMINISTRE</p>
+                </div>
+                <div id="accordion">
+                    <ul class="nav nav-pills nav-stacked">
+                        <div class="card">
+                            <div class="card-header nav" id="headingOne">
+                                <h5 class="mb-0">
+                                    <li><a class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne"
+                                           aria-expanded="false" aria-controls="collapseOne" role="button">
+                                            Espace demandeur
+                                        </a></li>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body nav">
+                                    <li><a href="{{ path('ls_imarket_reservation') }}">Mes réservations</a></li>
+                                    <li><a href="#">Mes commandes</a></li>
+                                    <li><a href="#">Mes paiements</a></li>
+                                    <li><a href="#">Mes profil</a></li>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="height: 150px;"></p>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock administre %}

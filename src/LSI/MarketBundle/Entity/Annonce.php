@@ -76,7 +76,6 @@ class Annonce
      * @var date
      *
      * @ORM\Column(name="date_creation", type="date")
-     *
      */
     private $dateCreation;
 
@@ -164,8 +163,8 @@ class Annonce
     public function __construct()
     {
 
-        $this->dateCreation = new \Date();
-        $this->heureCreation = new \Time();
+        //$this->dateCreation = new \Date();
+        //$this->heureCreation = new \Time();
         $this->annonceEtat = 'A';
     }
 

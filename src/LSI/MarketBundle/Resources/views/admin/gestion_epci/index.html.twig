@@ -1,0 +1,8 @@
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
+
+{% block monespace %}
+    <div class="well"><h2>Bienvenu dans votre espace d'administration !</h2></div>
+    {% for info in app.session.flashbag.get('notice') %}
+        <p class="alert alert-success">{{ info }}</p>
+    {% endfor %}
+{% endblock monespace %}

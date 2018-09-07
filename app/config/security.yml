@@ -47,7 +47,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_USER }
-        - { path: ^/administre/, role: ROLE_PART }
-        - { path: ^/mairie/, role: ROLE_MAIRIE }
-        - { path: ^/superadmin/, role: ROLE_ADMIN }
+        - { path: ^/monespace/admin/, role: ROLE_ADMIN }
+        - { path: ^/monespace/administre/, role: ROLE_PART }
+        - { path: ^/monespace/mairie/, role: ROLE_MAIRIE }
+        - { path: ^/monespace/superadmin/, role: ROLE_SUPER_ADMIN }

@@ -4,11 +4,12 @@ namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Adresse
  *
- * @ORM\Table(name="addresse")
- * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\AddresseRepository")
+ * @ORM\Table(name="adresse")
+ * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\AdresseRepository")
  */
 class Adresse
 {
@@ -36,9 +37,9 @@ class Adresse
     private $pays;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="rue", type="integer")
+     * @ORM\Column(name="rue", type="string", length=255)
      */
     private $rue;
 
