@@ -53,8 +53,6 @@ class EnvoyerMail {
     public function sendNewMessageToSeller($email, Annonce $annonce){
         $message = new \Swift_Message(
             'Vous avez reçu une nouvelle demande de réservation',
-            '
-                    Bonjour '.$annonce->getMairie()->.
                     ' Vous avez reçu une réservation sur votre annonce : '.$annonce->getTitre()
         );
 
