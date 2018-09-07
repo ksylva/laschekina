@@ -1,9 +1,9 @@
 {% block administre %}
     <div class="" style="height: 100%;">
-        <nav class="navbar navbar-default" >
+        <nav class="navbar navbar-inverse" >
             <div class="container-fluid">
                 <div class="navbar navbar-fixed-left">
-                    <p class="navbar-brand">MON ESPACE</p>
+                    <p class="navbar-brand">ESPACE ADMINISTRE</p>
                 </div>
                 <div id="accordion">
                     <ul class="nav nav-pills nav-stacked">
@@ -18,8 +18,10 @@
                             </div>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                 <div class="card-body nav">
-                                    <li><a href="">Mes réservations</a></li>
-                                    <li><a href="#">Consulter</a></li>
+                                    <li><a href="{{ path('ls_imarket_reservation') }}">Mes réservations</a></li>
+                                    <li><a href="#">Mes commandes</a></li>
+                                    <li><a href="#">Mes paiements</a></li>
+                                    <li><a href="#">Mes profil</a></li>
                                 </div>
                             </div>
                         </div>

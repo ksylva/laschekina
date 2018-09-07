@@ -8,9 +8,12 @@
 
 namespace LSI\MarketBundle\Controller;
 
-
+use LSI\MarketBundle\Entity\ConditionsGeneralesVentes;
+use LSI\MarketBundle\Form\ConditionsGeneralesVentesType;
+use LSI\MarketBundle\Entity\ConditionsGeneralesUtil;
 use LSI\MarketBundle\Entity\User;
 use LSI\MarketBundle\Entity\Epci;
+use LSI\MarketBundle\Form\ConditionsGeneralesUtilType;
 use LSI\MarketBundle\Form\EpciType;
 use LSI\MarketBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,33 +53,24 @@ class AdminController extends Controller  {
     }
 
     // Ajoute un EPCI ... Ok
-    public function ajouterEpciAction(Request $request){
-       $epci = new Epci();
-       $form = $this->createForm(EpciType::class, $epci);
+    public function ajouterEpciAction(Request $request) {
+        $epci = new Epci();
+        $form = $this->createForm(EpciType::class, $epci);
 
-       $form->handleRequest($request);
+        $form->handleRequest($request);
         //$error = "";
-       if ($form->isSubmitted()){
-           $em = $this->getDoctrine()->getManager();
-           /*$cp = $form['codePostal']->getData();
-           dump($cp);
-           $cod = $cp[0]->getCode();
-           $repo = $em->getRepository('LSIMarketBundle:CodePostal')->findCodePostal($cod);
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            if ($form->isValid()) {
 
-           if ($repo == null){*/
-               if ($form->isValid()){
-
-                   $em->persist($epci);
-                   $em->flush();
-                   $request->getSession()->getFlashBag()->add('notice', 'EPCI ajouté avec succès !');
-                   return $this->redirectToRoute('ls_imarket_liste_epci');
-               }
-           /*}else{
-               $error = "Ce code postal existe déjà.";
-           }*/
-       }
-       return $this->render('LSIMarketBundle:admin:ajout_epci.html.twig', array(
-           'form' => $form->createView()));
+                $em->persist($epci);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'EPCI ajouté avec succès !');
+                return $this->redirectToRoute('ls_imarket_liste_epci');
+            }
+        }
+        return $this->render('@LSIMarket/admin/gestion_epci/ajout_epci.html.twig', array(
+            'form' => $form->createView()));
     }
 
     // Liste tous les EPCIs existants ... Ok
@@ -84,9 +78,9 @@ class AdminController extends Controller  {
         $em = $this->getDoctrine()->getManager();
 
         $listeEpci = $em->getRepository('LSIMarketBundle:Epci')->findAllEpci();
-        dump($listeEpci);
+        //dump($listeEpci);
 
-        return $this->render('LSIMarketBundle:admin:liste_epci.html.twig', array('listeepci' => $listeEpci));
+        return $this->render('@LSIMarket/admin/gestion_epci/liste_epci.html.twig', array('listeepci' => $listeEpci));
     }
 
     public function voirEpciAction($id){
@@ -99,7 +93,7 @@ class AdminController extends Controller  {
              throw new NotFoundHttpException('L\'EPCI dont l\'id est'.$id.' n\'existe pas');
         }
 
-        return $this->render('LSIMarketBundle:admin:voir_epci.html.twig', array('epci' => $epci));
+        return $this->render('@LSIMarket/admin/gestion_epci/voir_epci.html.twig', array('epci' => $epci));
     }
 
     public function modifierEpciAction($id, Request $request){
@@ -126,6 +120,115 @@ class AdminController extends Controller  {
             }
         }
 
-        return $this->render('LSIMarketBundle:admin:modifier_epci.html.twig', array('form' => $form->createView()));
+        return $this->render('@LSIMarket/admin/gestion_epci/modifier_epci.html.twig', array('form' => $form->createView()));
     }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++ CGU +++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public function ajouterCguAction(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $cgu = new ConditionsGeneralesUtil();
+        $form = $this->createForm(ConditionsGeneralesUtilType::class, $cgu);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cgu);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales d\'Utilisation ont été éditer !');
+
+            return $this->redirectToRoute('ls_imarket_voir_cgu');
+        }
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgu_aj.html.twig', array('form' => $form->createView()));
+    }
+
+    public function voirCguAction(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $em = $this->getDoctrine()->getManager();
+
+        $cgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
+
+        if (null === $cgu){
+            throw new NotFoundHttpException('Les CGU n\'ont pas encore ete edite.');
+        }
+
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgu_voir.html.twig', array('cgu' => $cgu));
+    }
+
+    public function modifierCguAction(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $em = $this->getDoctrine()->getManager();
+
+        //recupération de l'objet à modifier
+        $editCgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
+
+        if (null === $editCgu){
+            throw new NotFoundHttpException('La CGU n\'existe pas.');
+        }
+
+        $form = $this->createForm(ConditionsGeneralesUtilType::class, $editCgu);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+            $em->persist($editCgu);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales d\'Utilisation ont été mis à jour !');
+
+            return $this->redirectToRoute('ls_imarket_voir_cgu');
+        }
+
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgu_mod.html.twig', array('form' => $form->createView()));
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++ CGV ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public function ajouterCgvAction(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $cgv = new ConditionsGeneralesVentes();
+        $form = $this->createForm(ConditionsGeneralesVentesType::class, $cgv);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cgv);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales de Ventes ont été édité !');
+
+            return $this->redirectToRoute('ls_imarket_voir_cgv');
+        }
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgv_aj.html.twig', array('form' => $form->createView()));
+    }
+
+    public function voirCgvAction(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $em = $this->getDoctrine()->getManager();
+
+        $cgv = $em->getRepository('LSIMarketBundle:ConditionsGeneralesVentes')->find(1);
+
+        if (null === $cgv){
+            throw new NotFoundHttpException('Les CGV n\'ont pas encore ete édité.');
+        }
+
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgv_voir.html.twig', array('cgv' => $cgv));
+    }
+
+    public function modifierCgvAction(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $em = $this->getDoctrine()->getManager();
+
+        //recupération de l'objet à modifier
+        $editCgv = $em->getRepository('LSIMarketBundle:ConditionsGeneralesVentes')->find(1);
+
+        if (null === $editCgv){
+            throw new NotFoundHttpException('La CGV n\'existe pas.');
+        }
+
+        $form = $this->createForm(ConditionsGeneralesUtilType::class, $editCgv);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+            $em->persist($editCgv);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales de Ventes ont été mis à jour !');
+
+            return $this->redirectToRoute('ls_imarket_voir_cgv');
+        }
+
+        return $this->render('@LSIMarket/admin/gestion_cgu_cgv/cgv_mod.html.twig', array('form' => $form->createView()));
+    }
+
 }

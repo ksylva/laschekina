@@ -1,0 +1,11 @@
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+    {% block volet %}
+        {% include 'LSIMarketBundle::layout_administre.html.twig' %}
+    {% endblock volet %}
+
+    {% block monespace %}
+        <h3>Bienvenu dans votre espace</h3>
+    {% endblock monespace %}
+{% endblock body %}

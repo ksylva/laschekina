@@ -83,7 +83,7 @@ ls_imarket_reservation:
 #----------------------------------------------- FIN ROUTES RESERVATIONS -----------------------------------------------
 
 #--------------------------------------------- ROUTES RELATIVES AUX ESPACES DE GESTION ---------------------------------
-# Pour acceder a l'espace mairie
+# Pour acceder a l'espace utilisateur
 ls_imarket_mon_espace:
     path: /monespace
     defaults:
@@ -109,6 +109,13 @@ ls_imarket_mes_commandes:
    path: /mescommandes
    defaults:
        _controller: LSIMarketBundle:Market:mesCommandes
+
+#+++++++++++++++++++++++++++++++++++++++++ ESPACE ADMINISTRE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ls_imarket_administre_index:
+    path: /monespace/index
+    defaults:
+        _controller: LSIMarketBundle:Espace:administreIndex
+
 
 #---------------------------------------------- FIN ROUTES ESPACES DE GESTION ------------------------------------------
 # Route pour la barre de recherche principale
@@ -182,3 +189,38 @@ ls_imarket_modifier_epci:
         _controller: LSIMarketBundle:Admin:modifierEpci
     requirements:
         id: \d+
+
+#************************************************ MODULE CGU - V *******************************************************
+#/////////////////////////////////////////////// CGU ////////////////////////////////////
+ls_imarket_ajouter_cgu:
+    path: /monespace/admin/ajouter-cgu
+    defaults:
+        _controller: LSIMarketBundle:Admin:ajouterCgu
+
+ls_imarket_voir_cgu:
+    path: /monespace/admin/voir-cgu
+    defaults:
+        _controller: LSIMarketBundle:Admin:voirCgu
+
+ls_imarket_modifier_cgu:
+    path: /monespace/admin/modifier-cgu
+    defaults:
+        _controller: LSIMarketBundle:Admin:modifierCgu
+
+
+#//////////////////////////////////////////////// CGV /////////////////////////////////////////
+ls_imarket_ajouter_cgv:
+    path: /monespace/admin/ajouter-cgv
+    defaults:
+        _controller: LSIMarketBundle:Admin:ajouterCgv
+
+ls_imarket_voir_cgv:
+    path: /monespace/admin/voir-cgv
+    defaults:
+        _controller: LSIMarketBundle:Admin:voirCgv
+
+ls_imarket_modifier_cgu:
+    path: /monespace/admin/modifier-cgv
+    defaults:
+        _controller: LSIMarketBundle:Admin:modifierCgv
+

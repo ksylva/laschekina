@@ -499,7 +499,7 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:commande:mes_commandes.html.twig');
     }
 
-    public function monEpciAction($cp){
+    /*public function monEpciAction($cp){
         $em = $this->getDoctrine()->getManager();
 
         $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
@@ -508,7 +508,7 @@ class MarketController extends Controller {
             $reponse = new Response(json_encode($codePostal));
             return $reponse;
         }
-    }
+    }*/
 
     function sendMail($from, $to, $subject, $body){
             $mesg = \Swift_Message::newInstance()
