@@ -1,0 +1,11 @@
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
+
+{% block monespace %}
+    {% include '@LSIMarket/admin/gestion_cgu_cgv/cgv_mod_content.html.twig' %}
+{% endblock monespace %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ tinymce_init() }}
+{% endblock javascripts %}

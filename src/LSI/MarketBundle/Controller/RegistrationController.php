@@ -222,12 +222,12 @@ class RegistrationController extends Controller
 
         if (null === $response = $event->getResponse()) {
             $url = $this->generateUrl('fos_user_registration_confirmed');
-            $response = new RedirectResponse($url);
+            new RedirectResponse($url);
         }
 
         $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
-        return $response;
+        return $this->redirectToRoute('ls_imarket_mon_espace');
     }
 
     /**

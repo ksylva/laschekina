@@ -6,6 +6,7 @@
         {{ render(controller("LSIMarketBundle:Market:index")) }}
     {% elseif app.user.hasRole('ROLE_PART') %}
         {% include 'LSIMarketBundle::layout_administre.html.twig' %}
+        {#{{ render(controller("LSIMarketBundle:Espace:administreIndex")) }}#}
     {% elseif app.user.hasRole('ROLE_MAIRIE') %}
         {% include 'LSIMarketBundle::layout_mairie.html.twig' %}
     {% elseif app.user.hasRole('ROLE_ADMIN') %}
@@ -16,6 +17,7 @@
 {% endblock volet %}
 
 {% block body %}
+
     {% block monespace %}
 
     {% endblock monespace %}
