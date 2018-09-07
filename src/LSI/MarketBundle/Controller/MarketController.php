@@ -520,4 +520,111 @@ class MarketController extends Controller {
             $this->get('mailer')->send($mesg);
        }
 
+
+    // traitement pour consulter les réservations sur annonces
+
+    public function voirReservationAction(Request $request, $id) {
+        $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $listreservation = $repository->find($id);
+        var_dump($listreservation);
+        return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
+            array('listanreserv' => $listreservation));
+    }
+
+    // Action pour traiter la validation d'une réservation par l'offreur
+
+    public function validAction(Request $request, $id)
+    {
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        // Recuperer l'annonce reservée
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+        if($request->isXmlHttpRequest() && $request->get('btn-valider')) {
+            // Modification de l'etat de l'annonce et le statut
+            $reserve->setReserveEtat('V');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+            // return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+        }
+        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+    }
+
+    // Action pour réfuser une réservation
+    public function refuserAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+        if($request->isXmlHttpRequest() && $request->get('btn-refuser')) {
+            $reserve->setReserveEtat('R');
+            // dump($reserve);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+        }
+        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+    }
+
+    // Traitement de la réservation par le demandeur
+
+    public function reservationdemandeurAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $listreservation = $repository->findreserveSurMesannonces($id);
+        return $this->render('LSIMarketBundle:reservation:pagetraitementreservationdemandeur.html.twig',
+            array('listreservation' => $listreservation ));
+    }
+
+    /*
+        Traitement de l'annulation d'une réservation par le demandeur après validation de l'offreur'
+     */
+
+    public function annulerReservationAction(Request $request, $id) {
+
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+
+        if ($request->isXmlHttpRequest() && $request->get('btn-annuler')) {
+            $reserve->setReserveEtat('An');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+    }
+
+    /*Traitement pour la modification d'une réservation par le demandeur*/
+
+    public function modifierReservationAction(Request $request, $id) {
+        // Recuperation du formulaire de réservation
+
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserveancien = $reporeserv->find($id);
+        //dump($reserveancien);
+        // $form = $this->get('form.factory')->create(ReserverType::class, $reserveancien );
+        //$form = $this->createForm(ReserverType::class, $reserveancien);
+
+        $formReservEdit = $this->createFormBuilder()
+            ->add('datedebut', DateType::class)
+            ->add('datefin', DateType::class)
+            ->add('newdatedebut', DateType::class)
+            ->add('newdatefin', DateType::class)
+            ->getForm();
+        $formReservEdit->get('datedebut')->setData($reserveancien->getDebutPrestation());
+        $formReservEdit->get('datefin')->setData($reserveancien->getFinPrestation());
+
+        $formReservEdit->handleRequest($request);
+
+        if ($formReservEdit->isSubmitted() && $formReservEdit->isValid()) {
+
+        }
+
+        return $this->render('LSIMarketBundle:reservation:pagemodreservation.html.twig',
+            array('formReservEdit' => $formReservEdit->createView()));
+    }
+
 }

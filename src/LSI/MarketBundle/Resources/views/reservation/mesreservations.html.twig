@@ -26,10 +26,18 @@
                         <td><strong>{{ titreAnnonce.titre }}</strong></td>
                         <td><strong>{{ reservation.debutPrestation|date('d/m/Y') }}</strong></td>
                         <td><strong>{{ reservation.finPrestation|date('d/m/Y') }}</strong></td>
-                        {% if reservation.reserveEtat == 'A' %}
+                        {% if reservation.reserveEtat == 'V' %}
+                            <td><strong>En attente de paiement</strong></td>
+                        {% elseif reservation.reserveEtat == 'R' %}
+                            <td><strong>Réservation refusée</strong></td>
+                        {% elseif reservation.reserveEtat == 'An' %}
+                            <td><strong>Réservation annulée</strong></td>
+                        {% else %}
                             <td><strong>En attente de validation</strong></td>
                         {% endif %}
-                        <td>Les actions</td>
+                        <td>
+                            <a class="btn btn-success" href="{{ path('ls_imarket_traitement_demandeur_reservation', {'id': reservation.id}) }}">Consulter</a>
+                        </td>
                     </tr>
                 {% else %}
                     <tr class="info">
