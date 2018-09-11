@@ -54,7 +54,7 @@ ls_imarket_voir_annonce:
     requirements:
         id: \d+
 
-# Pour modifier une annonce
+# Pour modifier une annonce phase 1. 
 ls_imarket_modifier_annonce:
     path: /modifier/{id}
     defaults:
@@ -62,13 +62,29 @@ ls_imarket_modifier_annonce:
     requirements:
         id: \d+
 
-#Pour creer une annonce  a partir d'une existante.
+# Pour modifier une annonce phase 2. 
+ls_imarket_modifier_annonce2:
+    path: /modifier2/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:modifier2
+    requirements:
+        id: \d+
+
+#Pour creer une annonce  a partir d'une existante phase 1.
 ls_imarket_dupliquer_annonce:
     path: /dupliquer/{id}
     defaults:
         _controller: LSIMarketBundle:Market:dupliquer
     requirements:
         id: \d+
+#Pour creer une annonce à partir d'une existante phase 2.
+ls_imarket_dupliquer_annonce2:
+    path: /dupliquer2/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:dupliquer2
+    requirements:
+        id: \d+
+
 
 # --------------------------------- FIN DES ROUTES RELATIVES A L'ANNONCE -----------------------------------------------
 
@@ -227,7 +243,7 @@ ls_imarket_voir_cgv:
     defaults:
         _controller: LSIMarketBundle:Admin:voirCgv
 
-ls_imarket_modifier_cgu:
+ls_imarket_modifier_cgv:
     path: /monespace/admin/modifier-cgv
     defaults:
         _controller: LSIMarketBundle:Admin:modifierCgv

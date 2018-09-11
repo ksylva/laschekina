@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-
     <div id="page" class="row">
         <div class="">
             <h2>Ajout d'une annonce</h2>
@@ -38,6 +37,7 @@
                 <div class="form-group">
                     {{ form_row(form.typeAnnul) }}
                 </div>
+                {{ form_errors(form.typeAnnul)}}
             </div>
             <div class="col-xs-6 col-md-6 col-lg-6">
                 <div class="form-group">
@@ -106,7 +106,7 @@
 
                 if (index == 0){
                     template = $container.attr('data-prototype')
-                        .replace(/__name__label__/g, '')
+                        .replace(/__name__label__/g, 'Image 1')
                         .replace(/__name__/g, index)
                     ;
                 }else{

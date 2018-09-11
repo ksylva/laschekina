@@ -10,6 +10,7 @@ namespace LSI\MarketBundle\Controller;
 
 
 use LSI\MarketBundle\Form\Annonce2Type;
+use LSI\MarketBundle\Form\AnnonceModifType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use LSI\MarketBundle\Entity\Annonce;
 use LSI\MarketBundle\Entity\Categorie;
@@ -132,14 +133,23 @@ class MarketController extends Controller {
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $annonce = new Annonce();
 
+
         $form = $this->createForm(AnnonceType::class, $annonce);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
             $em = $this->getDoctrine()->getManager();
+            //$annonce.titre() != $em->getRepository('LSIMarketBundle:Annonce')->findBy(titre);
             $user = $this->getUser()->getMairie();
             $annonce->setMairie($user);
+           /* $img = $annonce->getTitre();
+            $image->setAnnonce($img);*/
+           // $img = $item->getImages();
+            //$newannonce->addImage(new Image());
+           // $annonce->addImage()->;
+           // dump($annonce);
 
             $em->persist($annonce);
+
             $em->flush();
             $request->getSession()->getFlashBag()->add('notif', 'Annonce ajoutée avec succès !');
 
@@ -166,6 +176,9 @@ class MarketController extends Controller {
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
+            /* $img = $this->getImages()->getTitre();
+             $image->setAnnonce($img);*/
+
             //Insertion dans la BD
             $em->persist($annonce);
             $em->flush();
@@ -181,6 +194,8 @@ class MarketController extends Controller {
 
     public function voirAction($id){
         $em = $this->getDoctrine()->getManager();
+        $image = new Image();
+        $img ='';
 
         // Recuperer l'annonce cliquee
         $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
@@ -191,9 +206,15 @@ class MarketController extends Controller {
         // Recuperer l'auteur de l'annonce...
         $auteur = $em->getRepository('LSI\MarketBundle\Entity\User')
                      ->findAuteurAnnonce($annonce->getMairie()->getId());
+        /*foreach ($this->$image as $images ) {
+            $img = $em->getRepository('LSI\MarketBundle\Entity\Image')->findBy($annonce->getImages()->getId($annonce.$id));
+
+        }*/
 
 
-        return $this->render('LSIMarketBundle:market:voir.html.twig', array('annonce' => $annonce, 'auteur' => $auteur));
+
+        return $this->render('LSIMarketBundle:market:voir.html.twig', array('annonce' => $annonce, 'auteur' => $auteur,
+            'image'=>$img));
     }
 
     public function reserverAction(Request $request, $id){
@@ -355,19 +376,20 @@ class MarketController extends Controller {
 
             $annonce->setAnnonceUpdateAt(new \DateTime('now'));
 
+
             //Mise a jour de la BD
             $em->persist($annonce);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
 
-            //Redirection vers la page de consultation
-            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId(),
+            //Redirection vers la page 2 de la modification
+            return $this->redirectToRoute('ls_imarket_modifier_annonce2', array('id' => $annonce->getId(),
                 ));
         }
 
         //création de la vue
-        return $this->render('LSIMarketBundle:market:modifier.html.twig', array('form' => $form->createView(),
-            'images'=> $annonce->getImages()->getWebPath()));
+        return $this->render('LSIMarketBundle:market:modifier2.html.twig', array('form' => $form->createView(),
+            /*'images'=> $annonce->getImages()->getWebPath()*/));
     }
 
     public function dupliquerAction(Request $request,$id){
@@ -395,9 +417,10 @@ class MarketController extends Controller {
             $newannonce->setDescription($item->getDescription());
             $newannonce->setRegleCond($item->getRegleCond());
             $newannonce->setPrixDefaut($item->getPrixDefaut());
-            $newannonce->setStatut($item->getStatut());
+            $newannonce->setAdresse($item->getAdresse());
+            $newannonce->setTypeAnnul($item->getTypeAnnul());
             $img = $item->getImages();
-            $newannonce->setImages(new Image());
+            $newannonce->addImage(new Image());
             $newannonce->setCategorie($item->getCategorie());
         }
         //dump($newannonce); $newannonce = clone $annonce; dump($newannonce);
@@ -551,5 +574,93 @@ class MarketController extends Controller {
                 ;
             $this->get('mailer')->send($mesg);
        }
+
+
+    public function modifier2Action (){
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
+        //connection à la BD
+        $em = $this->getDoctrine()->getManager();
+
+        //recupération de l'objet à modifier
+        $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
+
+        if (null === $annonce)
+        {
+            throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
+        }
+
+        //création du formulaire de modification
+        // image de l'iamge avant modif pas encore réglé
+        $form = $this->createForm(AnnonceType::class, $annonce);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+
+            $annonce->setAnnonceUpdateAt(new \DateTime('now'));
+
+
+            //Mise a jour de la BD
+            $em->persist($annonce);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
+
+            //Redirection vers la page de consultation
+            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId(),
+                ));
+        }
+
+        //création de la vue
+        return $this->render('LSIMarketBundle:market:modifier.html.twig', array('form' => $form->createView(),
+            /*'images'=> $annonce->getImages()->getWebPath()*/));
+
+    }
+
+    public function dupliquer2Action (){
+        
+
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
+        //création d'un objet pour le dupliquer l'annonce avec une new image
+        $newannonce = new Annonce();
+        $image = new Image();
+
+        //connection à la BD et récupération de l'annonce à créer par duplicata
+        $em = $this->getDoctrine()->getManager();
+
+
+        $annonce = $em->getRepository('LSIMarketBundle:Annonce')->findById($id);
+        //$id = $em->getRepository('LSIMarketBundle:Annonce')->findIdMax();
+
+        if (null === $annonce)
+        {
+            throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
+        }
+        $img = '';
+        //copie du contenu de l'ancienne annonce dans la nouvelle
+        foreach ($annonce as $item){
+            $newannonce->setPublicMairie($item->getPublicMairie());
+            $newannonce->setPublicAdministre($item->getPublicAdministre());
+            
+        }
+        //dump($newannonce); $newannonce = clone $annonce; dump($newannonce);
+        // //création du formulaire
+        $form = $this->createForm(AnnonceType::class, $newannonce);
+        //dump($newannonce);
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser()->getMairie();
+            $newannonce->setMairie($user);
+            $em->persist($newannonce);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce crée avec succes.');
+
+            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $newannonce->getId(),
+                ));
+        }
+
+        return $this->render('LSIMarketBundle:Market:dupliquer.html.twig', array('form' => $form->createView(),
+            'img' => $img->getWebPath()));
+    
+
+    }
 
 }

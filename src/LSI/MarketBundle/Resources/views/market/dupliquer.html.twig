@@ -4,6 +4,7 @@
     <div id="page" class="row">
         <div class="">
             <h2>Créer une nouvelle annonce</h2>
+             <h3>Informations générales</h3>
             {{ form_start(form, {'attr' : {'claas' : 'form-control'}}) }}
             <div class="col-xs-6 col-md-6 col-lg-6">
                 <div class="form-group">
@@ -26,18 +27,33 @@
                     {{ form_row(form.regleCond) }}
                 </div>
                 {{ form_errors(form.regleCond) }}
-            </div>
-            <div class="col-xs-6 col-md-6 col-lg-6">
-                <div class="form-group">
-                    {#{{ form_label(form.statut) }}#}
-                    {{ form_row(form.statut) }}
-                </div>
-                {{ form_errors(form.statut) }}
                 <div class="form-group">
                     {#{{ form_label(form.categorie) }}#}
                     {{ form_row(form.categorie) }}
                 </div>
                 {{ form_errors(form.categorie) }}
+                <div class="form-group">
+                    {{ form_row(form.typeAnnul) }}
+                </div>
+                {{ form_errors(form.typeAnnul)}}
+            </div>
+            <div class="col-xs-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                    {{ form_row(form.adresse.pays, {'attr': {'placeholder': 'Donner le pays'}}) }}
+                </div>
+                {{ form_errors(form.adresse.pays) }}
+                <div class="form-group">
+                    {{ form_row(form.adresse.ville,  {'attr': {'placeholder': 'Donner la ville'}}) }}
+                </div>
+                {{ form_errors(form.adresse.ville) }}
+                <div class="form-group">
+                    {{ form_row(form.adresse.rue, {'attr': {'placeholder': 'Donner la rue'}}) }}
+                </div>
+                {{ form_errors(form.adresse.rue) }}
+                <div class="form-group">
+                    {{ form_row(form.adresse.codePostal,  {'attr': {'placeholder': 'Donner le Code postal'}}) }}
+                </div>
+                {{ form_errors(form.adresse.codePostal) }}
 
                 <div class="form-group">
                     {{ form_widget(form.images, {'attr' : {'onchange' : 'loadFile(event)'}}) }}

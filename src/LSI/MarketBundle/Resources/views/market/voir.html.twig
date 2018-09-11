@@ -9,10 +9,27 @@
         <div class="col-lg-offset-2 col-md-10">
             <h2>{{ annonce.titre }}</h2>
             <hr>
-            <div class="row">
+            <div class="form-row">
+                {#{% block file_widget %}
+                    {% spaceless %}
+                        {{ dump(annonce.images) }}
+
+                        {{ block('form_widget') }}
+                        {% if annonce.images is not null %}
+                            {% for images in annonce.images %}
+                            <img src="{{ asset(images.webPath) }}"/>
+                            {% endfor %}
+                        {% endif %}
+
+                    {% endspaceless %}
+                {% endblock %}#}
+                {#{{ dump(annonce.images) }}#}
                 {% if annonce.images is not null %}
-                    <img src="{{ asset(annonce.images.webPath) }}" alt="{{ annonce.images.alt }}"/>
+                    {% for images in annonce.images %}
+                    <img src="{{ asset(images.webPath) }}" alt="{{ images.alt }}"/>
+                    {% endfor %}
                 {% endif %}
+               {# {{ dump(annonce.images) }}#}
             </div>
             <div class="row">
                 <i>Par

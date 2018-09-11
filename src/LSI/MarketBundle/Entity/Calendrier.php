@@ -42,8 +42,8 @@ class Calendrier
     private $statut;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier", cascade={"persist"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id")
      */
     private $annonce;
 

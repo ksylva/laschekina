@@ -16,11 +16,18 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', FileType::class, array('label' => 'Ajouter une image'))
-            //->add('annonce', AnnonceType::class)
+            ->add('file', FileType::class,
+                array('label' => 'ajouter une image'))
+            ->add('annonce', AnnonceType::class)
             //->add('save', SubmitType::class, array('label' => 'Ajouter'))
             ;
+
+       // $builder 
+            //->remove('annonce');
+
+        
     }
+
 
     /**
      * {@inheritdoc}

@@ -7,3 +7,7 @@ services:
         arguments:
             - "@mailer"
             - "%mailer_user%"
+
+    LSIMarketBundle\Form\Extension\ImageExtension:
+       tags:
+           - { name: form.type_extension_type: Symfony\Component\Form\Extension\Core\Type\FileType }

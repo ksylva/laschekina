@@ -38,7 +38,7 @@ class Image
     private $alt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="images",cascade={"persist"})
      * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id")
      */
     private $annonce;
@@ -50,6 +50,12 @@ class Image
 
     // On ajoute cet attribut pour y stocker le nom du fichier temporairement
     private $tempFilename;
+
+    /**
+     * @var string The path - typically stored in the database
+     */
+    private $path;
+
 
     /**
    * @ORM\PrePersist()
@@ -92,7 +98,7 @@ class Image
     // On déplace le fichier envoyé dans le répertoire de notre choix
     $this->file->move(
       $this->getUploadRootDir(), // Le répertoire de destination
-      $this->id.'.'.$this->url   // Le nom du fichier à créer, ici « id.extension »
+      $this->annonce.'.'.$this->url   // Le nom du fichier à créer, ici « id.extension »
     );
   }
 

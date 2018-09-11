@@ -115,8 +115,8 @@ class Annonce
     private $mairie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Image", mappedBy="annonce", cascade={"persist"})
-     *@ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=false)
+     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Image", mappedBy="annonce",cascade={"persist"})
+     *@ORM\JoinColumn(name="image_id",referencedColumnName="id" ,nullable=false)
      */
     private $images;
 
@@ -166,7 +166,7 @@ class Annonce
     /**
      * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifNonAdministre", cascade={"persist"})
      */
-    private $tarifNonAdmins;
+    private $tarifNonAdminis;
 
     /**
      * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifEpci", cascade={"persist"})
@@ -197,7 +197,8 @@ class Annonce
         $this->dateCreation = new \DateTime();
         $this->heureCreation = new \DateTime();
         $this->annonceEtat = 'A';
-        //$this->images = ArrayCollection::class;
+        $this->images = new ArrayCollection;
+        $this->calendrier = new ArrayCollection;
     }
 
 
@@ -452,6 +453,8 @@ class Annonce
     {
         $this->images[] = $image;
 
+        $image->setAnnonce($this);
+
         return $this;
     }
 
@@ -543,6 +546,8 @@ class Annonce
     public function addCalendrier(\LSI\MarketBundle\Entity\Calendrier $calendrier)
     {
         $this->calendrier[] = $calendrier;
+
+        $calendrier->setAnnonce($this);
 
         return $this;
     }
@@ -781,5 +786,29 @@ class Annonce
     public function getTarifNonEpci()
     {
         return $this->tarifNonEpci;
+    }
+
+    /**
+     * Set tarifNonAdminis
+     *
+     * @param \LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdminis
+     *
+     * @return Annonce
+     */
+    public function setTarifNonAdminis(\LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdminis = null)
+    {
+        $this->tarifNonAdminis = $tarifNonAdminis;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifNonAdminis
+     *
+     * @return \LSI\MarketBundle\Entity\TarifNonAdministre
+     */
+    public function getTarifNonAdminis()
+    {
+        return $this->tarifNonAdminis;
     }
 }

@@ -15,6 +15,7 @@ services:
         public: false
 
 
+
     market.form.registration:
         class: LSI\MarketBundle\Form\RegistrationType
         tags:
