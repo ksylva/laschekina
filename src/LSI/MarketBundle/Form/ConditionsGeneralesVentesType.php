@@ -3,7 +3,7 @@
 namespace LSI\MarketBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,15 +15,9 @@ class ConditionsGeneralesVentesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('cgv', TextareaType::class, array(
-            'label' => 'Texte',
-            'attr' => array(
-                'class' => 'tinymce',
-                'data-theme' => 'advanced',
-                'rows' => '25',
-            )
-        ))
-            ->add('save', SubmitType::class)
+        $builder
+            ->add('fichier', FileType::class)
+            ->add('add', SubmitType::class)
         ;
     }
 

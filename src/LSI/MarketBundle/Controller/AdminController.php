@@ -132,6 +132,7 @@ class AdminController extends Controller  {
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($cgu);
+
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales d\'Utilisation ont été éditer !');
 

@@ -11,6 +11,7 @@ namespace LSI\MarketBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
@@ -39,8 +40,15 @@ class RegistrationType extends AbstractType {
             ->add('telephone', TextType::class)
             ->add('adresse', AdresseType::class)
 
+
             ->add('mairie', MairieType::class, array('required' => false))
             ->add('administre', AdministreType::class, array('required' => false))
+            ->add('cgu', CheckboxType::class, array(
+                'required' => true,
+                /*'choices' => array('Acceptez les ' =>'1'),
+                'expanded' => true, 'multiple' => true*/
+                //'label' => 'Acceptez les ',
+            ))
             ;
 
         // Ajout

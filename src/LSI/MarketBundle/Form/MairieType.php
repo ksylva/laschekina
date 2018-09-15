@@ -2,6 +2,8 @@
 
 namespace LSI\MarketBundle\Form;
 
+use LSI\MarketBundle\Repository\EpciRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,12 +22,24 @@ class MairieType extends AbstractType
             ->add('service', TextareaType::class, array('required' => false))
             ->add('longitude', TextType::class, array('required' => false))
             ->add('latitude', TextType::class, array('required' => false))
-            //->add('addresse', AdresseType::class, array('required' => false))
-            //->add('epi', TextType::class, array('required' => false))
+            ->add('epci', EntityType::class, array(
+                'required' => false,
+                'class' => 'LSIMarketBundle:Epci',
+                'query_builder' => function(EpciRepository $er){
+
+                    return $er->getListEpci();
+                },
+                'choice_label' => function($x){
+                     return $x->getNom();
+                },
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Sélectionner votre EPCI'
+            ))
         ;
 
         $builder
-            ->remove('epci')
+            //->remove('epci')
             ->remove('longitude')
             ->remove('latitude')
             ;

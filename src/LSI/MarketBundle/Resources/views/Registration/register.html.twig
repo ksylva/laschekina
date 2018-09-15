@@ -64,16 +64,24 @@
     </script>
     {#<script>
         $(document).ready(function () {
-            var monepci = function () {
+            $('#fos_user_registration_form_adresse_codePostal').on('change', function monepci (valu) {
+                valu = $(this).val();
+                alert(valu);
                 $.ajax({
                     type: 'GET',
                     url: '{{ path('ls_imarket_mon_epci') }}',
-                    data: {{ reponse }},
-                    success: function (data) {
-                        $("#maire").html(data);
+                    data: { 'cp': valu },
+                    dataType: 'json',
+                    success: function (json) {
+                        $("#fos_user_registration_form_mairie_epi").html(json);
+                        //alert(json);
+                        //alert('Code postal Ok!!');
+                    },
+                    error: function (data) {
+                        alert(cp);
                     }
                 })
-            }
+            })
         })
     </script>#}
 {% endblock javascripts %}

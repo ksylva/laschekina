@@ -5,6 +5,7 @@ namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+//use FOS\MessageBundle\Model\ParticipantInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\AttributeOverride;
 
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping\AttributeOverride;
  * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\UserRepository")
  *
  */
-class User extends BaseUser
+class User extends BaseUser //implements ParticipantInterface
 {
     /**
      * @var int
@@ -123,6 +124,13 @@ class User extends BaseUser
      * @var array
      */
     protected $roles;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="cgu", type="boolean", nullable=false)
+     * @Assert\NotBlank()
+     */
+    protected $cgu;
 
     public function __construct()
     {
@@ -373,5 +381,29 @@ class User extends BaseUser
     public function getAdresse()
     {
         return $this->adresse;
+    }
+
+    /**
+     * Set cgu
+     *
+     * @param boolean $cgu
+     *
+     * @return User
+     */
+    public function setCgu($cgu)
+    {
+        $this->cgu = $cgu;
+
+        return $this;
+    }
+
+    /**
+     * Get cgu
+     *
+     * @return boolean
+     */
+    public function getCgu()
+    {
+        return $this->cgu;
     }
 }

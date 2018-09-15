@@ -43,7 +43,7 @@ class Calendrier
 
     /**
      * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="annonce_id",referencedColumnName="id")
      */
     private $annonce;
 

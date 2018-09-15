@@ -2,12 +2,14 @@
 <div class="well">
     <center><strong><h2>MODIFICATION DES CGV</h2></strong></center>
     {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_row(form.cgv) }}
-    </div>
-    <div class="form-group">
-        {{ form_widget(form.save, {'label': 'Modifier', 'attr': {'class': 'btn btn-warning'}}) }}
-    </div>
+        <div class="form-group">
+            {{ form_label(form.fichier, 'Uploader le fichier de CGV') }}
+            {{ form_errors(form.fichier) }}
+            {{ form_widget(form.fichier) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.add, {'label': 'Modifier', 'attr': {'class': 'btn btn-warning'}}) }}
+        </div>
     {{ form_end(form) }}
 </div>
 </body>

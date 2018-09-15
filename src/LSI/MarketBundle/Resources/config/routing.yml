@@ -91,22 +91,22 @@ ls_imarket_mon_espace:
 
 # Pour accéder aux annonces de la mairie
 ls_imarket_mes_annonces:
-    path: /mesannonces
+    path: /mairie/mes-annonces
     defaults:
         _controller: LSIMarketBundle:Market:mesAnnonces
 
 ls_imarket_annonce_reservee:
-    path: /annoncereservee
+    path: /mairie/annonces-reservees
     defaults:
         _controller: LSIMarketBundle:Market:annonceReserver
 
-ls_imarket_annonce_commandee:
-    path: /annoncecommande
+ls_imarket_commandes_sur_mes_annonces:
+    path: /mairie/commandes-sur-mes-annonces
     defaults:
-        _controller: LSIMarketBundle:Market:annonceCommandee
+        _controller: LSIMarketBundle:Market:commandesSurMesAnnonces
 
 ls_imarket_mes_commandes:
-   path: /mescommandes
+   path: /mairie/mes-commandes
    defaults:
        _controller: LSIMarketBundle:Market:mesCommandes
 
@@ -158,9 +158,11 @@ ls_imarket_accueil:
 #***************************************** MODULE EPCI ********************************
 # Pour récupérer les infos de l'EPCI
 ls_imarket_mon_epci:
-    path: /monepci
+    path: /monepci #/{cp}
     defaults:
         _controller: LSIMarketBundle:Market:monEpci
+#    requirements:
+#        cp: \d+
 
 # Pour ajouter un epci
 ls_imarket_ajout_epci:
@@ -219,7 +221,7 @@ ls_imarket_voir_cgv:
     defaults:
         _controller: LSIMarketBundle:Admin:voirCgv
 
-ls_imarket_modifier_cgu:
+ls_imarket_modifier_cgv:
     path: /monespace/admin/modifier-cgv
     defaults:
         _controller: LSIMarketBundle:Admin:modifierCgv

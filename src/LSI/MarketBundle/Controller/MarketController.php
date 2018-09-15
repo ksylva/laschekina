@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -269,8 +270,8 @@ class MarketController extends Controller {
     }
 
     // Renvoie la liste des annonces crees par une mairie.
-    /*public function monEspaceAction(){
-        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART', 'ROLE_SUPER_ADMIN'], $this->redirectToRoute('fos_user_security_login'));
+    public function mesAnnoncesAction(){
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
         // Recuperer le User connecte
@@ -281,22 +282,11 @@ class MarketController extends Controller {
 
         if (null === $annonces){
             echo 'Vous n\'avez créer aucune annonce !';
-        }else{
-            if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-                return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
-            }elseif ($this->getUser()->hasRole('ROLE_PART')){
-                return $this->reservationAction();
-            }
         }
 
-        if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-            return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig');
-        }elseif ($this->getUser()->hasRole('ROLE_PART')){
-            return $this->reservationAction();
-        }elseif($this->getUser()->hasRole('ROLE_SUPER_ADMIN')){
+        return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
 
-        }
-    }*/
+    }
 
     public function monEspaceAction(){
         return $this->render('LSIMarketBundle::monespace.html.twig');
@@ -494,19 +484,32 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:mairie:annonce_commandee.html.twig');
     }
 
+    // Gérer les commandes d'un utilisateur...
     public function mesCommandesAction(){
 
         return $this->render('LSIMarketBundle:commande:mes_commandes.html.twig');
     }
 
-    /*public function monEpciAction($cp){
+    /*public function monEpciAction(){
         $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
 
-        $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+        if ($request->isXmlHttpRequest()){
+            // Initialisation de $cp ...
+            $cp = '';
+            $cp = $request->query->get('cp');
 
-        if (null !== $codePostal){
-            $reponse = new Response(json_encode($codePostal));
-            return $reponse;
+            if ($cp != '' ){
+                $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+                $response = new JsonResponse();
+                $response->setData(array('data' => $codePostal));
+                var_dump($response);die;
+                return $response;
+            }
+
+            //return $response = new Response(json_encode($codePostal));
+        }else{ //
+            return $response = new Response('Ne correspond à aucun EPCI');
         }
     }*/
 
