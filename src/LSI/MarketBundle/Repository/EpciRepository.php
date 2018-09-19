@@ -33,6 +33,7 @@ class EpciRepository extends EntityRepository {
         $qb = $this->createQueryBuilder('e')
             ->innerJoin('e.codePostal', 'cp')
             ->addSelect('cp')
+            //->orderBy('e.nom', 'ASC')
             ;
 
         return $qb->getQuery()->getResult();
@@ -52,5 +53,16 @@ class EpciRepository extends EntityRepository {
             ;
 
         return $qb->getQuery()->getSingleResult();
+    }
+
+    // Lister les EPCI sur le formulaire d'inscription mairie...
+    public function getListEpci(){
+        return $this
+            ->createQueryBuilder('e')
+            ->join('e.codePostal', 'cp')
+            ->addSelect('cp')
+            ->orderBy('e.nom', 'ASC')
+            ;
+
     }
 }

@@ -92,16 +92,16 @@
         <div class="form-group">
             {{ form_label(form.adresse.codePostal, 'Code postal') }}
             {{ form_errors(form.adresse.codePostal) }}
-            {{ form_widget(form.adresse.codePostal, {'attr' : {'placeholder' : 'Code postal'}}) }}
+            {{ form_widget(form.adresse.codePostal, {'attr' : {'placeholder' : 'Code postal', 'onchange': 'monepci(this.value)'}}) }}
         </div>
 
-        {#{% if form.mairie is defined %}
+        {% if form.mairie is defined %}
             <div class="form-group" id="maire" style="display: none;">
                 {{ form_label(form.mairie.epci, 'EPCI') }}
                 {{ form_errors(form.mairie.epci) }}
-                {{ form_widget(form.mairie.epci, {'disabled' : 'disabled', 'attr':{'placeholder':'Votre EPCI'}}) }}
+                {{ form_widget(form.mairie.epci, {'attr':{'placeholder':'Votre EPCI'}}) }}
             </div>
-        {% endif %}#}
+        {% endif %}
 
         <div class="form-group">
             {{ form_label(form.indicatif, 'Indicatif de votre pays') }}
@@ -124,7 +124,24 @@
     </div>
 
     <div class="row ">
-        <div class="col-lg-offset-6 col-xs-6 col-md-6 col-lg-6">
+
+        <div class="col-lg-offset-5 col-xs-5 col-md-5 col-lg-5">
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" class="input-checked" required />
+                    Acceptez les
+                    <a target="_blank" href="{{ path('ls_imarket_condition_generale') }}">conditions generales</a>
+                </label>
+
+                {#{{ form_label(form.cgu, 'Acceptez les ')  }}
+                <a href="{{ path('lsi_market_homepage') }}">conditions dutilisations</a>
+                #}{#{{ form_errors(form.cgu) }}
+                <div class="col-sm-10">#}{#
+                {{ form_widget(form.cgu) }}#}
+
+                {#, {'attr': {'class': 'form-control'}}
+            </div>#}
+            </div>
             <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary"/>
         </div>
     </div>

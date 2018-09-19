@@ -3,6 +3,7 @@
 namespace LSI\MarketBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -51,7 +52,12 @@ class AnnonceType extends AbstractType
                 'expanded' => false,
                 'placeholder' => 'Sélectionner un statut',
             ))*/
-            ->add('images', ImageType::class, array('label' => ''))
+            /*->add('images', ImageType::class, array('label' => ''))*/
+            ->add('images', CollectionType::class, array(
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true
+            ))
             ->add('categorie', EntityType::class, array(
                 'label' => 'Catégorie de l\'annonce',
                 'class' => 'LSIMarketBundle:Categorie',

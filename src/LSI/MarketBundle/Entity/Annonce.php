@@ -2,6 +2,7 @@
 
 namespace LSI\MarketBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -73,14 +74,14 @@ class Annonce
     private $prixDefaut;
 
     /**
-     * @var date
+     * @var \Date
      *
      * @ORM\Column(name="date_creation", type="date")
      */
     private $dateCreation;
 
     /**
-     * @var time
+     * @var \Time
      *
      * @ORM\Column(name="heure_creation", type="time")
      */
@@ -114,7 +115,7 @@ class Annonce
     private $mairie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Image", mappedBy="annonce")
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Image", cascade={"persist"})
      *@ORM\JoinColumn(nullable=false)
      */
     private $images;
@@ -131,7 +132,8 @@ class Annonce
     private $categorie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", mappedBy="annonce")
+     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", mappedBy="annonce", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $calendrier;
 
@@ -142,10 +144,39 @@ class Annonce
     private $adresse;
 
     /**
-     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\Prix", cascade={"persist"})
-     *
+     * @ORM\Column(name="PublicMairie", type="string" , nullable= true)
      */
-    private $prix;
+    private $pulicMairie;
+
+    /**
+     * @ORM\Column(name="PublicAdministre", type="string" , nullable= true)
+     */
+    private $pulicAdministre;
+
+    /**
+     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifAdministreEpci", cascade={"persist"})
+     */
+    private $tarifAdminisEpci;
+
+    /**
+     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifAdministreNonEpci", cascade={"persist"})
+     */
+    private $tarifNonAdminisEpci;
+
+    /**
+     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifNonAdministre", cascade={"persist"})
+     */
+    private $tarifNonAdminis;
+
+    /**
+     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifEpci", cascade={"persist"})
+     */
+    private $tarifEpci;
+
+    /**
+     * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\TarifEpci", cascade={"persist"})
+     */
+    private $tarifNonEpci;
 
 
     /**
@@ -163,9 +194,11 @@ class Annonce
     public function __construct()
     {
 
-        //$this->dateCreation = new \Date();
-        //$this->heureCreation = new \Time();
+        //$this->dateCreation = new \DateTime();
+        //$this->heureCreation = new \DateTime();
         $this->annonceEtat = 'A';
+        $this->images = new ArrayCollection;
+        $this->calendrier = new ArrayCollection;
     }
 
 
@@ -268,7 +301,7 @@ class Annonce
     /**
      * Set dateCreation
      *
-     * @param \DateTime $dateCreation
+     * @param \Date $dateCreation
      *
      * @return Annonce
      */
@@ -282,7 +315,7 @@ class Annonce
     /**
      * Get dateCreation
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getDateCreation()
     {
@@ -292,7 +325,7 @@ class Annonce
     /**
      * Set heureCreation
      *
-     * @param \DateTime $heureCreation
+     * @param \Time $heureCreation
      *
      * @return Annonce
      */
@@ -306,7 +339,7 @@ class Annonce
     /**
      * Get heureCreation
      *
-     * @return \DateTime
+     * @return \Time
      */
     public function getHeureCreation()
     {
@@ -420,6 +453,8 @@ class Annonce
     {
         $this->images[] = $image;
 
+        $image->setAnnonce($this);
+
         return $this;
     }
 
@@ -512,6 +547,8 @@ class Annonce
     {
         $this->calendrier[] = $calendrier;
 
+        $calendrier->setAnnonce($this);
+
         return $this;
     }
 
@@ -581,5 +618,197 @@ class Annonce
     public function getPrix()
     {
         return $this->prix;
+    }
+
+    /**
+     * Set pulicMairie
+     *
+     * @param string $pulicMairie
+     *
+     * @return Annonce
+     */
+    public function setPulicMairie($pulicMairie)
+    {
+        $this->pulicMairie = $pulicMairie;
+
+        return $this;
+    }
+
+    /**
+     * Get pulicMairie
+     *
+     * @return string
+     */
+    public function getPulicMairie()
+    {
+        return $this->pulicMairie;
+    }
+
+    /**
+     * Set pulicAdministre
+     *
+     * @param string $pulicAdministre
+     *
+     * @return Annonce
+     */
+    public function setPulicAdministre($pulicAdministre)
+    {
+        $this->pulicAdministre = $pulicAdministre;
+
+        return $this;
+    }
+
+    /**
+     * Get pulicAdministre
+     *
+     * @return string
+     */
+    public function getPulicAdministre()
+    {
+        return $this->pulicAdministre;
+    }
+
+    /**
+     * Set tarifAdminisEpci
+     *
+     * @param \LSI\MarketBundle\Entity\TarifAdministreEpci $tarifAdminisEpci
+     *
+     * @return Annonce
+     */
+    public function setTarifAdminisEpci(\LSI\MarketBundle\Entity\TarifAdministreEpci $tarifAdminisEpci = null)
+    {
+        $this->tarifAdminisEpci = $tarifAdminisEpci;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifAdminisEpci
+     *
+     * @return \LSI\MarketBundle\Entity\TarifAdministreEpci
+     */
+    public function getTarifAdminisEpci()
+    {
+        return $this->tarifAdminisEpci;
+    }
+
+    /**
+     * Set tarifNonAdminisEpci
+     *
+     * @param \LSI\MarketBundle\Entity\TarifAdministreNonEpci $tarifNonAdminisEpci
+     *
+     * @return Annonce
+     */
+    public function setTarifNonAdminisEpci(\LSI\MarketBundle\Entity\TarifAdministreNonEpci $tarifNonAdminisEpci = null)
+    {
+        $this->tarifNonAdminisEpci = $tarifNonAdminisEpci;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifNonAdminisEpci
+     *
+     * @return \LSI\MarketBundle\Entity\TarifAdministreNonEpci
+     */
+    public function getTarifNonAdminisEpci()
+    {
+        return $this->tarifNonAdminisEpci;
+    }
+
+    /**
+     * Set tarifNonAdmins
+     *
+     * @param \LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdmins
+     *
+     * @return Annonce
+     */
+    public function setTarifNonAdmins(\LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdmins = null)
+    {
+        $this->tarifNonAdmins = $tarifNonAdmins;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifNonAdmins
+     *
+     * @return \LSI\MarketBundle\Entity\TarifNonAdministre
+     */
+    public function getTarifNonAdmins()
+    {
+        return $this->tarifNonAdmins;
+    }
+
+    /**
+     * Set tarifEpci
+     *
+     * @param \LSI\MarketBundle\Entity\TarifEpci $tarifEpci
+     *
+     * @return Annonce
+     */
+    public function setTarifEpci(\LSI\MarketBundle\Entity\TarifEpci $tarifEpci = null)
+    {
+        $this->tarifEpci = $tarifEpci;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifEpci
+     *
+     * @return \LSI\MarketBundle\Entity\TarifEpci
+     */
+    public function getTarifEpci()
+    {
+        return $this->tarifEpci;
+    }
+
+    /**
+     * Set tarifNonEpci
+     *
+     * @param \LSI\MarketBundle\Entity\TarifEpci $tarifNonEpci
+     *
+     * @return Annonce
+     */
+    public function setTarifNonEpci(\LSI\MarketBundle\Entity\TarifEpci $tarifNonEpci = null)
+    {
+        $this->tarifNonEpci = $tarifNonEpci;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifNonEpci
+     *
+     * @return \LSI\MarketBundle\Entity\TarifEpci
+     */
+    public function getTarifNonEpci()
+    {
+        return $this->tarifNonEpci;
+    }
+
+    /**
+     * Set tarifNonAdminis
+     *
+     * @param \LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdminis
+     *
+     * @return Annonce
+     */
+    public function setTarifNonAdminis(\LSI\MarketBundle\Entity\TarifNonAdministre $tarifNonAdminis = null)
+    {
+        $this->tarifNonAdminis = $tarifNonAdminis;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifNonAdminis
+     *
+     * @return \LSI\MarketBundle\Entity\TarifNonAdministre
+     */
+    public function getTarifNonAdminis()
+    {
+        return $this->tarifNonAdminis;
     }
 }

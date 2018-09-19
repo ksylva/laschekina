@@ -30,22 +30,13 @@
                         <td>
                             {#{{ annonce.annonceEtat }}#}
                         </td>
-                        {#<!-- <td>
-                            <div class="btn-group  btn-group-xs pull-right">
-                                <a href="{{ path('ls_imarket_voir_annonce', {'id': annonce.id}) }}">
-                                    <button type="button" class="btn btn-success">Consulter</button>
-                                </a>
-                                <a href="">
-                                    <button type="button" class="btn btn-warning">Désactiver</button>
-                                </a>
-                                <a href="">
-                                    <button type="button" class="btn btn-danger">Archiver</button>
-                                </a>
-                            </div>
-                        </td> -->#}
                     </tr>
                 {% else %}
-                    <tr class="alert alert-info"><strong>Vous n'avez ajouté aucune annonce !</strong></tr>
+                    <tr class="alert alert-info">
+                        <td colspan="3">
+                            <center><strong>Vous n'avez ajouté aucune annonce !</strong></center>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
                 <tfoot>

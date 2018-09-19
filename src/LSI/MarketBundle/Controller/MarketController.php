@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -212,7 +213,7 @@ class MarketController extends Controller {
 
     }
 
-    public function reservationAction(){
+    public function mesReservationsAction(){
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
@@ -241,7 +242,7 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:reservation:mesreservations.html.twig');
     }
 
-    public function annonceReserverAction(){
+    public function reservationsSurMesAnnoncesAction(){
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
@@ -269,8 +270,8 @@ class MarketController extends Controller {
     }
 
     // Renvoie la liste des annonces crees par une mairie.
-    /*public function monEspaceAction(){
-        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART', 'ROLE_SUPER_ADMIN'], $this->redirectToRoute('fos_user_security_login'));
+    public function mesAnnoncesAction(){
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
         // Recuperer le User connecte
@@ -281,22 +282,11 @@ class MarketController extends Controller {
 
         if (null === $annonces){
             echo 'Vous n\'avez créer aucune annonce !';
-        }else{
-            if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-                return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
-            }elseif ($this->getUser()->hasRole('ROLE_PART')){
-                return $this->reservationAction();
-            }
         }
 
-        if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-            return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig');
-        }elseif ($this->getUser()->hasRole('ROLE_PART')){
-            return $this->reservationAction();
-        }elseif($this->getUser()->hasRole('ROLE_SUPER_ADMIN')){
+        return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
 
-        }
-    }*/
+    }
 
     public function monEspaceAction(){
         return $this->render('LSIMarketBundle::monespace.html.twig');
@@ -494,19 +484,32 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:mairie:annonce_commandee.html.twig');
     }
 
+    // Gérer les commandes d'un utilisateur...
     public function mesCommandesAction(){
 
         return $this->render('LSIMarketBundle:commande:mes_commandes.html.twig');
     }
 
-    /*public function monEpciAction($cp){
+    /*public function monEpciAction(){
         $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
 
-        $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+        if ($request->isXmlHttpRequest()){
+            // Initialisation de $cp ...
+            $cp = '';
+            $cp = $request->query->get('cp');
 
-        if (null !== $codePostal){
-            $reponse = new Response(json_encode($codePostal));
-            return $reponse;
+            if ($cp != '' ){
+                $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+                $response = new JsonResponse();
+                $response->setData(array('data' => $codePostal));
+                var_dump($response);die;
+                return $response;
+            }
+
+            //return $response = new Response(json_encode($codePostal));
+        }else{ //
+            return $response = new Response('Ne correspond à aucun EPCI');
         }
     }*/
 
@@ -521,20 +524,37 @@ class MarketController extends Controller {
        }
 
 
+    public function conditionsAction(){
+        $em = $this->getDoctrine()->getManager();
+
+        $cgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
+
+        return $this->render('LSIMarketBundle:market:condition_generale.html.twig', array('cgu' => $cgu));
+    }
+
+
     // traitement pour consulter les réservations sur annonces
 
     public function voirReservationAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
         $listreservation = $repository->find($id);
-        var_dump($listreservation);
+
+
+
+        //var_dump($listreservation);
+
         return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
             array('listanreserv' => $listreservation));
     }
 
     // Action pour traiter la validation d'une réservation par l'offreur
 
+
+    public function validAction(Request $request, $id) {
+
     public function validAction(Request $request, $id)
     {
+
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         // Recuperer l'annonce reservée
         $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
@@ -545,10 +565,15 @@ class MarketController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($reserve);
             $em->flush();
+
+        }
+        return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
             // return $this->redirectToRoute('ls_imarket_annonce_reservee');
 
         }
         return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     // Action pour réfuser une réservation
@@ -563,7 +588,11 @@ class MarketController extends Controller {
             $em->persist($reserve);
             $em->flush();
         }
-        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+        return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     // Traitement de la réservation par le demandeur
@@ -593,7 +622,11 @@ class MarketController extends Controller {
             $em->flush();
         }
 
-        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+        return $this->redirectToRoute('ls_imarket_mes_reservations');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     /*Traitement pour la modification d'une réservation par le demandeur*/
@@ -604,9 +637,11 @@ class MarketController extends Controller {
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
         $reserveancien = $reporeserv->find($id);
+
         //dump($reserveancien);
         // $form = $this->get('form.factory')->create(ReserverType::class, $reserveancien );
         //$form = $this->createForm(ReserverType::class, $reserveancien);
+
 
         $formReservEdit = $this->createFormBuilder()
             ->add('datedebut', DateType::class)

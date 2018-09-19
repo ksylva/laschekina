@@ -39,9 +39,9 @@ class Image
 
     /**
      * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $annonce;
+     * @@ORM\JoinColumn(name="annonce_id",referencedColumnName="id")
+     *
+    private $annonce;*/
 
     /**
      * @var UploadedFile

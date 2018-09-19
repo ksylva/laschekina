@@ -16,7 +16,7 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
+            //->add('nom')
             ->add('dateInscription')
             /*->add('indicatif', TextType::class, array('required' => false))
             ->add('dateModif')
@@ -25,10 +25,15 @@ class UserType extends AbstractType
             ->add('mairie')
             ->add('administre')
             ->add('adresse')*/
-            ->add('Ajouter', SubmitType::class)
+            ->add('Ajouter', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'form-control btn btn-primary'
+                )
+            ))
         ;
 
         $builder
+            ->remove('nom')
             ->remove('dateInscription')
             ->remove('indicatif')
             ->remove('dateModif')

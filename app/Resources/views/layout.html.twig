@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}publicsspace{% endblock %}</title>
+        <title>{% block title %}Civilink{% endblock %}</title>
         {% block stylesheets %}
             {# Liens CSS de Bootstrap #}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -42,7 +42,7 @@
                                 <ul class="nav navbar-nav navbar-right">
                                     {% if app.user %}
                                         <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ app.user.email }}<span class="caret"></span></a>
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ app.user.username }}<span class="caret"></span></a>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ path('fos_user_profile_show') }}">Profil</a></li>
                                                 <li><a href="{{ path('ls_imarket_mon_espace') }}">Mon espace</a> </li>
@@ -55,8 +55,7 @@
                                         </li>
 
                                     {% else %}
-                                        {#<li><a href="{{ path('fos_user_registration_register') }}">
-                                                <span class="glyphicon glyphicon-user"></span> S'inscrire</a></li>#}
+
                                         <li><a href="{{ path('fos_user_security_login') }}">
                                                 <span class="glyphicon glyphicon-lock"></span></a></li>
                                     {% endif %}
@@ -68,7 +67,7 @@
                         <div class="col-md-3">  {#Block lateral gauche#}
                             <div class="volet">
                                 {% block volet %}
-                                    <p> Block latéral</p>
+                                    
                                 {% endblock volet %}
                             </div>
                         </div>

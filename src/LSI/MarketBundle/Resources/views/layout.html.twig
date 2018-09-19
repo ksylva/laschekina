@@ -1,9 +1,17 @@
 {% extends '::layout.html.twig' %}
 
 {% block volet %}
-{% if app.user.hasRole('ROLE_SUPER_ADMIN') is defined %}
-    {% include 'LSIMarketBundle::layout_superadmin.html.twig' %}
-{% endif %}
+    {% if not app.user %}
+        {#{{ render(controller("LSIMarketBundle:Market:index")) }}#}
+    {% elseif app.user.hasRole('ROLE_PART') %}
+        {% include 'LSIMarketBundle::layout_administre.html.twig' %}
+    {% elseif app.user.hasRole('ROLE_MAIRIE') %}
+        {% include 'LSIMarketBundle::layout_mairie.html.twig' %}
+    {% elseif app.user.hasRole('ROLE_ADMIN') %}
+        {% include 'LSIMarketBundle::layout_admin.html.twig' %}
+    {% elseif app.user.hasRole('ROLE_SUPER_ADMIN') %}
+        {% include 'LSIMarketBundle::layout_superadmin.html.twig' %}
+    {% endif %}
 {% endblock volet %}
 
 {% block body %}
@@ -11,7 +19,7 @@
     {# On affiche les messages flash que définissent les contrôleurs du bundle #}
     {% for key, messages in app.session.flashbag.all() %}
         {% for message in messages %}
-            <div class="row" style="width: 990px; margin-left: 210px;">
+            <div class="row">
                 <div class="alert alert-{{ key }}">
                     {{ message|trans({}, 'FOSUserBundle') }}
                 </div>

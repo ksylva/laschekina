@@ -1,0 +1,11 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %}
+    Conditions générales d'Utilisation - {{ parent() }}
+{% endblock title %}
+
+{% block body %}
+    <div>
+        <embed src="http://docs.google.com/gview?url={{ asset(cgu.webPath) }}&embedded=true" width="970" height="500" ></embed>
+    </div>
+{% endblock body %}
