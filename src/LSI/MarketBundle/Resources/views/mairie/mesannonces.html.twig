@@ -1,4 +1,4 @@
-{% extends 'LSIMarketBundle::layout_mon_espace.html.twig' %}
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
 
 {% block title %}
     Mon annonces - {{ parent() }}
@@ -15,6 +15,7 @@
 {% endblock monespace %}
 
 {% block javascripts %}
+    {{ parent() }}
     {# Liens JS de Bootstrap #}
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

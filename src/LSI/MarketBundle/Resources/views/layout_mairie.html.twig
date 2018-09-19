@@ -18,8 +18,9 @@
                             </div>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                 <div class="card-body nav">
-                                    <li><a href="{#{{ path('#') }}#}">Mes annonces</a></li>
-                                    <li><a href="#">Consulter</a></li>
+                                    <li><a href="{{ path('ls_imarket_mes_annonces') }}">Mes annonces</a></li>
+                                    <li><a href="{{ path('ls_imarket_annonce_reservee') }}">Réservation sur mes annonces</a></li>
+                                    {#<li><a href="#">Consulter</a></li>#}
                                 </div>
                             </div>
                         </div>
@@ -34,14 +35,14 @@
                             </div>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="card-body nav">
-                                    <li><a href="{#{{ path('#') }}#}">Mes réservations</a></li>
-                                    <li><a href="#">Consulter</a></li>
+                                    <li><a href="{{ path('ls_imarket_reservation') }}">Mes réservations</a></li>
+                                    <li><a href="{#{{ path('#') }}#}">Mes commandes</a></li>
+                                    {#<li><a href="#">Consulter</a></li>#}
                                 </div>
                             </div>
                         </div>
-
-                        <p style="height: 150px;"></p>
-
+                       {# <button class="btn btn-success" onclick="msgview()">Messages reçus</button>#}
+                        <a class="btn btn-success btn-sm"  href="{{ path('ls_imarket_traitement_msgrecu') }}" style="position: relative; left: 15px">Messagerie</a>
                     </ul>
                 </div>
             </div>
