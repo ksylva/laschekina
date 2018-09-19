@@ -523,6 +523,7 @@ class MarketController extends Controller {
             $this->get('mailer')->send($mesg);
        }
 
+
     public function conditionsAction(){
         $em = $this->getDoctrine()->getManager();
 
@@ -531,11 +532,16 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:market:condition_generale.html.twig', array('cgu' => $cgu));
     }
 
+
     // traitement pour consulter les réservations sur annonces
 
     public function voirReservationAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
         $listreservation = $repository->find($id);
+
+
+
+        //var_dump($listreservation);
 
         return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
             array('listanreserv' => $listreservation));
@@ -543,7 +549,12 @@ class MarketController extends Controller {
 
     // Action pour traiter la validation d'une réservation par l'offreur
 
+
     public function validAction(Request $request, $id) {
+
+    public function validAction(Request $request, $id)
+    {
+
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         // Recuperer l'annonce reservée
         $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
@@ -554,8 +565,15 @@ class MarketController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($reserve);
             $em->flush();
+
         }
         return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
+            // return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+        }
+        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     // Action pour réfuser une réservation
@@ -570,7 +588,11 @@ class MarketController extends Controller {
             $em->persist($reserve);
             $em->flush();
         }
+
         return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     // Traitement de la réservation par le demandeur
@@ -600,7 +622,11 @@ class MarketController extends Controller {
             $em->flush();
         }
 
+
         return $this->redirectToRoute('ls_imarket_mes_reservations');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
     }
 
     /*Traitement pour la modification d'une réservation par le demandeur*/
@@ -611,6 +637,11 @@ class MarketController extends Controller {
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
         $reserveancien = $reporeserv->find($id);
+
+        //dump($reserveancien);
+        // $form = $this->get('form.factory')->create(ReserverType::class, $reserveancien );
+        //$form = $this->createForm(ReserverType::class, $reserveancien);
+
 
         $formReservEdit = $this->createFormBuilder()
             ->add('datedebut', DateType::class)
