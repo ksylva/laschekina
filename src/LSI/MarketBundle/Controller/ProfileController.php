@@ -27,4 +27,12 @@ class ProfileController extends Controller {
 
         return $this->render('LSIMarketBundle:Profile:show.html.twig', array('user' => $user));
     }
+
+    public function aProposAction(){
+        return $this->render('LSIMarketBundle:Profile:a_propos.html.twig');
+    }
+
+    public function coordonneesBancairesAction(){
+        return $this->render('LSIMarketBundle:Profile:coordonnees_bancaires.html.twig');
+    }
 }

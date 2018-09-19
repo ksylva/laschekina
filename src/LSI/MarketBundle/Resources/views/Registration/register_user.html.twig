@@ -127,11 +127,17 @@
 
         <div class="col-lg-offset-5 col-xs-5 col-md-5 col-lg-5">
             <div class="form-group">
-                {{ form_label(form.cgu, 'Acceptez les ')  }}
+                <label>
+                    <input type="checkbox" class="input-checked" required />
+                    Acceptez les
+                    <a target="_blank" href="{{ path('ls_imarket_condition_generale') }}">conditions generales</a>
+                </label>
+
+                {#{{ form_label(form.cgu, 'Acceptez les ')  }}
                 <a href="{{ path('lsi_market_homepage') }}">conditions dutilisations</a>
-                {#{{ form_errors(form.cgu) }}
-                <div class="col-sm-10">#}
-                {{ form_widget(form.cgu) }}
+                #}{#{{ form_errors(form.cgu) }}
+                <div class="col-sm-10">#}{#
+                {{ form_widget(form.cgu) }}#}
 
                 {#, {'attr': {'class': 'form-control'}}
             </div>#}

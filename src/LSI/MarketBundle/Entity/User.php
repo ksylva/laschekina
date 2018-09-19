@@ -41,13 +41,7 @@ class User extends BaseUser //implements ParticipantInterface
      * @var string
      * 
      * @ORM\Column(name="nom", type="string", length=50, nullable=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *     min = 5,
-     *     max = 15,
-     *     minMessage = "Le nom doit comporter au moins {{ limit }} caractères",
-     *     maxMessage = "Le nom ne doit pas comporter plus de {{ limit }} caractères"
-     * )
+     *
      */
     protected $nom;
 
@@ -62,18 +56,7 @@ class User extends BaseUser //implements ParticipantInterface
      * @var integer
      *
      * @ORM\Column(name="indicatif", type="string", length=4, nullable=true)
-     * @Assert\NotBlank()
-     * @Assert\Regex(
-     *     pattern = "/^[\d]*$/",
-     *     match = true,
-     *     message = "L'indicatif est invalide"
-     * )
-     * @Assert\Length(
-     *     min = 1,
-     *     max = 4,
-     *     minMessage =" L'indicatif doit comporter {{ limmit }} caractères",
-     *     maxMessage = "L'indicatif ne doit pas comporter plus de {{ limit }} caractères"
-     * )
+     *
      */
     protected $indicatif;
 
@@ -87,25 +70,12 @@ class User extends BaseUser //implements ParticipantInterface
     /**
      * @var string
      * @ORM\Column(name="langue", type="string", length=3, nullable=true)
-     * @Assert\NotBlank()
      */
     protected $langue;
 
     /**
      * @var string
      * @ORM\Column(name="telephone", type="string", length=15, nullable=true)
-     * @Assert\NotBlank()
-     * @Assert\Regex(
-     *     pattern = "/^[\d]*$/",
-     *     match = true,
-     *     message = "Le numéro est invalide"
-     * )
-     * @Assert\Length(
-     *     min = 8,
-     *     max = 15,
-     *     minMessage =" Le numéro doit comporter {{ limmit }} caractères",
-     *     maxMessage = "Le numéro ne doit pas comporter plus de {{ limit }} caractères"
-     * )
      */
     protected $telephone;
 
@@ -127,8 +97,8 @@ class User extends BaseUser //implements ParticipantInterface
 
     /**
      * @var boolean
-     * @ORM\Column(name="cgu", type="boolean", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="cgu", type="boolean", nullable=true)
+     *
      */
     protected $cgu;
 

@@ -5,6 +5,9 @@
     {% for flash in app.session.flashbag.get('notice') %}
         <p class="alert alert-info">{{ flash }}</p>
     {% endfor %}
+    {% for flash2 in app.session.flashbag.get('info') %}
+        <p class="alert alert-info">{{ flash2 }}</p>
+    {% endfor %}
     <center><strong><h2>CONDITIONS GENERALES DE VENTES</h2></strong></center>
     <div>
 

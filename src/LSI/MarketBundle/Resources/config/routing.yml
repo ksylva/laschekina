@@ -4,7 +4,7 @@ fos_user_security:
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
+    prefix: /mon-espace/coordonnees
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
@@ -16,14 +16,27 @@ fos_user_resetting:
 
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /profile
+    prefix: /mon-espace/profile
 
 
 # Page d'accueil
 lsi_market_homepage:
     path:     /
     defaults:
-     _controller: LSIMarketBundle:Market:index
+        _controller: LSIMarketBundle:Market:index
+
+#--------------------------------- GESTION DES ESPACES -----------------------------------------------
+lsi_market_coordonnees_bancaires:
+    path: /mon-espace/coordonnees-bancaires
+    defaults:
+        _controller: LSIMarketBundle:Profile:coordonneesBancaires
+
+lsi_market_a_propos:
+    path: /mon-espace/a-propos
+    defaults:
+        _controller: LSIMarketBundle:Profile:aPropos
+
+
 
 # -------------------------------- ROUTES RELATIVES LA CREATION, MODIFICATION, VISUALISATION, DUPLICATION D'ANNONCES --
 
@@ -75,10 +88,36 @@ ls_imarket_reserver_annonce:
         id: \d+
 
 # Pour acceder aux reservations effectuees
-ls_imarket_reservation:
-    path: /mesreservations
+ls_imarket_mes_reservations:
+    path: /mon-espace/mes-reservations
     defaults:
-        _controller: LSIMarketBundle:Market:reservation
+        _controller: LSIMarketBundle:Market:mesReservations
+
+ls_imarket_voir_reservation:
+    path: /annonce_reservee/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:voirReservation
+
+# Route pour la methode valider une réservation
+ls_imarket_valider_reservation:
+    path: /valider_reservation/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:valid
+
+
+# Route pour la methode refuser une réservation
+ls_imarket_refuser_reservation:
+    path: /refuser_reservation/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:refuser
+
+# Traitement de réservation par le demandeur
+
+ls_imarket_traitement_demandeur_reservation:
+    path: /reservation_demandeur/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:reservationdemandeur
+
 
 #----------------------------------------------- FIN ROUTES RESERVATIONS -----------------------------------------------
 
@@ -91,14 +130,14 @@ ls_imarket_mon_espace:
 
 # Pour accéder aux annonces de la mairie
 ls_imarket_mes_annonces:
-    path: /mairie/mes-annonces
+    path: /offreur/mes-annonces
     defaults:
         _controller: LSIMarketBundle:Market:mesAnnonces
 
-ls_imarket_annonce_reservee:
-    path: /mairie/annonces-reservees
+ls_imarket_reservations_sur_mes_annonces:
+    path: /offreur/reservations-sur-mes-annonces
     defaults:
-        _controller: LSIMarketBundle:Market:annonceReserver
+        _controller: LSIMarketBundle:Market:reservationsSurMesAnnonces
 
 ls_imarket_commandes_sur_mes_annonces:
     path: /mairie/commandes-sur-mes-annonces
@@ -136,12 +175,24 @@ ls_imarket_engagement:
     defaults:
         _controller: LSIMarketBundle:Code:nosEngagements
 
+#Pour afficher les conditions générales d'utilisations
+ls_imarket_condition_generale:
+    path: /conditions-generales
+    defaults:
+        _controller: LSIMarketBundle:Market:conditions
+
+
 #------------------------------------------------ ADMINISTRATION -------------------------------------------------------
 #********************************* SUPER ADMIN **********************************************
 ls_imarket_superadmin:
     path: /superadmin
     defaults:
         _controller: LSIMarketBundle:Admin:superAdmin
+
+ls_imarket_liste_admin:
+    path: /superadmin/liste-admin
+    defaults:
+        _controller: LSIMarketBundle:Admin:listeAdmin
 
 ls_imarket_admin_registration:
     path: /superadmin/registration

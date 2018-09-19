@@ -93,7 +93,7 @@ fos_user:
             type: LSI\MarketBundle\Form\RegistrationType
     profile:
         form:
-            type: LSI\MarketBundle\Form\ProfileType
+            type: LSI\MarketBundle\Form\ProfileFormType
     service:
         mailer: fos_user.mailer.twig_swift
         token_generator: fos_user.util.token_generator.default

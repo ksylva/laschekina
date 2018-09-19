@@ -74,14 +74,14 @@ class Annonce
     private $prixDefaut;
 
     /**
-     * @var date
+     * @var \Date
      *
      * @ORM\Column(name="date_creation", type="date")
      */
     private $dateCreation;
 
     /**
-     * @var time
+     * @var \Time
      *
      * @ORM\Column(name="heure_creation", type="time")
      */
@@ -115,8 +115,8 @@ class Annonce
     private $mairie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Image", mappedBy="annonce",cascade={"persist"})
-     *@ORM\JoinColumn(name="image_id",referencedColumnName="id" ,nullable=false)
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Image", cascade={"persist"})
+     *@ORM\JoinColumn(nullable=false)
      */
     private $images;
 
@@ -132,8 +132,8 @@ class Annonce
     private $categorie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", mappedBy="annonce",cascade={"persist"})
-     * @ORM\JoinColumn(name="calendrier_id", referencedColumnName="id",nullable=true)
+     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", mappedBy="annonce", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $calendrier;
 
@@ -194,8 +194,8 @@ class Annonce
     public function __construct()
     {
 
-        $this->dateCreation = new \Date();
-        $this->heureCreation = new \Time();
+        //$this->dateCreation = new \DateTime();
+        //$this->heureCreation = new \DateTime();
         $this->annonceEtat = 'A';
         $this->images = new ArrayCollection;
         $this->calendrier = new ArrayCollection;
@@ -301,7 +301,7 @@ class Annonce
     /**
      * Set dateCreation
      *
-     * @param \DateTime $dateCreation
+     * @param \Date $dateCreation
      *
      * @return Annonce
      */
@@ -315,7 +315,7 @@ class Annonce
     /**
      * Get dateCreation
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getDateCreation()
     {
@@ -325,7 +325,7 @@ class Annonce
     /**
      * Set heureCreation
      *
-     * @param \DateTime $heureCreation
+     * @param \Time $heureCreation
      *
      * @return Annonce
      */
@@ -339,7 +339,7 @@ class Annonce
     /**
      * Get heureCreation
      *
-     * @return \DateTime
+     * @return \Time
      */
     public function getHeureCreation()
     {

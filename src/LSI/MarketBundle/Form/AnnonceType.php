@@ -3,6 +3,7 @@
 namespace LSI\MarketBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -37,21 +38,26 @@ class AnnonceType extends AbstractType
                 'required' => true,
 
             ))
-            ->add('dateCreation', DateTimeType::class, array(
+           /* ->add('dateCreation', DateTimeType::class, array(
                 'label' => 'Date de création de l\'annonce',
                 'required' => true,
-            ))
+            ))*/
             ->add('annonceUpdateAt', DateTimeType::class)
             ->add('mairie')
-            ->add('statut', EntityType::class, array(
+            /*->add('statut', EntityType::class, array(
                 'label' => 'Statut de l\'annonce',
                 'class' => 'LSIMarketBundle:Statut',
                 'choice_label' => 'libelle',
                 'multiple' => false,
                 'expanded' => false,
                 'placeholder' => 'Sélectionner un statut',
+            ))*/
+            /*->add('images', ImageType::class, array('label' => ''))*/
+            ->add('images', CollectionType::class, array(
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true
             ))
-            ->add('images', ImageType::class, array('label' => ''))
             ->add('categorie', EntityType::class, array(
                 'label' => 'Catégorie de l\'annonce',
                 'class' => 'LSIMarketBundle:Categorie',

@@ -80,7 +80,8 @@ class ConditionsGeneralesUtil {
         $this->cgu = $this->fichier->guessExtension();
 
         // Et on génère l'attribut alt de la balise <img>, à la valeur du nom du fichier sur le PC de l'internaute
-        $this->cguAlt = $this->fichier->getClientOriginalName();
+        //$this->cguAlt = $this->fichier->getClientOriginalName();
+        $this->cguAlt = $this->nomFichier;
     }
 
     /**
@@ -96,7 +97,7 @@ class ConditionsGeneralesUtil {
 
         // Si on avait un ancien fichier (attribut tempFilename non null), on le supprime
         if (null !== $this->tempFilename) {
-            $oldFile = $this->getUploadRootDir().'/'.$this->id.'.'.$this->tempFilename;
+            $oldFile = $this->getUploadRootDir().'/'.$this->nomFichier.'.'.$this->tempFilename;
             if (file_exists($oldFile)) {
                 unlink($oldFile);
             }

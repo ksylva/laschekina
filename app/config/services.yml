@@ -19,3 +19,9 @@ services:
         class: LSI\MarketBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: market_user_registration }
+
+    market.form.profile:
+        class: LSI\MarketBundle\Form\ProfileFormType
+        tags:
+            - { name: form.type, alias: market_user_profile }
+

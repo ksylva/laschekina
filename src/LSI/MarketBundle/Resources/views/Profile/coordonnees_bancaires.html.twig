@@ -1,0 +1,12 @@
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
+
+{% block title %}
+    Mes coordonnées bancaires - {{ parent() }}
+{% endblock title %}
+
+{% block monespace %}
+    <div id="page" class="row">
+        <h2>CORDONNEES BANCAIRES</h2>
+        {% include '@LSIMarket/page_en_cours.html.twig' %}
+    </div>
+{% endblock monespace %}

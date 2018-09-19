@@ -16,7 +16,7 @@ class ConditionsGeneralesUtilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fichier', FileType::class)
+            ->add('fichier', FileType::class, array('data_class' => null))
             ->add('add', SubmitType::class)
         ;
     }

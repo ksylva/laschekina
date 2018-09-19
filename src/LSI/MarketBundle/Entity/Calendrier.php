@@ -22,16 +22,16 @@ class Calendrier
     private $id;
 
     /**
-     * @var string
+     * @var \Date
      *
-     * @ORM\Column(name="debut", type="string", length=255)
+     * @ORM\Column(name="debut", type="date")
      */
     private $debut;
 
     /**
-     * @var string
+     * @var \Date
      *
-     * @ORM\Column(name="fin", type="string", length=255)
+     * @ORM\Column(name="fin", type="date")
      */
     private $fin;
 
@@ -43,7 +43,7 @@ class Calendrier
 
     /**
      * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier")
-     * @ORM\JoinColumn(name="annonce_id",referencedColumnName="id")
+     * @ORM\JoinColumn(name="annonce_id",referencedColumnName="id", nullable=false)
      */
     private $annonce;
 
@@ -60,7 +60,7 @@ class Calendrier
     /**
      * Set debut
      *
-     * @param string $debut
+     * @param \Date $debut
      *
      * @return Calendrier
      */
@@ -74,7 +74,7 @@ class Calendrier
     /**
      * Get debut
      *
-     * @return string
+     * @return \Date
      */
     public function getDebut()
     {
@@ -84,7 +84,7 @@ class Calendrier
     /**
      * Set fin
      *
-     * @param string $fin
+     * @param \Date $fin
      *
      * @return Calendrier
      */
@@ -98,7 +98,7 @@ class Calendrier
     /**
      * Get fin
      *
-     * @return string
+     * @return \Date
      */
     public function getFin()
     {

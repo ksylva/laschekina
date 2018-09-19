@@ -21,11 +21,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminController extends Controller  {
+
+    // ------------------------------------------- METHODES SUPER ADMINISTRATEUR --------------------------------------
     public function superAdminAction(){
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', $this->redirectToRoute('fos_user_security_login'));
         return $this->render('LSIMarketBundle:superadmin:admin.html.twig');
     }
 
     public function addAdminAction(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', $this->redirectToRoute('fos_user_security_login'));
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
@@ -41,19 +45,32 @@ class AdminController extends Controller  {
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirectToRoute('ls_imarket_superadmin');
+                return $this->redirectToRoute('ls_imarket_liste_admin');
             }
         }
         return $this->render('LSIMarketBundle:superadmin:add_admin.html.twig', array('form' => $form->createView()));
     }
 
+    public function listeAdminAction(){
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', $this->redirectToRoute('fos_user_security_login'));
+        $em = $this->getDoctrine()->getManager();
+
+        $listeAdmin = $em->getRepository('LSIMarketBundle:User')->findUserAdmin();
+        dump($listeAdmin);
+        return $this->render('LSIMarketBundle:superadmin:liste_admin.html.twig', array('listeAdmin' => $listeAdmin));
+    }
+
+    // ------------------------------------------- METHODES DES ADMINISTRATEURS -----------------------------------------
+
     //Accueil admin
     public function indexAdminAction(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page' );
         return $this->render('LSIMarketBundle:admin:index.html.twig');
     }
 
     // Ajoute un EPCI ... Ok
     public function ajouterEpciAction(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page' );
         $epci = new Epci();
         $form = $this->createForm(EpciType::class, $epci);
 
@@ -75,6 +92,7 @@ class AdminController extends Controller  {
 
     // Liste tous les EPCIs existants ... Ok
     public function listeEpciAction(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page' );
         $em = $this->getDoctrine()->getManager();
 
         $listeEpci = $em->getRepository('LSIMarketBundle:Epci')->findAllEpci();
@@ -84,6 +102,7 @@ class AdminController extends Controller  {
     }
 
     public function voirEpciAction($id){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page' );
         $em = $this->getDoctrine()->getManager();
 
         // Récupère l'EPCI cliqué
@@ -97,6 +116,7 @@ class AdminController extends Controller  {
     }
 
     public function modifierEpciAction($id, Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page' );
         $em = $this->getDoctrine()->getManager();
 
         $epci = $em->getRepository('LSIMarketBundle:Epci')->find($id);
@@ -125,7 +145,7 @@ class AdminController extends Controller  {
 
     // +++++++++++++++++++++++++++++++++++++++++++++ CGU +++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function ajouterCguAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $cgu = new ConditionsGeneralesUtil();
         $form = $this->createForm(ConditionsGeneralesUtilType::class, $cgu);
 
@@ -142,7 +162,7 @@ class AdminController extends Controller  {
     }
 
     public function voirCguAction(){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $em = $this->getDoctrine()->getManager();
 
         $cgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
@@ -155,22 +175,22 @@ class AdminController extends Controller  {
     }
 
     public function modifierCguAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $em = $this->getDoctrine()->getManager();
 
         //recupération de l'objet à modifier
         $editCgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
-
+        //dump($editCgu);
         if (null === $editCgu){
             throw new NotFoundHttpException('La CGU n\'existe pas.');
         }
 
         $form = $this->createForm(ConditionsGeneralesUtilType::class, $editCgu);
-
+        //dump($form['fichier']->getData());die;
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
             $em->persist($editCgu);
             $em->flush();
-            $request->getSession()->getFlashBag()->add('notice', 'Les Conditions Générales d\'Utilisation ont été mis à jour !');
+            $request->getSession()->getFlashBag()->add('info', 'Les Conditions Générales d\'Utilisation ont été mis à jour !');
 
             return $this->redirectToRoute('ls_imarket_voir_cgu');
         }
@@ -180,7 +200,7 @@ class AdminController extends Controller  {
 
     // ++++++++++++++++++++++++++++++++++++++++++++++ CGV ++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public function ajouterCgvAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $cgv = new ConditionsGeneralesVentes();
         $form = $this->createForm(ConditionsGeneralesVentesType::class, $cgv);
 
@@ -196,7 +216,7 @@ class AdminController extends Controller  {
     }
 
     public function voirCgvAction(){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $em = $this->getDoctrine()->getManager();
 
         $cgv = $em->getRepository('LSIMarketBundle:ConditionsGeneralesVentes')->find(1);
@@ -209,7 +229,7 @@ class AdminController extends Controller  {
     }
 
     public function modifierCgvAction(Request $request){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette url !');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Vous n\'avez pas accès à cette page');
         $em = $this->getDoctrine()->getManager();
 
         //recupération de l'objet à modifier

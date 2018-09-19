@@ -5,14 +5,14 @@
     {% for flash in app.session.flashbag.get('notice') %}
         <p class="alert alert-info">{{ flash }}</p>
     {% endfor %}
+    {% for flash2 in app.session.flashbag.get('info') %}
+        <p class="alert alert-info">{{ flash2 }}</p>
+    {% endfor %}
     <center><strong><h2>CONDITIONS GENERALES D'UTILISATION</h2></strong></center>
-    {#<div style="overflow: scroll; height: 500px; background-color: white; padding-left: 10px;">
-        #}{#{{ cgu.cgu|raw }}#}{#
 
-    </div>#}
     <div>
-
-        <embed src="http://docs.google.com/gview?url={{ asset(cgu.webPath) }}&embedded=true" width="800" height="500" ></embed>
+        <embed src="http://docs.google.com/gview?url={{ asset(cgu.webPath) }}&embedded=true" width="970" height="500" ></embed>
+        {#<iframe src="{{ asset(cgu.webPath) }}" width="970" height="500" ></iframe>#}
         {#<img src='{{ asset(cgu.webPath) }}' width='800' height='500' type='application/pdf'/>#}
         {#<embed src='{{ asset(cgu.webPath) }}' width='800' height='500' type='application/pdf'/>#}
         {#<object data="{{ asset(cgu.webPath) }}" width="800" height="500" type="application/pdf"/>#}
@@ -24,3 +24,4 @@
         </div>
     </div>
 {% endblock monespace %}
+

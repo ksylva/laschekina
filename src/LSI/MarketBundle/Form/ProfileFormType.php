@@ -2,36 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: Sylvanus KONAN
- * Date: 16/07/2018
- * Time: 14:16
+ * Date: 19/07/2018
+ * Time: 12:59
  */
 
 namespace LSI\MarketBundle\Form;
 
 
 use Symfony\Component\Form\AbstractType;
-
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class RegistrationType extends AbstractType {
+class ProfileFormType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', ChoiceType::class, array(
-                'mapped' => false,
-                'choices' => array('Mairie' => 'mairie', 'Administré' => 'administre'),
-                    'expanded' => true, 'multiple' => false
-                ))
             ->add('nom', TextType::class, array(
                 'constraints' => array(
                     new NotBlank(),
@@ -55,14 +47,13 @@ class RegistrationType extends AbstractType {
                     new Length(array(
                         'min' => 1,
                         'max' => 4,
-                        'minMessage' => "L'indicatif doit comporter {{ limit }} caractères",
+                        'minMessage' => "L'indicatif doit comporter {{ limmit }} caractères",
                         'maxMessage' => "L'indicatif ne doit pas comporter plus de {{ limit }} caractères"
                     ))
                 )
             ))
             ->add('langue', LanguageType::class, array(
-                'empty_data' => 'Sélectionner votre langue',
-                'preferred_choices' => ['fr', 'en', 'de'],
+                'preferred_choices' => array('de','en','fr'),
                 'constraints' => array(
                     new NotBlank()
                 )
@@ -78,65 +69,53 @@ class RegistrationType extends AbstractType {
                     new Length(array(
                         'min' => 8,
                         'max' => 15,
-                        'minMessage' => "Le numéro doit comporter {{ limit }} caractères",
+                        'minMessage' => "Le numéro doit comporter {{ limmit }} caractères",
                         'maxMessage' => "Le numéro ne doit pas comporter plus de {{ limit }} caractères"
                     ))
                 )
             ))
             ->add('adresse', AdresseType::class)
-
-
-            ->add('mairie', MairieType::class, array('required' => false))
-            ->add('administre', AdministreType::class, array('required' => false))
-            /*->add('cgu', CheckboxType::class, array(
-                'constraints' => array(
-                    new NotBlank()
-                ),
-                /*'choices' => array('Acceptez les ' =>'1'),
-                'expanded' => true, 'multiple' => true
-                'label' => 'Acceptez les ',
-            ))*/
             ;
+        $builder
+            ->remove('cgu');
 
-        $builder->remove('cgu');
-
-        // Ajout
         $builder->addEventListener(
-            FormEvents::PRE_SUBMIT,
+            FormEvents::PRE_SET_DATA,
             function (FormEvent $event){
-                // On recupere les informations de la vue
                 $user = $event->getData();
-                
-                // Si $user est null, on retourne
-                if (null === $user){
-                    return;
-                }
 
-                // Teste la valeur de type
-                if ($user['type'] === 'mairie'){ // Si null, alors il s'agit d'une mairie
-                    $event->getForm()->remove('administre'); // Puis on retire l'attribut 'administre' du formulaire
+                if (null === $user){ return; }
 
-                }elseif ($user['type'] === 'administre'){ // Idem
-                    $event->getForm()->remove('mairie');
+                if ($user->getUsername() || null !== $user->getId()){
+                    if ($user->getRoles() === ['ROLE_PART']){
+                        $event->getForm()->remove('mairie');
+                        $event->getForm()->add('administre', AdministreType::class, array('required' => false));
+                    }elseif ($user->getRoles() === ['ROLE_MAIRIE']){
+                        $event->getForm()->remove('administre');
+                        $event->getForm()->add('mairie', MairieType::class, array('required' => false));
+                    }elseif($user->getRoles() === ['ROLE_ADMIN'] || $user->getRoles() === ['ROLE_SUPER_ADMIN']){
+                        $event->getForm()
+                            ->remove('mairie')
+                            ->remove('administre')
+                            ->remove('adresse')
+                            ->remove('nom')
+                            ->remove('indicatif')
+                            ->remove('langue')
+                            ->remove('telephone')
+                            ;
+                    }
                 }
             }
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver){
-        $resolver->setDefaults(array(
-            'allow_extra_fields' => true,
-            
-        ));
-    }
-
     public function getParent()
     {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+        return 'FOS\UserBundle\Form\Type\ProfileFormType';
     }
 
     public function getBlockPrefix()
     {
-        return 'market_user_registration';
+        return 'market_user_profile';
     }
 }
