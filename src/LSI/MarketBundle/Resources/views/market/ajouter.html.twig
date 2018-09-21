@@ -56,11 +56,13 @@
                     {{ form_row(form.adresse.codePostal,  {'attr': {'placeholder': 'Donner le Code postal'}}) }}
                 </div>
                 {{ form_errors(form.adresse.codePostal) }}
+
                 <div class="form-group" id="" data-prototype="">
                     {{ form_widget(form.images) }}
                     <input type="button" id="add_code" value="autres images" class="btn btn-warning pull-right"/>
                 </div>
                 {{ form_errors(form.images) }}
+                
                 <div class="form-group">
                     {{ form_widget(form.save, { 'label': 'Ajouter l\'annonce', 'attr' : {'class' : 'btn btn-success',}}) }}
                 </div>
@@ -124,6 +126,8 @@
 
                 }else{
                     addDeleteLink($prototype);
+                    if (index > 0){
+                        index --;}
                 }
 
                 // On ajoute le prototype modifié à la fin de la balise <div>

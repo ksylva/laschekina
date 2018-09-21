@@ -232,5 +232,28 @@ class AnnonceRepository extends EntityRepository {
 
         return $qb->getQuery()->getResult();
     }
+    public function findPeriodDispo($debut, $fin) {
+        $qb = $this->createQueryBuilder('a')
+                   ->innerJoin('a.calendrier', 'c')
+                    ->addSelect('c')
+                    ->where('c.debut = :debut')
+                    ->setParameter('debut', $debut)
+                    ->andWhere('c.fin = :fin')
+                    ->setParameter('fin', $fin);
+        return $qb->getQuery()->getResult();
+
+    }
+
+    public function findAnnoncesAvecCalendrier($id){
+        $qb = $this->createQueryBuilder('a')
+            ->join('a.calendrier', 'c')
+            ->addSelect('c')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+            ;
+        return $qb->getQuery()->getResult();
+
+    }
+
 
 }

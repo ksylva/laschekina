@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,40 +17,38 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AnnonceType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('titre', TextType::class, array(
                 'label' => 'Titre de l\'annonce',
                 'required' => true,
-
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Description de l\'annonce',
                 'required' => true,
-
             ))
             ->add('regleCond', TextType::class, array(
                 'label' => 'Règle',
                 'required' => true,
-
             ))
             ->add('prixDefaut', MoneyType::class, array(
                 'label' => 'Prix par defaut',
                 'required' => true,
-
             ))
-            ->add('dateCreation', DateTimeType::class, array(
+            ->add('dateCreation', DateType::class, array(
                 'label' => 'Date de création de l\'annonce',
                 'required' => true,
             ))
+            ->add('heureCreation',DateTimeType::class
+            )
             ->add('annonceUpdateAt', DateTimeType::class)
             ->add('mairie')
             ->add('images', CollectionType::class, array(
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
-                'allow_delete' => true,))
+                'allow_delete' => true,
+                ))
             ->add('adresse',AdresseType::class)
             ->add('categorie', EntityType::class, array(
                 'label' => 'Catégorie de l\'annonce',
@@ -69,9 +68,9 @@ class AnnonceType extends AbstractType
             ))
             ->add('save', SubmitType::class, array())
         ;
-
         $builder
             ->remove('dateCreation')
+            ->remove('heureCreation')
             ->remove('annonceUpdateAt')
             ->remove('mairie')
             ->remove('pulicMairie')
@@ -80,13 +79,12 @@ class AnnonceType extends AbstractType
             ->remove('tarifNonAdminisEpci')
             ->remove('tarifNonAdmins')
             ->remove('tarifEpci')
-            ->remove('tarifNonEpci');
+            ->remove('tarifNonEpci')
             //->remove('dateCreation')
             ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
+        }
+     public function configureOptions(OptionsResolver $resolver)
+     {
         $resolver->setDefaults(array(
             'data_class' => 'LSI\MarketBundle\Entity\Annonce'
         ));

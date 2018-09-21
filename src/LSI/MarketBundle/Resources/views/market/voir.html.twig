@@ -9,27 +9,13 @@
         <div class="col-lg-offset-2 col-md-10">
             <h2>{{ annonce.titre }}</h2>
             <hr>
-            <div class="form-row">
-                {#{% block file_widget %}
-                    {% spaceless %}
-                        {{ dump(annonce.images) }}
-
-                        {{ block('form_widget') }}
-                        {% if annonce.images is not null %}
-                            {% for images in annonce.images %}
-                            <img src="{{ asset(images.webPath) }}"/>
-                            {% endfor %}
-                        {% endif %}
-
-                    {% endspaceless %}
-                {% endblock %}#}
-                {#{{ dump(annonce.images) }}#}
+            <div class="row">
                 {% if annonce.images is not null %}
                     {% for images in annonce.images %}
-                    <img src="{{ asset(images.webPath) }}" alt="{{ images.alt }}"/>
+                    <img src="{{ asset(images.webPath) }}" alt="{{ images.alt }}"
                     {% endfor %}
+                    class="responsive" style="width: 260px; height: auto;"/>
                 {% endif %}
-               {# {{ dump(annonce.images) }}#}
             </div>
             <div class="row">
                 <i>Par
@@ -37,6 +23,7 @@
                         {{ auth.nom }},
                     {% endfor %}
                     le {{ annonce.dateCreation|date('d/m/Y') }}</i>
+                    <i> <a href="{{ path('ls_imarket_plage_annonce' , { 'id' :annonce.id})}}">consulter la disponibilité<a/> </i>
             </div>
             <div class="row">
                 <p>{{ annonce.description }}</p>
@@ -62,6 +49,8 @@
                     <a href="{{ path('ls_imarket_reserver_annonce', {'id': annonce.id}) }}"
                        class="btn btn-success">Reserver</a>
                 {% endif %}
+                <a href="#{# {{ path('ls_imarket_modifier_annonce', {'id' :annonce.id}) }} #}"
+                           class="btn btn-warning">Envoyer un message</a>
             </div>
         </div>
     </div>

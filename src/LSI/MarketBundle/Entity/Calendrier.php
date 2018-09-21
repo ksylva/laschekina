@@ -3,6 +3,7 @@
 namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+/* use Symfony\Component\Validator\Constraints\Date; */
 
 /**
  * Calendrier
@@ -22,16 +23,12 @@ class Calendrier
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="debut", type="string", length=255)
+     * @ORM\Column(name="debut", type="date")
      */
     private $debut;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="fin", type="string", length=255)
+     * @ORM\Column(name="fin", type="date")
      */
     private $fin;
 
@@ -42,10 +39,10 @@ class Calendrier
     private $statut;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier", cascade={"persist"})
-     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id")
-     */
-    private $annonce;
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier", cascade={"persist"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
+     *
+    private $annonce;*/
 
     /**
      * Get id
@@ -57,34 +54,11 @@ class Calendrier
         return $this->id;
     }
 
-    /**
-     * Set debut
-     *
-     * @param string $debut
-     *
-     * @return Calendrier
-     */
-    public function setDebut($debut)
-    {
-        $this->debut = $debut;
-
-        return $this;
-    }
-
-    /**
-     * Get debut
-     *
-     * @return string
-     */
-    public function getDebut()
-    {
-        return $this->debut;
-    }
 
     /**
      * Set fin
      *
-     * @param string $fin
+     * @param \Date $fin
      *
      * @return Calendrier
      */
@@ -98,7 +72,7 @@ class Calendrier
     /**
      * Get fin
      *
-     * @return string
+     * @return \Date
      */
     public function getFin()
     {
@@ -151,5 +125,29 @@ class Calendrier
     public function getAnnonce()
     {
         return $this->annonce;
+    }
+
+    /**
+     * Set debut
+     *
+     * @param \DateTime $debut
+     *
+     * @return Calendrier
+     */
+    public function setDebut($debut)
+    {
+        $this->debut = $debut;
+
+        return $this;
+    }
+
+    /**
+     * Get debut
+     *
+     * @return \DateTime
+     */
+    public function getDebut()
+    {
+        return $this->debut;
     }
 }

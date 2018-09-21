@@ -31,8 +31,8 @@ class Statut
     /**
      * @ORM\OneToOne(targetEntity="LSI\MarketBundle\Entity\Calendrier", inversedBy="statut")
      * @ORM\JoinColumn(nullable=false)
-     */
-    private $calendrier;
+     *
+    private $calendrier;*/
 
     /**
      * Get id

@@ -5,6 +5,7 @@ namespace LSI\MarketBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Annonce
@@ -32,8 +33,8 @@ class Annonce
      *     min = 5,
      *     max = 50,
      *     minMessage = "Le titre doit comporter au moins {{ limit }} caractères",
-     *     maxMessage = "Le titre ne doit pas comporter plus de {{ limit }} caractères",
-     * )
+     *     maxMessage = "Le titre ne doit pas comporter plus de {{ limit }} caractères")
+     *
      */
     private $titre;
 
@@ -46,8 +47,7 @@ class Annonce
      *     min = 5,
      *     max = 100,
      *     minMessage = "La description doit comporter au moins {{ limit }} caractères",
-     *     maxMessage = "La description ne doit pas comporter plus de {{ limit }} caractères"
-     * )
+     *     maxMessage = "La description ne doit pas comporter plus de {{ limit }} caractères")
      */
     private $description;
 
@@ -115,8 +115,8 @@ class Annonce
     private $mairie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Image", mappedBy="annonce",cascade={"persist"})
-     *@ORM\JoinColumn(name="image_id",referencedColumnName="id" ,nullable=false)
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $images;
 
@@ -132,8 +132,8 @@ class Annonce
     private $categorie;
 
     /**
-     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", mappedBy="annonce", cascade={"persist"})
-     * @ORM\JoinColumn(name="calendrier_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Calendrier", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $calendrier;
 
@@ -197,10 +197,11 @@ class Annonce
         $this->dateCreation = new \DateTime();
         $this->heureCreation = new \DateTime();
         $this->annonceEtat = 'A';
-        $this->images = new ArrayCollection;
-        $this->calendrier = new ArrayCollection;
+        /* $this->images = new ArrayCollection;
+        $this->calendrier = new ArrayCollection; */
     }
 
+    //public function __To
 
     /**
      * Set titre
@@ -301,7 +302,7 @@ class Annonce
     /**
      * Set dateCreation
      *
-     * @param \DateTime $dateCreation
+     * @param \Date $dateCreation
      *
      * @return Annonce
      */
@@ -315,7 +316,7 @@ class Annonce
     /**
      * Get dateCreation
      *
-     * @return \DateTime
+     * @return \Date
      */
     public function getDateCreation()
     {
@@ -325,7 +326,7 @@ class Annonce
     /**
      * Set heureCreation
      *
-     * @param \DateTime $heureCreation
+     * @param \Time $heureCreation
      *
      * @return Annonce
      */
@@ -339,7 +340,7 @@ class Annonce
     /**
      * Get heureCreation
      *
-     * @return \DateTime
+     * @return \Time
      */
     public function getHeureCreation()
     {

@@ -54,6 +54,14 @@ ls_imarket_voir_annonce:
     requirements:
         id: \d+
 
+# Pour consulter les disponibilités
+ls_imarket_plage_annonce:
+    path: /plage/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:disponibilite
+    requirements:
+        id: \d+
+
 # Pour modifier une annonce phase 1. 
 ls_imarket_modifier_annonce:
     path: /modifier/{id}

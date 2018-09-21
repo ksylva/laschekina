@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CalendrierType extends AbstractType
 {
@@ -18,28 +19,23 @@ class CalendrierType extends AbstractType
         $builder
             ->add('debut', DateType::class, array(
                 'label' => 'Date début pour la plage',
-                //'input' => 'datetime',
-                'widget' => 'choice',
-                'years' => range(date('Y'), date('Y') + 2),
-                'months' => range(date('m'), date('m') + 11),
+                'placeholder' => array(
+                    'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour', )
             ))
             ->add('fin', DateType::class, array(
                 'label' => 'Date fin pour la plage',
-                //'input' => 'datetime',
-                'widget' => 'choice',
-                'years' => range(date('Y'), date('Y') + 2),
-                'months' => range(date('m'), date('m') + 11),
+                'placeholder' => array(
+                    'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',)
             ))
-            ->add('statut', ChoiceType::class, array(
+            ->add('statut', EntityType::class, array(
                 'label' => 'satut de la plage',
-                'placeholder' => 'Sélectionner le statut de l\'annonce',
-                'choices' => array(
-                    'Indéterminé' => 'indéterminé',
-                    'Déterminé' => 'déterminé',
-                    'Indisponible' => 'indisponible',
-                    'Disponible' => 'disponible'
+                'class' => 'LSIMarketBundle:Statut',
+                'choice_label' => 'libelle',
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => 'Sélectionner le statut',
                 )
-            ));
+            );
             //->add('annonce');
     }
     /**
@@ -48,7 +44,8 @@ class CalendrierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'LSI\MarketBundle\Entity\Calendrier'
+            'data_class' => 'LSI\MarketBundle\Entity\Calendrier',
+            'csrf_protection' => false
         ));
     }
 

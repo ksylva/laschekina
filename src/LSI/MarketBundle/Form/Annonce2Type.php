@@ -29,50 +29,54 @@ class Annonce2Type extends AbstractType
             ->add('pulicAdministre', ChoiceType::class, array(
                 'label' => 'Public cible : Administré',
                 'placeholder' => 'Sélectionner la restriction sur les administrés',
+               // 'multiple' => true,
                 'choices' => array(
                     'Les Administrés de mon EPCI' => 'Adminis_EPCI',
                     'Les autres Administrés' => 'Adminis_non_EPCI',
                     'Pas aux Administrés' => 'Aucun'
                 )
             ))
-            ->add('calendrier', CalendrierType::class, array(
-                /*'entry_type' => CalendrierType::class,
+            ->add('calendrier', CollectionType::class , array(
+                'entry_type' => CalendrierType::class,
                 'allow_add' => true,
-                'allow_delete' => false*/
-                'data_class' => null)
-            )
+                'allow_delete' => true,
+               /*  'data_class' => null, */
+            ))
             ->add('tarifAdminisEpci',MoneyType::class, array(
-                'label' => 'Tarif'
+                'label' => false
             ))
             ->add('tarifNonAdminisEpci', MoneyType::class, array(
-                'label' => 'Tarif'
+                'label' => false
             ))
             ->add('tarifNonAdminis', MoneyType::class, array(
-                'label' => 'Tarif'
+                'label' => false
             ))
             ->add('tarifEpci', MoneyType::class, array(
-                'label' => 'Tarif'
+                'label' => false
             ))
             ->add('tarifNonEpci', MoneyType::class, array(
-                'label' => 'Tarif'
+                'label' => false
             ))
-
             ->add('save', SubmitType::class, array());
 
 
         $builder
+            //->remove('calendrier')
             ->remove('dateCreation')
+            ->remove('heureCreation')
             ->remove('annonceUpdateAt')
             ->remove('mairie');
         //->remove('dateCreation');
     }
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'LSI\MarketBundle\Entity\Annonce'
+            'data_class' => 'LSI\MarketBundle\Entity\Annonce',
+            //'csrf_protection' => false
         ));
     }
 

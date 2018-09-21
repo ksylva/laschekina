@@ -5,22 +5,21 @@
 {% endblock %}
 
 {% block body %}
-
     <div id="page" class="row">
         <div class="">
             <h2>Ajout d'une annonce</h2>
             <h3> Gestions des disponibilités </h3>
             {{ form_start(form, {'attr' : {'claas' : 'form-control', 'novalidate':'novalidate'}}) }}
             <div class="col-xs-6 col-md-6 col-lg-4">
-                <div class="form-group">
+                <div class="form-group" >
                     {{ form_row(form.pulicMairie) }}
                 </div>
                 {{ form_errors(form.pulicMairie) }}
-                <div class="form-group" style="display:none";>
+                <div class="form-group" id="tarifEpci" style="display:none";>
                     {{ form_row(form.tarifEpci, {'attr': {'placeholder': 'Définir leur tarif' }}) }}
                 </div>
                 {{ form_errors(form.tarifEpci) }}
-                <div class="form-group" style="display:none"; >
+                <div class="form-group" id="tarifNonEpci" style="display:none"; >
                     {{ form_row(form.tarifNonEpci, {'attr': {'placeholder': 'Définir leur tarif' }}) }}
                 </div>
                 {{ form_errors(form.tarifNonEpci) }}
@@ -28,58 +27,39 @@
                     {{ form_row(form.pulicAdministre) }}
                 </div>
                 {{ form_errors(form.pulicAdministre) }}
-                <div class="form-group" style="display:none"; >
+                <div class="form-group" id="tarifAdminisEpci" style="display:none"; >
                     {{ form_row(form.tarifAdminisEpci,{ 'attr': {'placeholder': 'Définir leur tarif' }}) }}
                 </div>
                 {{ form_errors(form.tarifAdminisEpci) }}
-                <div class="form-group" style="display:none"; >
+                <div class="form-group" id="tarifNonAdminisEpci" style="display:none"; >
                     {{ form_row(form.tarifNonAdminisEpci, {'attr': {'placeholder': 'Définir leur tarif' }}) }}
                 </div>
                 {{ form_errors(form.tarifNonAdminisEpci) }}
-                <div class="form-group" style="display:none";>
+                <div class="form-group" id="tarifNonAdminis" style="display:none";>
                     {{ form_row(form.tarifNonAdminis , {'attr': {'placeholder': 'Définir leur tarif' }}) }}
                 </div>
                 {{ form_errors(form.tarifNonAdminis) }}
             </div>
-            <div class="col-xs-6 col-md-6 col-lg-4">
-                {% for calendrier in form.calendrier %}
-                <div class="form-group">
-                    {{ form_row(form.calendrier.debut, {'label': 'Date début pour le statut'}) }}
+            <div class="col-xs-6 col-md-6 col-lg-6">
+                <div class="form-group" id="" data-prototype="" >
+                    {{ form_widget(form.calendrier) }}
+                    <input type="button" id="add_code" value="autres plages" class="btn btn-warning pull-right"/>
                 </div>
-                {{ form_errors(form.calendrier.debut) }}
-                <div class="form-group">
-                    {{ form_row(form.calendrier.statut, {'label': 'Statut de l\'annonce'}) }}
-                </div>
-                {{ form_errors(form.calendrier.statut) }}
-                {% endfor %}
+                {{ form_errors(form.calendrier) }}
                 <div class="form-group">
                     {{ form_widget(form.save, { 'label': 'Ajouter l\'annonce', 'attr' : {'class' : 'btn btn-success',}}) }}
                 </div>
-            </div>
-            <div class="col-xs6 col-md-6 col-lg-4">
-                <div class="form-group">
-                    {% for calendrier in form.calendrier %}
-                    <div class="form-group">
-                        {{ form_row(form.calendrier.fin, {'label': 'Date fin pour le statut'}) }}
-                    </div>
-                    {{ form_errors(form.calendrier.fin) }}
-                    {% endfor %}
-                    <input type="button" id="add_code" value="autres images" class="btn btn-warning pull-right" />
-                </div>
-
             </div>
             {{ form_end(form) }}
         </div>
     </div>
 
 {% endblock %}
-
-
 {% block javascripts %}
 
     {{ parent() }}
 
-    {#<script>
+    <script>
         $(document).ready(function () {
             // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
             var $container = $('div#lsi_marketbundle_annonce_calendrier');
@@ -89,14 +69,14 @@
 
             // On ajoute un nouveau champ à chaque click sur le bouton
             $('#add_code').click(function (e) {
-                addcalendrier($container);
+                addCalendrier($container);
                 e.preventDefault(); // Pour éviter qu'un # apparaissent dans l'URL
                 return false;
             });
 
             // On ajoute automatiquement le 1er champ sans le bouton de suppression
             if ( index == 0 ){
-                addcalendirer($container);
+                addCalendrier($container);
             }else{
                 // S'il existe déjà des champs de codes
                 $container.children('div').each(function () {
@@ -105,7 +85,7 @@
             }
 
             // Fonction pour ajouter un formulaire de code postal
-            function addcalendirer($container) {
+            function addCalendrier($container) {
                 var template;
 
                 if (index == 0){
@@ -115,7 +95,7 @@
                     ;
                 }else{
                     template = $container.attr('data-prototype')
-                        .replace(/__name__label__/g, 'plage '+ (index +1))
+                        .replace(/__name__label__/g, 'Plage '+ (index +1))
                         .replace(/__name__/g, index)
                     ;
                 }
@@ -136,7 +116,6 @@
                 // On incrémente l'index
                 index++;
             }
-
             // La fonction pour supprimer un code postal
             function addDeleteLink($prototype) {
                 // Création du bouton
@@ -157,28 +136,5 @@
                 });
             }
         })
-    </script>#}
-
-    <script>
-        function selection (i)
-        {
-            var valeur = document.getElementById('lsi_marketbundle_annonce_publicMairie');
-            valeur.addEventListener('change', function ()
-            {
-                switch (i.valeur)
-                {
-                    case 'EPCI' :
-                        document.getElementById('lsi_marketbundle_annonce_tarifEpci').style.display='';
-                        break;
-                    case 'Non_EPCI':
-                        document.getElementById('lsi_marketbundle_annonce_tarifNonEpci').style.display='';
-                        break;
-                    default :
-                        alert('selectionner un élément');
-                        break;
-                }
-            })
-        }
     </script>
-
 {% endblock javascripts %}
