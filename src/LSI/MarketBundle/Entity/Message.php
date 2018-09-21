@@ -4,7 +4,11 @@ namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+<<<<<<< HEAD
+use FOS\MessageBundle\Entity\Message as BaseMessage;
+=======
 //use FOS\MessageBundle\Entity\Message as BaseMessage;
+>>>>>>> master
 
 /**
  * Message
@@ -12,7 +16,11 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\MessageRepository")
  */
+<<<<<<< HEAD
+class Message 
+=======
 class Message //extends BaseMessage
+>>>>>>> master
 {
     /**
      * @var int
@@ -45,6 +53,13 @@ class Message //extends BaseMessage
     private $dest;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dest", type="string", length=50)
+     */
+    private $dest;
+
+    /**
      * @var datetime
      * @ORM\Column(name="date_ajout", type="datetime")
      */
@@ -64,7 +79,7 @@ class Message //extends BaseMessage
 
 
     public function __construct(){
-        $this->dateAjout = new \Datetime();
+        $this->dateAjout = new \DateTime();
     }
 
     /**
@@ -203,6 +218,41 @@ class Message //extends BaseMessage
     }
 
     /**
+<<<<<<< HEAD
+     * Set dest
+     *
+     * @param string $dest
+     *
+     * @return Message
+     */
+    public function setDest($dest)
+    {
+        $this->dest = $dest;
+
+        return $this;
+    }
+
+    /**
+     * Get dest
+     *
+     * @return string
+     */
+    public function getDest()
+    {
+        return $this->dest;
+    }
+
+    /**
+     * Set contenu
+     *
+     * @param string $contenu
+     *
+     * @return Message
+     */
+    public function setContenu($contenu)
+    {
+        $this->contenu = $contenu;
+=======
      * Add metadatum
      *
      * @param \LSI\MarketBundle\Entity\MessageMetadata $metadatum
@@ -246,11 +296,21 @@ class Message //extends BaseMessage
     public function setDest($dest)
     {
         $this->dest = $dest;
+>>>>>>> master
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
+     * Get contenu
+     *
+     * @return string
+     */
+    public function getContenu()
+    {
+        return $this->contenu;
+=======
      * Get dest
      *
      * @return string
@@ -258,5 +318,6 @@ class Message //extends BaseMessage
     public function getDest()
     {
         return $this->dest;
+>>>>>>> master
     }
 }

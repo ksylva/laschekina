@@ -1,0 +1,24 @@
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+{% endblock %}
+<style>
+    body{
+        background-color: lightslategray;
+    }
+</style>
+<h2 style="text-align: center; position: relative; top: 20px; font-weight: bold">ENVOYER UN MESSAGE AU CLIENT</h2>
+<div class="row" id="messagerie">
+    <div class="col-lg-6 well"   style="width: 500px; position: relative; left: 450px; top: 120px">
+        {{ form_start(formtchat, {'method': 'POST'}) }}
+        {{ form_label(formtchat.sujet, 'Sujet') }}
+        {{ form_widget(formtchat.sujet) }}
+        {{ form_label(formtchat.contenu, 'Contenu') }}
+        {{ form_widget(formtchat.contenu) }}
+        {{ form_widget(formtchat.dest) }}
+        {{ form_widget(formtchat.dateAjout, {'attr': {'class': 'hidden'}}) }}
+        <br>
+        <button type="submit" class="btn btn-success" value="envoyer" name="btn-envoyer" id="envoyer">Envoyer</button>
+        {{ form_end(formtchat) }}
+    </div>
+</div>

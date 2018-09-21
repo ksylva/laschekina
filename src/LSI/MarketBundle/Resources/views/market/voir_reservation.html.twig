@@ -12,8 +12,15 @@
 
                 </div>
                 <div class="col-lg-6" style="text-align: center">
+<<<<<<< HEAD
+                    {% for list in listanreserv.annonce.images %}
+                        <img src="{{ asset(list.webPath) }}" alt="{{ list.alt }}"
+                             style="width: 500px; height: 500px"/>
+                    {% endfor %}
+=======
                     <img src="{{ asset(listanreserv.annonce.images.webPath) }}" alt="{{ listanreserv.annonce.images.alt }}"
                          style="width: 500px; height: 500px"/>
+>>>>>>> master
                     <h3>{{ listanreserv.annonce.titre }}</h3>
                     <h3>{{ listanreserv.annonce.prixDefaut }}</h3>
                     <h3>{{ listanreserv.annonce.categorie.name }}</h3>
@@ -23,7 +30,10 @@
                         {{ listanreserv.reserveEtat }}
                     </h3>
                     <h3>{{ listanreserv.user.nom }}</h3>
+<<<<<<< HEAD
+=======
                     <h3>{{ listanreserv.user.adresse }}</h3>
+>>>>>>> master
                     <h3>{{ listanreserv.user.telephone }}</h3>
                     <div>
                         {% if listanreserv.reserveEtat == "V" or listanreserv.reserveEtat == "R"  %}
@@ -40,6 +50,32 @@
                             <span>
                                         <button type="submit" class="btn btn-success" value="refuser" name="btn-refuser" id="refuser"
                                         >Refuser</button>
+<<<<<<< HEAD
+                            </span>
+                            <span>
+                                {#<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Ecrire un message</button>#}
+                                <a href="{{ path('ls_imarket_traitement_messagerie', {'id': listanreserv.id}) }}" class="btn btn-success">Ecrire un message</a>
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {#Espace pour la messagerie#}
+               {# <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Messages</h4>
+                            </div>
+                            <div class="modal-body">
+                                {{ render(controller("LSIMarketBundle:Market:msgEnvoyer", {'id': listanreserv.id})) }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>#}
+=======
                                     </span>
                         {% endif %}
                     </div>
@@ -47,6 +83,7 @@
                 <div class="col-lg-4">
                     {{ render(controller("LSIMarketBundle:Market:interfUserConnect", {'id': listanreserv.id})) }}
                 </div>
+>>>>>>> master
             </div>
         {% endfor %}
     {% endif %}

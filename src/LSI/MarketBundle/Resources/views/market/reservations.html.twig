@@ -13,8 +13,10 @@
                 <div class="col-md-4">
                     <a href="{{ path('ls_imarket_voir_annonce', {'id': annonce.id}) }}">
                         {% if annonce.images is not null %}
-                            <img src="{{ asset(annonce.images.webPath) }}" alt="{{ annonce.images.alt }}"
+                            {% for images in annonce.images %}
+                            <img src="{{ asset(images.webPath) }}" alt="{{ images.alt }}"
                             class="responsive" style="width: 260px; height: auto;"/>
+                            {% endfor %}
                         {% endif %}
                         <h2>{{ annonce.titre }}</h2>
                         <p>{{ annonce.description }}</p>
