@@ -13,16 +13,12 @@
                     <img src="{{ asset(listancreserve.webPath) }}" alt="{{ listancreserve.alt }}"
                          style="width: 500px; height: 500px"/>
                     {% endfor %}
-                    <h3>{{ listreservation.annonce.titre }}</h3>
-                    <h3>{{ listreservation.annonce.prixDefaut }}</h3>
-                    <h3>{{ listreservation.annonce.categorie.name }}</h3>
-                    <h3>
-                        {{ listreservation.user.id }}
-                        {{ listreservation.id }}
-                        {{ listreservation.reserveEtat }}
-                    </h3>
-                    <h3>{{ listreservation.user.nom }}</h3>
-                    <h3>{{ listreservation.user.telephone }}</h3>
+                    <h3>Titre : {{ listreservation.annonce.titre }}</h3>
+                    <h3>Prix par defaut : {{ listreservation.annonce.prixDefaut }}</h3>
+                    <h3>Categorie : {{ listreservation.annonce.categorie.name }}</h3>
+                    <h3>Etat : {{ listreservation.reserveEtat }}</h3>
+                    <h3>Offreur : </h3>
+                    <h3>Contact : {{ listreservation.user.telephone }}</h3>
                     <div>
                         {% if listreservation.reserveEtat == "R"  %}
                             <span>
@@ -34,12 +30,18 @@
                             <span>
                                 <button type="submit" class="btn btn-success" value="payer" name="btn-payer" disabled>Payer</button>
                             </span>
+                            <span>
+                                <a href="{{ path('ls_imarket_traitement_messagerie', {'id': listreservation.id }) }}" class="btn btn-success" value="msg" name="btn-msg" id="msg">Ecrire message</a>
+                            </span>
                         {% elseif listreservation.reserveEtat == "V" %}
                             <span>
                                 <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler">Annuler</button>
                             </span>
                             <span>
                                 <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer">Payer</button>
+                            </span>
+                            <span>
+                                <a href="{{ path('ls_imarket_traitement_messagerie', {'id': listreservation.id }) }}" class="btn btn-success" value="msg" name="btn-msg" id="msg">Ecrire message</a>
                             </span>
                         {% elseif listreservation.reserveEtat == "An" %}
                             <span>
@@ -48,6 +50,9 @@
                             <span>
                                 <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer" disabled>Payer</button>
                             </span>
+                            <span>
+                                <a href="{{ path('ls_imarket_traitement_messagerie', {'id': listreservation.id }) }}" class="btn btn-success" value="msg" name="btn-msg" id="msg">Ecrire message</a>
+                            </span>
                         {% else %}
                             <span>
                                 <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler">Annuler</button>
@@ -55,9 +60,9 @@
                             <span>
                                 <a href="{{ path('ls_imarket_traitement_demandeur_modifierreserv', {'id': listreservation.id }) }}" type="submit" class="btn btn-success" value="modifier" name="btn-modifier" id="modifier">Modifier</a>
                             </span>
-                           {# <span>
-                                <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer">Payer</button>
-                            </span>#}
+                            <span>
+                                <a href="{{ path('ls_imarket_traitement_messagerie', {'id': listreservation.id }) }}" class="btn btn-success" value="msg" name="btn-msg" id="msg">Ecrire message</a>
+                            </span>
                         {% endif %}
                     </div>
                 </div>

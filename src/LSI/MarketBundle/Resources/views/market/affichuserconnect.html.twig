@@ -10,7 +10,7 @@
 <h2 style="text-align: center; position: relative; top: 20px; font-weight: bold">ENVOYER UN MESSAGE AU CLIENT</h2>
 <div class="row" id="messagerie">
     <div class="col-lg-6 well"   style="width: 500px; position: relative; left: 450px; top: 120px">
-        {{ form_start(formtchat, {'method': 'POST'}) }}
+        {{ form_start(formtchat, {'method': 'GET'}) }}
         {{ form_label(formtchat.sujet, 'Sujet') }}
         {{ form_widget(formtchat.sujet) }}
         {{ form_label(formtchat.contenu, 'Contenu') }}

@@ -3,13 +3,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-   {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">#}
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">#}
 {% endblock %}
 
 {% block monespace %}
     <div id="page" class="row">
         <div class="">
-            <h3>Messages reçus</h3>
+            <h3>Messages envoyes</h3>
             <table id="message" class="table table-hover">
                 <thead>
                 <tr class="success">
@@ -18,27 +18,20 @@
                     <th>Sujet</th>
                     <th>Contenu</th>
                     <th>Date</th>
-                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for key, msg in msgrecus %}
-                 {% if (msg.dest) is same as(app.user.username) %}
-                    <tr>
+                {% for key, msg in msgenvoyes %}
+                    {#{% if (msg.dest) is same as(app.user.username) %}#}
+                        <tr>
 
-                        <td>{{ key + 1 }}</td>
-                        <td>Auteur</td>
-                        <td><strong>{{ msg.sujet  }}</strong></td>
-                        <td><strong>{{ msg.contenu }}</strong></td>
-                        <td><strong>{{ msg.dateAjout|date('Y-m-d H:i:s') }}</strong></td>
-                        <td>
-                            {#Lien pour repondre aux messages#}
-                           {# <a href="{{ path('ls_imarket_traitement_messagerie', { 'id': msg.id }) }}" class="btn btn-success" style="font-weight: bold">Repondre</a>#}
-                            {#<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success" style="font-weight: bold">Repondre</button>#}
-                            <a  href="{{ path('ls_imarket_traitement_reponsemsg', {'id': msg.id}) }}" class="btn btn-success btn-sm" style="font-weight: bold">Repondre</a>
-                        </td>
-                    </tr>
-                 {% endif %}
+                            <td>{{ key + 1 }}</td>
+                            <td>Auteur</td>
+                            <td><strong>{{ msg.sujet  }}</strong></td>
+                            <td><strong>{{ msg.contenu }}</strong></td>
+                            <td><strong>{{ msg.dateAjout|date('Y-m-d H:i:s') }}</strong></td>
+                        </tr>
+                    {#{% endif %}#}
                 {% else %}
                     <p>Vous n'avez aucun message !</p>
                 {% endfor %}

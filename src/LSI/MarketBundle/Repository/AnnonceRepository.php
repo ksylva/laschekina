@@ -233,4 +233,17 @@ class AnnonceRepository extends EntityRepository {
         return $qb->getQuery()->getResult();
     }
 
+    // Requête qui renvoie id de la mairie qui a cree l'annonce
+
+    public function idmairieannonce(){
+        $req = $this->createQueryBuilder('a');
+                    $req->innerJoin('a.mairie', 'm')
+                        ->addSelect('m');
+
+        $req->select('m.id');
+
+        return $req->getQuery()->getResult();
+    }
+
+
 }

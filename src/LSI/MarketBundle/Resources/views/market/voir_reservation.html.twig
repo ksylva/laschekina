@@ -16,15 +16,10 @@
                         <img src="{{ asset(list.webPath) }}" alt="{{ list.alt }}"
                              style="width: 500px; height: 500px"/>
                     {% endfor %}
-                    <h3>{{ listanreserv.annonce.titre }}</h3>
-                    <h3>{{ listanreserv.annonce.prixDefaut }}</h3>
-                    <h3>{{ listanreserv.annonce.categorie.name }}</h3>
-                    <h3>
-                        {{ listanreserv.user.id }}
-                        {{ listanreserv.id }}
-                        {{ listanreserv.reserveEtat }}
-                    </h3>
-                    <h3>{{ listanreserv.user.nom }}</h3>
+                    <h3>Titre : {{ listanreserv.annonce.titre }}</h3>
+                    <h3>Prix par defaut : {{ listanreserv.annonce.prixDefaut }}</h3>
+                    <h3>Categorie : {{ listanreserv.annonce.categorie.name }}</h3>
+                    <h3>Demandeur : {{ listanreserv.user.nom }}</h3>
                     <h3>{{ listanreserv.user.telephone }}</h3>
                     <div>
                         {% if listanreserv.reserveEtat == "V" or listanreserv.reserveEtat == "R"  %}
@@ -49,22 +44,6 @@
                         {% endif %}
                     </div>
                 </div>
-                {#Espace pour la messagerie#}
-               {# <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Messages</h4>
-                            </div>
-                            <div class="modal-body">
-                                {{ render(controller("LSIMarketBundle:Market:msgEnvoyer", {'id': listanreserv.id})) }}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>#}
             </div>
         {% endfor %}
     {% endif %}

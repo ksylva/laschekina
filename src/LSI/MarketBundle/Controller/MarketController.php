@@ -227,7 +227,7 @@ class MarketController extends Controller {
         // Recuperer les reservations actives en BD dont l'auteur est le User connecte
         $reservations = $em->getRepository('LSIMarketBundle:Reserver')->findByUser($userId);
         $titreAnn = [];
-        dump($reservations);
+        //dump($reservations);
         if (null === $reservations){
             throw new NotFoundHttpException("Vous n'avez aucune reservation en attente !");
         }else{
@@ -253,7 +253,7 @@ class MarketController extends Controller {
         $userId = $this->getUser()->getMairie()->getId();
 
         $annonceReservees = $em->getRepository('LSIMarketBundle:Reserver')->annonceReserver($userId);
-
+        dump($annonceReservees );
         $titreAnn = [];
 
         if (null === $annonceReservees){
@@ -526,12 +526,13 @@ class MarketController extends Controller {
        }
 
 
-    // traitement pour consulter les réservations sur annonces
+    // traitement pour consulter les réservations
 
     public function voirReservationAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
-        $listreservation = $repository->findreserveSurMesannonces($id);
-       // var_dump($listreservation[0]->getId());
+        $userid = $this->getUser()->getId();
+        $listreservation = $repository->annonceReserver($userid);
+        //dump($listreservation);
         return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
             array('listanreserv' => $listreservation));
     }
@@ -573,10 +574,20 @@ class MarketController extends Controller {
 
     // Traitement de la réservation par le demandeur
 
-    public function reservationdemandeurAction(Request $request, $id){
+    public function reservationdemandeurAction(){
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
-        $listreservation = $repository->findreserveSurMesannonces($id);
+        $repoano = $this->getDoctrine()->getRepository('LSIMarketBundle:Annonce');
+        $idmairieannonce = $repoano->idmairieannonce();
+        $repouser = $this->getDoctrine()->getRepository('LSIMarketBundle:User');
+        foreach ($idmairieannonce as $idmairie){
+            $auteurannonce = $repouser->find($idmairie);
+            dump($auteurannonce);
+        }
+
+        $userid = $this->getUser()->getId();
+
+        $listreservation = $repository->findreserveSurMesannonces($userid);
         //var_dump($listreservation);
         return $this->render('LSIMarketBundle:reservation:pagetraitementreservationdemandeur.html.twig',
             array('listreservation' => $listreservation ));
@@ -633,7 +644,7 @@ class MarketController extends Controller {
             array('formReservEdit' => $formReservEdit->createView()));
     }
 
-   /* Traitement de l'interface affichant les connectés ayant passer des réservations sur les annonces*/
+   /* METHODE DE TRAITEMENT POUR LA  MESSAGERIE */
 
     public function msgEnvoyerAction(Request $request, $id){
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
@@ -642,8 +653,8 @@ class MarketController extends Controller {
         // Recuperer le username du destinateur
          $repousernamereser = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
          $destinateur = $repousernamereser->findreserveSurMesannonces($id);
-
-        // dump($destinateur[0]->getUser()->getUsername());
+            //dump($destinateur);
+            dump($destinateur[0]);
         $formtchat = $this->createForm(MessageType::class, $msg);
         $formtchat->handleRequest($request);
 
@@ -662,11 +673,11 @@ class MarketController extends Controller {
                 $em->persist($msg);
                 $em->flush();
                 return $this->redirectToRoute('ls_imarket_voir_reservation', array('id' => $destinateur[0]->getId()));
-            }else{
+            }elseif ($user->hasRole('ROLE_PART')){
                 // Recuperer id de l'utilisateur connecté
                 $user = $this->getUser()->getAdministre();
                 $msg->setAdministre($user);
-                $msg->setDest($destinateur[0]->getUser()->getUsername());
+                $msg->setDest('muss');
                 $msg->setDateAjout(new \DateTime());
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($msg);
@@ -678,7 +689,6 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:market:affichuserconnect.html.twig', array(
             'formtchat' => $formtchat->createView()));
     }
-
 
    /*Traitement de l'espace tchat*/
 
@@ -692,15 +702,11 @@ class MarketController extends Controller {
     public function msgRecuAction(){
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $repo = $this->getDoctrine()->getRepository('LSIMarketBundle:Message');
-        //$msgrecus = $repo->findAll();
-        // Recuperer l'utilisateur connecté
+
          $user = $this->getUser();
-         //dump($user->getUsername());
-        // Recuperer id de la mairie connectée
-        $userid = $this->getUser()->getId();
-        //dump($userid);
+        //$userid = $this->getUser()->getId();
+
         $msgrecus = $repo->findByDest($user->getUsername());
-       // dump($msgrecus);
 
        return $this->render('LSIMarketBundle:market:msgrecu.html.twig', array(
            'msgrecus' => $msgrecus
@@ -721,7 +727,7 @@ class MarketController extends Controller {
         $username = $repusername->find($msg->getMairie()->getId());
        // $useridadministre = $repusername->find($msg->getAdministre()->getId());
        // dump($username);
-       // dump($username->getUsername());
+        dump($username->getUsername());
         //var_dump($username[0]);
        // $msgnew->setDest($username->getUsername());
       //  dump($msg->getAdministre());
@@ -751,9 +757,8 @@ class MarketController extends Controller {
                     $em->persist($msgnew);
                     $em->flush();
 
-                    return $this->redirectToRoute('ls_imarket_traitement_msgrecu', array(
-                        'formrepmsg' => $formrepmsg->createView()
-                    ));
+                    return $this->redirectToRoute('ls_imarket_traitement_msgrecu'
+                    );
                /* return $this->render('LSIMarketBundle:market:reponsemgs.html.twig', array(
                     'formrepmsg' => $formrepmsg->createView()));*/
             }else{
@@ -777,4 +782,20 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:market:reponsemgs.html.twig', array(
             'formrepmsg' => $formrepmsg->createView()));
     }
+
+    public function msgenvoyeAction(){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+       $repomsg = $this->getDoctrine()->getRepository('LSIMarketBundle:Message');
+        $userid = $this->getUser()->getId();
+       $msgenvoyes = $repomsg->findmsgEnvoyes($userid );
+        dump( $userid);
+        dump($msgenvoyes);
+       return $this->render('LSIMarketBundle:market:pagemsgenvoyes.html.twig', array(
+           'msgenvoyes' => $msgenvoyes
+       ));
+
+
+    }
+
+    /* FIN  */
 }

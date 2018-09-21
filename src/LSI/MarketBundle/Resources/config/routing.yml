@@ -236,7 +236,7 @@ ls_imarket_refuser_reservation:
 # Traitement de réservation par le demandeur
 
 ls_imarket_traitement_demandeur_reservation:
-    path: /reservation_demandeur/{id}
+    path: /reservation_demandeur
     defaults:
         _controller: LSIMarketBundle:Market:reservationdemandeur
 
@@ -270,3 +270,28 @@ ls_imarket_traitement_demandeur_modifierreserv:
     path: /reservation_modifier/{id}
     defaults:
         _controller: LSIMarketBundle:Market:modifierReservation
+
+#Traitement de la messagerie
+
+ls_imarket_traitement_msgrecu:
+    path: /messages/recus
+    defaults:
+        _controller: LSIMarketBundle:Market:msgRecu
+
+ls_imarket_traitement_messagerie:
+    path: /messages/envoye/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:msgEnvoyer
+
+ls_imarket_traitement_reponsemsg:
+    path: /message/reponse/{id}
+    defaults:
+        _controller: LSIMarketBundle:Market:reponsemsg
+
+#Route pour consulter les messages ecrits par les utilisateurs
+
+ls_imarket_traitement_msgenvoye:
+    path: /message/msgenvoye
+    defaults:
+        _controller: LSIMarketBundle:Market:msgenvoye
+#Fin traitement de la messagerie

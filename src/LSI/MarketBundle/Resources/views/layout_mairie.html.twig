@@ -41,8 +41,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" type="button" data-toggle="dropdown">Messagerie
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('ls_imarket_traitement_msgrecu') }}">Messages recus</a></li>
+                                <li><a href="{{ path('ls_imarket_traitement_msgenvoye') }}">Messages envoyes</a></li>
+                            </ul>
+                        </div>
                        {# <button class="btn btn-success" onclick="msgview()">Messages reçus</button>#}
-                        <a class="btn btn-success btn-sm"  href="{{ path('ls_imarket_traitement_msgrecu') }}" style="position: relative; left: 15px">Messagerie</a>
+                       {# <a class="btn btn-success btn-sm"  href="{{ path('ls_imarket_traitement_msgrecu') }}" style="position: relative; left: 15px">Messagerie</a>#}
                     </ul>
                 </div>
             </div>
