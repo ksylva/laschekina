@@ -1,8 +1,11 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div id="page" class="fos_user_user_show">
+    <h2>COORDONNEES</h2>
     <table class="table table-striped">
-        {% if user.nom is defined %}
+        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+
+        {% else %}
             <tr>
                 <td>{{ 'Nom'|trans }}</td>
                 <td>{{ user.nom }}</td>
@@ -31,6 +34,10 @@
                 <td>{{ 'Service' }}</td>
                 <td>{{ user.mairie.service }}</td>
             </tr>
+            <tr>
+                <td>{{ 'Epci' }}</td>
+                <td>{{ user.mairie.epci.nom }}</td>
+            </tr>
         {% endif %}
 
         <tr>
@@ -41,47 +48,51 @@
             <td>{{ 'profile.show.email'|trans }}</td>
             <td>{{ user.email }}</td>
         </tr>
-        {% if user.telephone is defined %}
-            <tr>
-                <td>{{ 'Numéro de téléphone' }}</td>
-                <td>{{ user.telephone }}</td>
-            </tr>
-        {% endif %}
-        {% if user.adresse.pays is defined %}
-            <tr>
-                <td>{{ 'Pays' }}</td>
-                <td>{{ user.adresse.pays }}</td>
-            </tr>
-        {% endif %}
-        {% if user.adresse.ville is defined %}
-            <tr>
-                <td>{{ 'Ville' }}</td>
-                <td>{{ user.adresse.ville }}</td>
-            </tr>
-        {% endif %}
-        {% if user.adresse.rue is defined %}
-            <tr>
-                <td>{{ 'Rue' }}</td>
-                <td>{{ user.adresse.rue }}</td>
-            </tr>
-        {% endif %}
-        {% if user.adresse.codePostal is defined %}
-            <tr>
-                <td>{{ 'Code postal' }}</td>
-                <td>{{ user.adresse.codePostal }}</td>
-            </tr>
-        {% endif %}
-        {% if user.indicatif is defined %}
-            <tr>
-                <td>{{ 'Indicatif' }}</td>
-                <td> + {{ user.indicatif }}</td>
-            </tr>
-        {% endif %}
-        {% if user.langue is defined %}
-            <tr>
-                <td>{{ 'Langue' }}</td>
-                <td>{{ user.langue |capitalize }}</td>
-            </tr>
+        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+
+        {% else %}
+            {% if user.telephone is defined and not null %}
+                <tr>
+                    <td>{{ 'Numéro de téléphone' }}</td>
+                    <td>{{ user.telephone }}</td>
+                </tr>
+            {% endif %}
+            {% if user.adresse.pays is defined and not null %}
+                <tr>
+                    <td>{{ 'Pays' }}</td>
+                    <td>{{ user.adresse.pays }}</td>
+                </tr>
+            {% endif %}
+            {% if user.adresse.ville is defined and not null %}
+                <tr>
+                    <td>{{ 'Ville' }}</td>
+                    <td>{{ user.adresse.ville }}</td>
+                </tr>
+            {% endif %}
+            {% if user.adresse.rue is defined and not null %}
+                <tr>
+                    <td>{{ 'Rue' }}</td>
+                    <td>{{ user.adresse.rue }}</td>
+                </tr>
+            {% endif %}
+            {% if user.adresse.codePostal is defined and not null %}
+                <tr>
+                    <td>{{ 'Code postal' }}</td>
+                    <td>{{ user.adresse.codePostal }}</td>
+                </tr>
+            {% endif %}
+            {% if user.indicatif is defined and not null %}
+                <tr>
+                    <td>{{ 'Indicatif' }}</td>
+                    <td> + {{ user.indicatif }}</td>
+                </tr>
+            {% endif %}
+            {% if user.langue is defined and not null %}
+                <tr>
+                    <td>{{ 'Langue' }}</td>
+                    <td>{{ user.langue |capitalize }}</td>
+                </tr>
+            {% endif %}
         {% endif %}
     </table>
     <div class="row">

@@ -1,9 +1,14 @@
-{% extends '::layout.html.twig' %}
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
 
+{% block title %}
+    Espace super administrateur - {{ parent() }}
+{% endblock title %}
 
-{% block body %}
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-
-    {{ form_end(form) }}
-{% endblock body %}
+{% block monespace %}
+    <div class="row well">
+        <h2>Ajout d'un administrateur</h2>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock monespace %}

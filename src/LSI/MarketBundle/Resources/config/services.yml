@@ -7,3 +7,9 @@ services:
         arguments:
             - "@mailer"
             - "%mailer_user%"
+            - "@templating"
+
+#    lsi_market.file.twig.extension:
+#        class: LSI\MarketBundle\Extensions\ExistenceFichier
+#        tags:
+#            -{ name: twig.extension }

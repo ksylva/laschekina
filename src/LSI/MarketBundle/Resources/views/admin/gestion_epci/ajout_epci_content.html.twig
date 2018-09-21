@@ -1,5 +1,6 @@
 <body>
     <div class="well">
+        <h2>Ajout d'un EPCI</h2>
         {{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
             <div class="form-group">
                 {{ form_errors(form.nom) }}
@@ -20,7 +21,7 @@
                 <input type="button" id="add_code" value="Ajouter un code postal" class="btn btn-warning pull-right" />
             </div>
             <div class="form-group">
-                {{ form_widget(form.add, {'label': ' Ajouter', 'attr': {'class' : 'btn btn-primary glyphicon glyphicon-plus'}}) }}
+                {{ form_widget(form.add, {'label': ' Ajouter l\'EPCI', 'attr': {'class' : 'btn btn-primary'}}) }}
             </div>
 
         {{ form_end(form) }}
