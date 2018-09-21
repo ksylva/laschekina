@@ -11,7 +11,10 @@
             <hr>
             <div class="row">
                 {% if annonce.images is not null %}
-                    <img src="{{ asset(annonce.images.webPath) }}" alt="{{ annonce.images.alt }}"/>
+                    {% for images in annonce.images %}
+                    <img src="{{ asset(images.webPath) }}" alt="{{ images.alt }}"
+                    {% endfor %}
+                    class="responsive" style="width: 260px; height: auto;"/>
                 {% endif %}
             </div>
             <div class="row">
@@ -20,6 +23,7 @@
                         {{ auth.nom }},
                     {% endfor %}
                     le {{ annonce.dateCreation|date('d/m/Y') }}</i>
+                    <i> <a href="{{ path('ls_imarket_plage_annonce' , { 'id' :annonce.id})}}">consulter la disponibilité<a/> </i>
             </div>
             <div class="row">
                 <p>{{ annonce.description }}</p>
@@ -45,6 +49,8 @@
                     <a href="{{ path('ls_imarket_reserver_annonce', {'id': annonce.id}) }}"
                        class="btn btn-success">Reserver</a>
                 {% endif %}
+                <a href="#{# {{ path('ls_imarket_modifier_annonce', {'id' :annonce.id}) }} #}"
+                           class="btn btn-warning">Envoyer un message</a>
             </div>
         </div>
     </div>

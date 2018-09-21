@@ -9,6 +9,8 @@
 namespace LSI\MarketBundle\Controller;
 
 
+use LSI\MarketBundle\Form\Annonce2Type;
+use LSI\MarketBundle\Form\AnnonceModifType;
 use LSI\MarketBundle\Entity\Message;
 use LSI\MarketBundle\Form\MessageType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -19,6 +21,8 @@ use LSI\MarketBundle\Entity\Categorie;
 use LSI\MarketBundle\Entity\Reserver;
 use LSI\MarketBundle\Entity\Image;
 use LSI\MarketBundle\Form\AnnonceType;
+use LSI\MarketBundle\Entity\Calendrier;
+use LSI\MarketBundle\Form\Annonce2Type;
 use LSI\MarketBundle\Repository\CategorieRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -135,26 +139,27 @@ class MarketController extends Controller {
     public function ajouterAction(Request $request){
         // Restreindre l'acces uniquement a la mairie
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
+       
         $annonce = new Annonce();
-
         $form = $this->createForm(AnnonceType::class, $annonce);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser()->getMairie();
             $annonce->setMairie($user);
-
             $em->persist($annonce);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notif', 'Annonce ajoutée avec succès !');
 
-            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId()));
+            return $this->redirectToRoute('ls_imarket_ajouter_annonce2', array('id' => $annonce->getId()));
         }
         return $this->render('LSIMarketBundle:market:ajouter.html.twig', array('form' => $form->createView()));
     }
 
     public function voirAction($id){
         $em = $this->getDoctrine()->getManager();
+        $image = new Image();
+        $img ='';
 
         // Recuperer l'annonce cliquee
         $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
@@ -165,9 +170,15 @@ class MarketController extends Controller {
         // Recuperer l'auteur de l'annonce...
         $auteur = $em->getRepository('LSI\MarketBundle\Entity\User')
                      ->findAuteurAnnonce($annonce->getMairie()->getId());
+        /*foreach ($this->$image as $images ) {
+            $img = $em->getRepository('LSI\MarketBundle\Entity\Image')->findBy($annonce->getImages()->getId($annonce.$id));
+
+        }*/
 
 
-        return $this->render('LSIMarketBundle:market:voir.html.twig', array('annonce' => $annonce, 'auteur' => $auteur));
+
+        return $this->render('LSIMarketBundle:market:voir.html.twig', array('annonce' => $annonce, 'auteur' => $auteur,
+            'image'=>$img));
     }
 
     public function reserverAction(Request $request, $id){
@@ -276,11 +287,7 @@ class MarketController extends Controller {
 
     // Renvoie la liste des annonces crees par une mairie.
     public function mesAnnoncesAction(){
-<<<<<<< HEAD
-        $this->denyAccessUnlessGranted( 'ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
-=======
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
->>>>>>> master
         $em = $this->getDoctrine()->getManager();
 
         // Recuperer le User connecte
@@ -294,11 +301,6 @@ class MarketController extends Controller {
         }
 
         return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
-
-<<<<<<< HEAD
-        }
-=======
->>>>>>> master
     }
 
     public function monEspaceAction(){
@@ -309,7 +311,6 @@ class MarketController extends Controller {
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         //connection à la BD
         $em = $this->getDoctrine()->getManager();
-
         //recupération de l'objet à modifier
         $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
 
@@ -317,28 +318,22 @@ class MarketController extends Controller {
         {
             throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
         }
-
         //création du formulaire de modification
-        // image de l'iamge avant modif pas encore réglé
+        // Recup&ration de l'image avant modif pas encore réglé
         $form = $this->createForm(AnnonceType::class, $annonce);
-
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-
             $annonce->setAnnonceUpdateAt(new \DateTime('now'));
-
             //Mise a jour de la BD
             $em->persist($annonce);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
-
             //Redirection vers la page de consultation
             return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId(),
                 ));
         }
-
         //création de la vue
         return $this->render('LSIMarketBundle:market:modifier.html.twig', array('form' => $form->createView(),
-            'images'=> $annonce->getImages()->getWebPath()));
+            /* 'images'=> $annonce->getImages()->getWebPath() */));
     }
 
     public function dupliquerAction(Request $request,$id){
@@ -359,16 +354,20 @@ class MarketController extends Controller {
         {
             throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
         }
-        $img = '';
+        //$img = '';
         //copie du contenu de l'ancienne annonce dans la nouvelle
         foreach ($annonce as $item){
             $newannonce->setTitre($item->getTitre());
             $newannonce->setDescription($item->getDescription());
             $newannonce->setRegleCond($item->getRegleCond());
             $newannonce->setPrixDefaut($item->getPrixDefaut());
-            $newannonce->setStatut($item->getStatut());
-            $img = $item->getImages();
+            $newannonce->setAdresse($item->getAdresse());
+            $newannonce->setTypeAnnul($item->getTypeAnnul());
+            foreach($image as $images){
+                $image = $item->getImages();
             $newannonce->setImages(new Image());
+            }
+            
             $newannonce->setCategorie($item->getCategorie());
         }
         //dump($newannonce); $newannonce = clone $annonce; dump($newannonce);
@@ -384,14 +383,13 @@ class MarketController extends Controller {
 
             $request->getSession()->getFlashBag()->add('notice', 'Annonce crée avec succes.');
 
-            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $newannonce->getId(),
+            return $this->redirectToRoute('ls_imarket_ajouter_annonce2', array('id' => $newannonce->getId(),
                 ));
         }
 
-        return $this->render('LSIMarketBundle:Market:dupliquer.html.twig', array('form' => $form->createView(),
-            'img' => $img->getWebPath()));
+        return $this->render('LSIMarketBundle:market:dupliquer.html.twig', array('form' => $form->createView(),
+            'img' => $image->getWebPath()));
     }
-
 
     // traitement barre de recherche pour toutes les pages et affiner les resultats de la recherche
     public function recherchebarreAction(Request $request){
@@ -537,6 +535,88 @@ class MarketController extends Controller {
        }
 
 
+
+    public function modifier2Action (){
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
+        //connection à la BD
+        $em = $this->getDoctrine()->getManager();
+
+        //recupération de l'objet à modifier
+        $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
+
+        if (null === $annonce)
+        {
+            throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
+        }
+
+        //création du formulaire de modification
+        // image de l'iamge avant modif pas encore réglé
+        $form = $this->createForm(AnnonceType::class, $annonce);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+
+            $annonce->setAnnonceUpdateAt(new \DateTime('now'));
+
+
+            //Mise a jour de la BD
+            $em->persist($annonce);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
+
+            //Redirection vers la page de consultation
+            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId(),
+                ));
+        }
+
+        //création de la vue
+        return $this->render('LSIMarketBundle:market:modifier.html.twig', array('form' => $form->createView(),
+            /*'images'=> $annonce->getImages()->getWebPath()*/));
+
+    }
+
+    public function ajouter2Action($id, Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
+        $em = $this->getDoctrine()->getManager();
+        //recupération de l'objet
+        $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
+        if (null === $annonce)
+        {
+            throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
+        }
+        //création du formulaire
+        $form = $this->createForm(Annonce2Type::class, $annonce);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            //Insertion dans la BD
+            $em->persist($annonce);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Votre Annonce a été crée et publiée.');
+            //Redirection vers la page de consultation
+            return $this->redirectToRoute('ls_imarket_voir_annonce', array('id' => $annonce->getId(),
+            ));
+        }
+        //création de la vue
+        return $this->render('LSIMarketBundle:market:ajouter2.html.twig', array('form' => $form->createView()));
+    }
+     public function disponibiliteAction($id){
+        //$statut = new ();
+        $em = $this->getDoctrine()->getManager();
+        //recuperons l'id de annonce
+        $annonce = $em->getRepository('LSIMarketBundle:Annonce')->find($id);
+        if (null === $annonce)
+        {
+            throw new NotFoundHttpException("L'annonce dont le numéro est ".$id." n'existe pas.");
+        }
+        $statut = $em->getRepository('LSIMarketBundle:Annonce')->findAnnoncesAvecCalendrier($id);
+        $dispo;
+        foreach ($statut as $disp) {
+            $dispo = $disp;
+        }
+
+       return $this->render('LSIMarketBundle:market:plage.html.twig', array('dispo' => $dispo));
+    }
+
+
     public function conditionsAction(){
         $em = $this->getDoctrine()->getManager();
 
@@ -550,17 +630,16 @@ class MarketController extends Controller {
 
     public function voirReservationAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
-<<<<<<< HEAD
+
         $listreservation = $repository->findreserveSurMesannonces($id);
        // var_dump($listreservation[0]->getId());
-=======
-        $listreservation = $repository->find($id);
+
+        //$listreservation = $repository->find($id);
 
 
 
         //var_dump($listreservation);
 
->>>>>>> master
         return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
             array('listanreserv' => $listreservation));
     }

@@ -38,8 +38,9 @@ class Image
     private $alt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="images")
-     * @@ORM\JoinColumn(name="annonce_id",referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="LSI\MarketBundle\Entity\Annonce", mappedBy="images",cascade={"persist"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
+     *
      *
     private $annonce;*/
 

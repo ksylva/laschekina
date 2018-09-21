@@ -3,6 +3,7 @@
 namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+/* use Symfony\Component\Validator\Constraints\Date; */
 
 /**
  * Calendrier
@@ -22,15 +23,11 @@ class Calendrier
     private $id;
 
     /**
-     * @var \Date
-     *
      * @ORM\Column(name="debut", type="date")
      */
     private $debut;
 
     /**
-     * @var \Date
-     *
      * @ORM\Column(name="fin", type="date")
      */
     private $fin;
@@ -42,10 +39,12 @@ class Calendrier
     private $statut;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier")
-     * @ORM\JoinColumn(name="annonce_id",referencedColumnName="id", nullable=false)
-     */
-    private $annonce;
+
+     * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier", cascade={"persist"})
+     * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
+     *
+    private $annonce;*/
+
 
     /**
      * Get id
@@ -55,30 +54,6 @@ class Calendrier
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set debut
-     *
-     * @param \Date $debut
-     *
-     * @return Calendrier
-     */
-    public function setDebut($debut)
-    {
-        $this->debut = $debut;
-
-        return $this;
-    }
-
-    /**
-     * Get debut
-     *
-     * @return \Date
-     */
-    public function getDebut()
-    {
-        return $this->debut;
     }
 
     /**
@@ -151,5 +126,29 @@ class Calendrier
     public function getAnnonce()
     {
         return $this->annonce;
+    }
+
+    /**
+     * Set debut
+     *
+     * @param \DateTime $debut
+     *
+     * @return Calendrier
+     */
+    public function setDebut($debut)
+    {
+        $this->debut = $debut;
+
+        return $this;
+    }
+
+    /**
+     * Get debut
+     *
+     * @return \DateTime
+     */
+    public function getDebut()
+    {
+        return $this->debut;
     }
 }
