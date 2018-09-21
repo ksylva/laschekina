@@ -10,16 +10,18 @@ namespace LSI\MarketBundle\Form;
 
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,18 +32,73 @@ class RegistrationType extends AbstractType {
                 'choices' => array('Mairie' => 'mairie', 'Administré' => 'administre'),
                     'expanded' => true, 'multiple' => false
                 ))
-            ->add('nom', TextType::class)
-            ->add('indicatif', TextType::class)
+            ->add('nom', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank(),
+                    new Length(array(
+                            'min' => 5,
+                            'max' => 15,
+                            'minMessage' => "Le nom doit comporter au moins {{ limit }} caractères",
+                            'maxMessage' => "Le nom ne doit pas comporter plus de {{ limit }} caractères"
+                        )
+                    )
+                )
+            ))
+            ->add('indicatif', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank(),
+                    new Regex(array(
+                        'pattern' => "/^[\d]*$/",
+                        'match' => true,
+                        'message' => "L'indicatif est invalide"
+                    )),
+                    new Length(array(
+                        'min' => 1,
+                        'max' => 4,
+                        'minMessage' => "L'indicatif doit comporter {{ limit }} caractères",
+                        'maxMessage' => "L'indicatif ne doit pas comporter plus de {{ limit }} caractères"
+                    ))
+                )
+            ))
             ->add('langue', LanguageType::class, array(
                 'empty_data' => 'Sélectionner votre langue',
                 'preferred_choices' => ['fr', 'en', 'de'],
+                'constraints' => array(
+                    new NotBlank()
+                )
             ))
-            ->add('telephone', TextType::class)
+            ->add('telephone', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank(),
+                    new Regex(array(
+                        'pattern' => "/^[\d]*$/",
+                        'match' => true,
+                        'message' => "Le numéro est invalide"
+                    )),
+                    new Length(array(
+                        'min' => 8,
+                        'max' => 15,
+                        'minMessage' => "Le numéro doit comporter {{ limit }} caractères",
+                        'maxMessage' => "Le numéro ne doit pas comporter plus de {{ limit }} caractères"
+                    ))
+                )
+            ))
             ->add('adresse', AdresseType::class)
+
 
             ->add('mairie', MairieType::class, array('required' => false))
             ->add('administre', AdministreType::class, array('required' => false))
+            /*->add('cgu', CheckboxType::class, array(
+                'constraints' => array(
+                    new NotBlank()
+                ),
+                /*'choices' => array('Acceptez les ' =>'1'),
+                'expanded' => true, 'multiple' => true
+                'label' => 'Acceptez les ',
+            ))*/
             ;
+
+        $builder->remove('cgu');
 
         // Ajout
         $builder->addEventListener(

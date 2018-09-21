@@ -39,10 +39,12 @@ class Calendrier
     private $statut;
 
     /**
+
      * @ORM\ManyToMany(targetEntity="LSI\MarketBundle\Entity\Annonce", inversedBy="calendrier", cascade={"persist"})
      * @ORM\JoinColumn(name="annonce_id", referencedColumnName="id", nullable=false)
      *
     private $annonce;*/
+
 
     /**
      * Get id
@@ -53,7 +55,6 @@ class Calendrier
     {
         return $this->id;
     }
-
 
     /**
      * Set fin

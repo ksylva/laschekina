@@ -11,6 +11,10 @@ namespace LSI\MarketBundle\Controller;
 
 use LSI\MarketBundle\Form\Annonce2Type;
 use LSI\MarketBundle\Form\AnnonceModifType;
+use LSI\MarketBundle\Entity\Message;
+use LSI\MarketBundle\Form\MessageType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use LSI\MarketBundle\Entity\Annonce;
 use LSI\MarketBundle\Entity\Categorie;
@@ -25,11 +29,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use LSI\MarketBundle\Form\ReserverType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Regex;
 
 
@@ -223,7 +229,7 @@ class MarketController extends Controller {
 
     }
 
-    public function reservationAction(){
+    public function mesReservationsAction(){
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
@@ -233,7 +239,7 @@ class MarketController extends Controller {
         // Recuperer les reservations actives en BD dont l'auteur est le User connecte
         $reservations = $em->getRepository('LSIMarketBundle:Reserver')->findByUser($userId);
         $titreAnn = [];
-
+        dump($reservations);
         if (null === $reservations){
             throw new NotFoundHttpException("Vous n'avez aucune reservation en attente !");
         }else{
@@ -252,7 +258,7 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:reservation:mesreservations.html.twig');
     }
 
-    public function annonceReserverAction(){
+    public function reservationsSurMesAnnoncesAction(){
         $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
@@ -280,8 +286,8 @@ class MarketController extends Controller {
     }
 
     // Renvoie la liste des annonces crees par une mairie.
-    /*public function monEspaceAction(){
-        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART', 'ROLE_SUPER_ADMIN'], $this->redirectToRoute('fos_user_security_login'));
+    public function mesAnnoncesAction(){
+        $this->denyAccessUnlessGranted('ROLE_MAIRIE', $this->redirectToRoute('fos_user_security_login'));
         $em = $this->getDoctrine()->getManager();
 
         // Recuperer le User connecte
@@ -292,22 +298,10 @@ class MarketController extends Controller {
 
         if (null === $annonces){
             echo 'Vous n\'avez créer aucune annonce !';
-        }else{
-            if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-                return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
-            }elseif ($this->getUser()->hasRole('ROLE_PART')){
-                return $this->reservationAction();
-            }
         }
 
-        if ($this->getUser()->hasRole('ROLE_MAIRIE')){
-            return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig');
-        }elseif ($this->getUser()->hasRole('ROLE_PART')){
-            return $this->reservationAction();
-        }elseif($this->getUser()->hasRole('ROLE_SUPER_ADMIN')){
-
-        }
-    }*/
+        return $this->render('LSIMarketBundle:mairie:mesannonces.html.twig', array('annonce' => $annonces));
+    }
 
     public function monEspaceAction(){
         return $this->render('LSIMarketBundle::monespace.html.twig');
@@ -501,19 +495,32 @@ class MarketController extends Controller {
         return $this->render('LSIMarketBundle:mairie:annonce_commandee.html.twig');
     }
 
+    // Gérer les commandes d'un utilisateur...
     public function mesCommandesAction(){
 
         return $this->render('LSIMarketBundle:commande:mes_commandes.html.twig');
     }
 
-    /*public function monEpciAction($cp){
+    /*public function monEpciAction(){
         $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
 
-        $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+        if ($request->isXmlHttpRequest()){
+            // Initialisation de $cp ...
+            $cp = '';
+            $cp = $request->query->get('cp');
 
-        if (null !== $codePostal){
-            $reponse = new Response(json_encode($codePostal));
-            return $reponse;
+            if ($cp != '' ){
+                $codePostal = $em->getRepository('LSIMarketBundle:Epci')->findEpciCodePostal($cp);
+                $response = new JsonResponse();
+                $response->setData(array('data' => $codePostal));
+                var_dump($response);die;
+                return $response;
+            }
+
+            //return $response = new Response(json_encode($codePostal));
+        }else{ //
+            return $response = new Response('Ne correspond à aucun EPCI');
         }
     }*/
 
@@ -526,6 +533,7 @@ class MarketController extends Controller {
                 ;
             $this->get('mailer')->send($mesg);
        }
+
 
 
     public function modifier2Action (){
@@ -608,4 +616,292 @@ class MarketController extends Controller {
        return $this->render('LSIMarketBundle:market:plage.html.twig', array('dispo' => $dispo));
     }
 
+
+    public function conditionsAction(){
+        $em = $this->getDoctrine()->getManager();
+
+        $cgu = $em->getRepository('LSIMarketBundle:ConditionsGeneralesUtil')->find(1);
+
+        return $this->render('LSIMarketBundle:market:condition_generale.html.twig', array('cgu' => $cgu));
+    }
+
+
+    // traitement pour consulter les réservations sur annonces
+
+    public function voirReservationAction(Request $request, $id) {
+        $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+
+        $listreservation = $repository->findreserveSurMesannonces($id);
+       // var_dump($listreservation[0]->getId());
+
+        //$listreservation = $repository->find($id);
+
+
+
+        //var_dump($listreservation);
+
+        return $this->render('LSIMarketBundle:market:voir_reservation.html.twig',
+            array('listanreserv' => $listreservation));
+    }
+
+    // Action pour traiter la validation d'une réservation par l'offreur
+
+
+    public function validAction(Request $request, $id) {
+
+    public function validAction(Request $request, $id)
+    {
+
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        // Recuperer l'annonce reservée
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+        if($request->isXmlHttpRequest() && $request->get('btn-valider')) {
+            // Modification de l'etat de l'annonce et le statut
+            $reserve->setReserveEtat('V');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+
+        }
+        return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
+            // return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+        }
+        return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+    }
+
+    // Action pour réfuser une réservation
+    public function refuserAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+        if($request->isXmlHttpRequest() && $request->get('btn-refuser')) {
+            $reserve->setReserveEtat('R');
+            // dump($reserve);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+    }
+
+    // Traitement de la réservation par le demandeur
+
+    public function reservationdemandeurAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $repository = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $listreservation = $repository->findreserveSurMesannonces($id);
+        //var_dump($listreservation);
+        return $this->render('LSIMarketBundle:reservation:pagetraitementreservationdemandeur.html.twig',
+            array('listreservation' => $listreservation ));
+    }
+
+    /*
+        Traitement de l'annulation d'une réservation par le demandeur après validation de l'offreur'
+     */
+
+    public function annulerReservationAction(Request $request, $id) {
+
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserve = $reporeserv->find($id);
+
+        if ($request->isXmlHttpRequest() && $request->get('btn-annuler')) {
+            $reserve->setReserveEtat('An');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($reserve);
+            $em->flush();
+        }
+
+
+        return $this->redirectToRoute('ls_imarket_mes_reservations');
+
+        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
+
+    }
+
+    /*Traitement pour la modification d'une réservation par le demandeur*/
+
+    public function modifierReservationAction(Request $request, $id) {
+        // Recuperation du formulaire de réservation
+
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+        $reserveancien = $reporeserv->find($id);
+
+        //dump($reserveancien);
+        // $form = $this->get('form.factory')->create(ReserverType::class, $reserveancien );
+        //$form = $this->createForm(ReserverType::class, $reserveancien);
+
+
+        $formReservEdit = $this->createFormBuilder()
+            ->add('datedebut', DateType::class)
+            ->add('datefin', DateType::class)
+            ->add('newdatedebut', DateType::class)
+            ->add('newdatefin', DateType::class)
+            ->getForm();
+        $formReservEdit->get('datedebut')->setData($reserveancien->getDebutPrestation());
+        $formReservEdit->get('datefin')->setData($reserveancien->getFinPrestation());
+
+        $formReservEdit->handleRequest($request);
+
+        if ($formReservEdit->isSubmitted() && $formReservEdit->isValid()) {
+
+        }
+
+        return $this->render('LSIMarketBundle:reservation:pagemodreservation.html.twig',
+            array('formReservEdit' => $formReservEdit->createView()));
+    }
+
+   /* Traitement de l'interface affichant les connectés ayant passer des réservations sur les annonces*/
+
+    public function msgEnvoyerAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        // Formulaire de messagerie
+        $msg = new Message();
+        // Recuperer le username du destinateur
+         $repousernamereser = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
+         $destinateur = $repousernamereser->findreserveSurMesannonces($id);
+
+        // dump($destinateur[0]->getUser()->getUsername());
+        $formtchat = $this->createForm(MessageType::class, $msg);
+        $formtchat->handleRequest($request);
+
+        if($formtchat->isSubmitted() && $formtchat->isValid()){
+            //  $data = $formtchat->getData();
+
+            // Recuperer l'utilisateur connecté
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            if($user->hasRole('ROLE_MAIRIE')){
+                // Recuperer id de l'utilisateur connecté
+                $user = $this->getUser()->getMairie();
+                $msg->setDest($destinateur[0]->getUser()->getUsername());
+                $msg->setDateAjout(new \DateTime());
+                $msg->setMairie($user);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($msg);
+                $em->flush();
+                return $this->redirectToRoute('ls_imarket_voir_reservation', array('id' => $destinateur[0]->getId()));
+            }else{
+                // Recuperer id de l'utilisateur connecté
+                $user = $this->getUser()->getAdministre();
+                $msg->setAdministre($user);
+                $msg->setDest($destinateur[0]->getUser()->getUsername());
+                $msg->setDateAjout(new \DateTime());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($msg);
+                $em->flush();
+                return $this->redirectToRoute('ls_imarket_voir_reservation', array('id' => $destinateur[0]->getId()));
+            }
+        }
+
+        return $this->render('LSIMarketBundle:market:affichuserconnect.html.twig', array(
+            'formtchat' => $formtchat->createView()));
+    }
+
+
+   /*Traitement de l'espace tchat*/
+
+   public function tchatAction(){
+
+       return $this->render('LSIMarketBundle:market:tchat.html.twig');
+   }
+
+   // Methode de traitement pour les messages reçus
+
+    public function msgRecuAction(){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $repo = $this->getDoctrine()->getRepository('LSIMarketBundle:Message');
+        //$msgrecus = $repo->findAll();
+        // Recuperer l'utilisateur connecté
+         $user = $this->getUser();
+         //dump($user->getUsername());
+        // Recuperer id de la mairie connectée
+        $userid = $this->getUser()->getId();
+        //dump($userid);
+        $msgrecus = $repo->findByDest($user->getUsername());
+       // dump($msgrecus);
+
+       return $this->render('LSIMarketBundle:market:msgrecu.html.twig', array(
+           'msgrecus' => $msgrecus
+       ));
+    }
+
+    // Methode de traitement pour repondre au messages récus
+
+    public function reponsemsgAction(Request $request, $id){
+        $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
+        $msgnew = new Message();
+
+        $reporecupmsg = $this->getDoctrine()->getRepository('LSIMarketBundle:Message');
+        $msg = $reporecupmsg->find($id);
+            //dump($msg->getMairie()->getId());
+        // Recuperer le username de la personnes aà qui on veut repondre
+        $repusername = $this->getDoctrine()->getRepository('LSIMarketBundle:User');
+        $username = $repusername->find($msg->getMairie()->getId());
+       // $useridadministre = $repusername->find($msg->getAdministre()->getId());
+       // dump($username);
+       // dump($username->getUsername());
+        //var_dump($username[0]);
+       // $msgnew->setDest($username->getUsername());
+      //  dump($msg->getAdministre());
+
+
+        $formrepmsg = $this->createFormBuilder()
+                            ->add('reponse', TextareaType::class)
+                            ->getForm();
+
+        $formrepmsg->handleRequest($request);
+
+        if($formrepmsg->isSubmitted() && $formrepmsg->isValid()) {
+
+            $user = $this->getUser();
+
+            if($user->hasRole('ROLE_MAIRIE')){
+
+                    $sujet = $msg->getSujet();
+                    $userid = $this->getUser()->getMairie();
+                    //$persid = $msg->getMairie();
+                    $msgnew->setSujet($sujet);
+                    $msgnew->setDest($username->getUsername());
+                    $msgnew->setContenu($formrepmsg['reponse']->getData());
+                    $msgnew->setMairie($userid);
+                    //dump($msgnew);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($msgnew);
+                    $em->flush();
+
+                    return $this->redirectToRoute('ls_imarket_traitement_msgrecu', array(
+                        'formrepmsg' => $formrepmsg->createView()
+                    ));
+               /* return $this->render('LSIMarketBundle:market:reponsemgs.html.twig', array(
+                    'formrepmsg' => $formrepmsg->createView()));*/
+            }else{
+                $sujet = $msg->getSujet();
+                $userid = $this->getUser()->getAdministre();
+                $msgnew->setSujet($sujet);
+               // $msgnew->setDest($useridadministre->getUsername());
+                //$msgnew->setDateAjout(new \DateTime());
+                $msgnew->setContenu($formrepmsg['reponse']->getData());
+                $msgnew->setMairie($userid);
+                //dump($msgnew);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($msgnew);
+                $em->flush();
+                return $this->render('LSIMarketBundle:market:reponsemgs.html.twig', array(
+                    'formrepmsg' => $formrepmsg->createView()));
+            }
+
+        }
+
+        return $this->render('LSIMarketBundle:market:reponsemgs.html.twig', array(
+            'formrepmsg' => $formrepmsg->createView()));
+    }
 }

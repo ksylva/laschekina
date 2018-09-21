@@ -38,7 +38,11 @@
                             </div>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="card-body nav">
-                                    <li><a href="{{ path('ls_imarket_ajouter_cgu') }}">Ajouter les CGU</a></li>
+                                    {#{% if file_exists(asset(cgu.webPath)) %}#}
+                                    <li><a href="{{ path('ls_imarket_ajouter_cgu') }}" class="disabled">Ajouter les CGU</a></li>
+                                    {#{% else %}#}
+                                    {#<li><a href="{{ path('ls_imarket_ajouter_cgu') }}">Ajouter les CGU</a></li>
+                                    {% endif %}#}
                                     <li><a href="{{ path('ls_imarket_voir_cgu') }}">Consulter les CGU</a></li>
                                 </div>
                             </div>

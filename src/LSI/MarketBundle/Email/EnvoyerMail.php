@@ -14,17 +14,17 @@ class EnvoyerMail {
      */
     private $mailer;
     // Modèle du mail
-    private $template;
+    private $templating;
     // Expéditeur
     private $from;
     // Nom auteur mail
     private $name = 'Civilink';
 
 
-    public function __construct(\Swift_Mailer $mailer, $sender, EngineInterface $template) {
+    public function __construct(\Swift_Mailer $mailer, $sender, EngineInterface $templating) {
         $this->mailer = $mailer;
         $this->from = $sender;
-        $this->template = $template;
+        $this->templating = $templating;
     }
 
     public function sendMail($to, $subject, $body){
@@ -39,6 +39,15 @@ class EnvoyerMail {
         $this->mailer->send($message);
     }
 
+    public function sendCreationAnnonceMail(User $user){
+        $sujet = 'Votre annonce est maintenant visible';
+        $template = 'LSIMarketBundle:mails:mail_annonce_cree.html.twig';
+        $to = $user->getEmail();
+        $body = $this->templating->render($template, array('user' => $user));
+
+        $this->sendMail($to, $sujet, $body);
+    }
+
     public function sendNewMessageToCumtomer(User $user, Annonce $annonce){
         $message = new \Swift_Message(
             'Nouvelle réservation',
@@ -50,14 +59,17 @@ class EnvoyerMail {
         $this->mailer->send($message);
     }
 
-    public function sendNewMessageToSeller($email, Annonce $annonce){
+    /*public function sendNewMessageToSeller($email, Annonce $annonce){
         $message = new \Swift_Message(
             'Vous avez reçu une nouvelle demande de réservation',
+            '
+                    Bonjour '.$annonce->getMairie().
+
                     ' Vous avez reçu une réservation sur votre annonce : '.$annonce->getTitre()
         );
 
         $message
             ->addTo($email);
         $this->mailer->send($message);
-    }
+    }*/
 }

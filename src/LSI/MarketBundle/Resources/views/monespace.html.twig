@@ -1,9 +1,8 @@
 {% extends '::layout.html.twig' %}
 
-
 {% block volet %}
     {% if not app.user %}
-        {{ render(controller("LSIMarketBundle:Market:index")) }}
+        {#{{ render(controller("LSIMarketBundle:Market:index")) }}#}
     {% elseif app.user.hasRole('ROLE_PART') %}
         {% include 'LSIMarketBundle::layout_administre.html.twig' %}
         {#{{ render(controller("LSIMarketBundle:Espace:administreIndex")) }}#}

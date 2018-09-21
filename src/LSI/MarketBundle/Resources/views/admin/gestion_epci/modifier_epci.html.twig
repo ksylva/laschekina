@@ -1,5 +1,9 @@
 {% extends 'LSIMarketBundle::monespace.html.twig' %}
 
+{% block title %}
+    Modifier un EPCI - {{ parent() }}
+{% endblock title %}
+
 {% block monespace %}
     {% include '@LSIMarket/admin/gestion_epci/modifier_epci_content.html.twig' %}
 {% endblock monespace %}

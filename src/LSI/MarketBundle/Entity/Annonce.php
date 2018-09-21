@@ -74,14 +74,14 @@ class Annonce
     private $prixDefaut;
 
     /**
-     * @var date
+     * @var \Date
      *
      * @ORM\Column(name="date_creation", type="date")
      */
     private $dateCreation;
 
     /**
-     * @var time
+     * @var \Time
      *
      * @ORM\Column(name="heure_creation", type="time")
      */
@@ -193,12 +193,9 @@ class Annonce
      */
     public function __construct()
     {
-
         $this->dateCreation = new \DateTime();
         $this->heureCreation = new \DateTime();
         $this->annonceEtat = 'A';
-        /* $this->images = new ArrayCollection;
-        $this->calendrier = new ArrayCollection; */
     }
 
     //public function __To

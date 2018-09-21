@@ -1,10 +1,14 @@
 {% extends 'LSIMarketBundle::monespace.html.twig' %}
 
+{% block title %}
+    Liste des EPCI - {{ parent() }}
+{% endblock title %}
+
 {% block stylesheets %}
     {# Liens CSS de Bootstrap #}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-{% endblock %}
+{% endblock stylesheets %}
 
 {% block monespace %}
     {% include('@LSIMarket/admin/gestion_epci/liste_epci_content.html.twig') %}
@@ -18,6 +22,7 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 
+    {# Pour traduire le dataTable en francais #}
     <script type="text/javascript">
         $(document).ready(function() {
             $('#epci').DataTable({
@@ -46,5 +51,9 @@
                 }
             );
         } );
+    </script>
+
+    <script>
+
     </script>
 {% endblock %}

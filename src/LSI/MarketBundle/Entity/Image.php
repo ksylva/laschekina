@@ -130,9 +130,11 @@ class Image
     return __DIR__.'/../../../../web/'.$this->getUploadDir();
   }
 
+
+
   public function getWebPath()
   {
-    return $this->getUploadDir().'/'.$this->getId().'.'.$this->getUrl();
+      return $this->getUploadDir().'/'.$this->getId().'.'.$this->getUrl();
   }
 
     /**

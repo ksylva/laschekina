@@ -3,6 +3,12 @@
 namespace LSI\MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+<<<<<<< HEAD
+use FOS\MessageBundle\Entity\Message as BaseMessage;
+=======
+//use FOS\MessageBundle\Entity\Message as BaseMessage;
+>>>>>>> master
 
 /**
  * Message
@@ -10,7 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="LSI\MarketBundle\Repository\MessageRepository")
  */
-class Message
+<<<<<<< HEAD
+class Message 
+=======
+class Message //extends BaseMessage
+>>>>>>> master
 {
     /**
      * @var int
@@ -19,7 +29,7 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -33,7 +43,21 @@ class Message
      *
      * @ORM\Column(name="contenu", type="text")
      */
-    private $contenu;
+    /*private $contenu;*/
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dest", type="string", length=50)
+     */
+    private $dest;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dest", type="string", length=50)
+     */
+    private $dest;
 
     /**
      * @var datetime
@@ -43,19 +67,19 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Administre")
-     *@ORM\JoinColumn(nullable=false)
+     *@ORM\JoinColumn(nullable=true)
      */
     private $administre;
 
     /**
      * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\Mairie")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $mairie;
 
 
     public function __construct(){
-        $this->dateAjout = new \Datetime();
+        $this->dateAjout = new \DateTime();
     }
 
     /**
@@ -68,30 +92,6 @@ class Message
         return $this->id;
     }
 
-
-    /**
-     * Set contenu
-     *
-     * @param string $contenu
-     *
-     * @return Message
-     */
-    public function setContenu($contenu)
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    /**
-     * Get contenu
-     *
-     * @return string
-     */
-    public function getContenu()
-    {
-        return $this->contenu;
-    }
 
     /**
      * Set administre
@@ -166,6 +166,34 @@ class Message
     }
 
     /**
+     * @ORM\ManyToOne(
+     *   targetEntity="LSI\MarketBundle\Entity\Thread",
+     *   inversedBy="messages"
+     * )
+     * @var \FOS\MessageBundle\Model\ThreadInterface
+     *
+    protected $thread;*/
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LSI\MarketBundle\Entity\User")
+     * @var \FOS\MessageBundle\Model\ParticipantInterface
+     *
+    protected $sender;*/
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="LSI\MarketBundle\Entity\MessageMetadata",
+     *   mappedBy="message",
+     *   cascade={"all"}
+     * )
+     * @var MessageMetadata[]|Collection
+     *
+    protected $metadata;*/
+
+
+
+
+    /**
      * Set dateAjout
      *
      * @param \DateTime $dateAjout
@@ -187,5 +215,109 @@ class Message
     public function getDateAjout()
     {
         return $this->dateAjout;
+    }
+
+    /**
+<<<<<<< HEAD
+     * Set dest
+     *
+     * @param string $dest
+     *
+     * @return Message
+     */
+    public function setDest($dest)
+    {
+        $this->dest = $dest;
+
+        return $this;
+    }
+
+    /**
+     * Get dest
+     *
+     * @return string
+     */
+    public function getDest()
+    {
+        return $this->dest;
+    }
+
+    /**
+     * Set contenu
+     *
+     * @param string $contenu
+     *
+     * @return Message
+     */
+    public function setContenu($contenu)
+    {
+        $this->contenu = $contenu;
+=======
+     * Add metadatum
+     *
+     * @param \LSI\MarketBundle\Entity\MessageMetadata $metadatum
+     *
+     * @return Message
+     *
+    public function addMetadatum(\LSI\MarketBundle\Entity\MessageMetadata $metadatum)
+    {
+        $this->metadata[] = $metadatum;
+
+        return $this;
+    }*/
+
+    /**
+     * Remove metadatum
+     *
+     * @param \LSI\MarketBundle\Entity\MessageMetadata $metadatum
+     *
+    public function removeMetadatum(\LSI\MarketBundle\Entity\MessageMetadata $metadatum)
+    {
+        $this->metadata->removeElement($metadatum);
+    }*/
+
+    /**
+     * Get metadata
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     *
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }*/
+
+    /**
+     * Set dest
+     *
+     * @param string $dest
+     *
+     * @return Message
+     */
+    public function setDest($dest)
+    {
+        $this->dest = $dest;
+>>>>>>> master
+
+        return $this;
+    }
+
+    /**
+<<<<<<< HEAD
+     * Get contenu
+     *
+     * @return string
+     */
+    public function getContenu()
+    {
+        return $this->contenu;
+=======
+     * Get dest
+     *
+     * @return string
+     */
+    public function getDest()
+    {
+        return $this->dest;
+>>>>>>> master
     }
 }

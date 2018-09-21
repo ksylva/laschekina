@@ -1,0 +1,52 @@
+{% extends 'LSIMarketBundle::monespace.html.twig' %}
+
+{% block stylesheets %}
+    {# Liens CSS de Bootstrap #}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+{% endblock stylesheets %}
+
+{% block monespace %}
+    {% include('@LSIMarket/superadmin/liste_admin_content.html.twig') %}
+{% endblock monespace %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    {# Liens JS de Bootstrap #}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+    {# Pour traduire le dataTable en francais #}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#admin').DataTable({
+                    language: {
+                        processing:     "Traitement en cours...",
+                        search:         "Rechercher&nbsp;:",
+                        lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
+                        info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                        infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                        infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                        infoPostFix:    "",
+                        loadingRecords: "Chargement en cours...",
+                        zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                        emptyTable:     "Aucune donnée disponible dans le tableau",
+                        paginate: {
+                            first:      "Premier",
+                            previous:   "Pr&eacute;c&eacute;dent",
+                            next:       "Suivant",
+                            last:       "Dernier"
+                        },
+                        aria: {
+                            sortAscending:  ": activer pour trier la colonne par ordre croissant",
+                            sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                        }
+                    }
+                }
+            );
+        } );
+    </script>
+
+{% endblock javascripts %}

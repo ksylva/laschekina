@@ -37,6 +37,9 @@ class ReserverType extends AbstractType
                 'months' => range(date('m'), date('m') + 11),
                 //'attr' => array('class' => 'js-datepicker'),
             ))
+            ->add('adresseReserve', TextType::class, array(
+                'attr' => array('placeholder' => 'Adresse',)
+            ))
             ->add('reserveUpdateAt', DateTimeType::class, array(
                 'input' => 'datetime',
                 'widget' => 'choice',

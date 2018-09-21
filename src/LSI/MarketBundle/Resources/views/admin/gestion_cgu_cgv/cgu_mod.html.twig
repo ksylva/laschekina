@@ -6,9 +6,4 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    {{ tinymce_init({
-        theme: {'advanced': {'language': app.request.locale, 'height': 700}}
-    })
-    }}
 {% endblock javascripts %}

@@ -1,0 +1,100 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    details reservation
+{% endblock %}
+
+{% block body %}
+    {% if listreservation is defined %}
+        {% for listreservation in listreservation %}
+            <div class="row">
+                <div class="col-lg-12" style="text-align: center">
+                    {% for listancreserve in listreservation.annonce.images %}
+                    <img src="{{ asset(listancreserve.webPath) }}" alt="{{ listancreserve.alt }}"
+                         style="width: 500px; height: 500px"/>
+                    {% endfor %}
+                    <h3>{{ listreservation.annonce.titre }}</h3>
+                    <h3>{{ listreservation.annonce.prixDefaut }}</h3>
+                    <h3>{{ listreservation.annonce.categorie.name }}</h3>
+                    <h3>
+                        {{ listreservation.user.id }}
+                        {{ listreservation.id }}
+                        {{ listreservation.reserveEtat }}
+                    </h3>
+                    <h3>{{ listreservation.user.nom }}</h3>
+                    <h3>{{ listreservation.user.telephone }}</h3>
+                    <div>
+                        {% if listreservation.reserveEtat == "R"  %}
+                            <span>
+                                <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler" disabled>Annuler</button>
+                            </span>
+                            <span>
+                                <button type="submit" class="btn btn-success" value="modifier" name="btn-modifier" disabled>Modifier</button>
+                            </span>
+                            <span>
+                                <button type="submit" class="btn btn-success" value="payer" name="btn-payer" disabled>Payer</button>
+                            </span>
+                        {% elseif listreservation.reserveEtat == "V" %}
+                            <span>
+                                <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler">Annuler</button>
+                            </span>
+                            <span>
+                                <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer">Payer</button>
+                            </span>
+                        {% elseif listreservation.reserveEtat == "An" %}
+                            <span>
+                                <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler" disabled>Annuler</button>
+                            </span>
+                            <span>
+                                <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer" disabled>Payer</button>
+                            </span>
+                        {% else %}
+                            <span>
+                                <button type="submit" class="btn btn-success" value="annuler" name="btn-annuler" id="annuler">Annuler</button>
+                            </span>
+                            <span>
+                                <a href="{{ path('ls_imarket_traitement_demandeur_modifierreserv', {'id': listreservation.id }) }}" type="submit" class="btn btn-success" value="modifier" name="btn-modifier" id="modifier">Modifier</a>
+                            </span>
+                           {# <span>
+                                <button type="submit" class="btn btn-success" value="payer" name="btn-payer" id="payer">Payer</button>
+                            </span>#}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if listreservation is defined %}
+        {% for listreservation in listreservation %}
+
+            {#Traitement du bouton d'annulation d'une réservation par le demandeur#}
+            <script>
+
+                $(document).on('click', 'button#annuler', function () {
+                    that = $(this);
+                    if (confirm('Voulez vous annuler la réservation ?')) {
+                        $.ajax({
+                            url: "{{ path('ls_imarket_traitement_demandeur_annulerreserv', {'id': listreservation.id}) }}",
+                            type: "GET",
+                            data: {
+                                "btn-annuler": "annuler"
+                            },
+                            async: true,
+                            success: function () {
+                                // alert('La réservation a été refusée !');
+                                $("#annuler").prop('disabled', true);
+                                $("#payer").prop('disabled', true);
+                                /* Redirection vers la page de consultation des annonces*/
+                                window.location.href = "{{ path('ls_imarket_annonce_reservee') }}";
+                            }
+                        })
+                    }
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

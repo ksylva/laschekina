@@ -44,12 +44,19 @@ class AnnonceType extends AbstractType
             )
             ->add('annonceUpdateAt', DateTimeType::class)
             ->add('mairie')
+
             ->add('images', CollectionType::class, array(
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 ))
             ->add('adresse',AdresseType::class)
+            ->add('images', CollectionType::class, array(
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true
+            ))
+
             ->add('categorie', EntityType::class, array(
                 'label' => 'Catégorie de l\'annonce',
                 'class' => 'LSIMarketBundle:Categorie',

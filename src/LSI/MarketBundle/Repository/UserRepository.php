@@ -49,4 +49,14 @@ class UserRepository extends \Doctrine\ORM\EntityRepository {
         ;
         return $qb->getQuery()->getResult();
     }
+
+    // Lister les administrateurs
+    public function findUserAdmin(){
+        $roles = 'a:1:{i:0;s:10:"ROLE_ADMIN";}';
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.roles = :roles')
+            ->setParameter('roles', $roles)
+            ;
+        return $qb->getQuery()->getResult();
+    }
 }
