@@ -647,11 +647,9 @@ class MarketController extends Controller {
     // Action pour traiter la validation d'une réservation par l'offreur
 
 
-    public function validAction(Request $request, $id) {
 
     public function validAction(Request $request, $id)
     {
-
         $this->denyAccessUnlessGranted(['ROLE_MAIRIE', 'ROLE_PART'], $this->redirectToRoute('fos_user_security_login'));
         // Recuperer l'annonce reservée
         $reporeserv = $this->getDoctrine()->getRepository('LSIMarketBundle:Reserver');
@@ -665,12 +663,6 @@ class MarketController extends Controller {
 
         }
         return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
-
-            // return $this->redirectToRoute('ls_imarket_annonce_reservee');
-
-        }
-        return $this->redirectToRoute('ls_imarket_annonce_reservee');
-
     }
 
     // Action pour réfuser une réservation
@@ -687,9 +679,6 @@ class MarketController extends Controller {
         }
 
         return $this->redirectToRoute('ls_imarket_reservations_sur_mes_annonces');
-
-        //return $this->redirectToRoute('ls_imarket_annonce_reservee');
-
     }
 
     // Traitement de la réservation par le demandeur
@@ -810,7 +799,6 @@ class MarketController extends Controller {
    /*Traitement de l'espace tchat*/
 
    public function tchatAction(){
-
        return $this->render('LSIMarketBundle:market:tchat.html.twig');
    }
 
